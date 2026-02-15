@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const { lang, toggleLang, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,7 +16,7 @@ const Header = () => {
 
       const sections = ['hero', 'leadership', 'services', 'wrc-2027', 'contact'];
       const scrollPosition = window.scrollY + 100;
-      
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -27,7 +29,7 @@ const Header = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -45,11 +47,11 @@ const Header = () => {
   };
 
   const navLinks = [
-    { id: 'hero', label: 'Home' },
-    { id: 'leadership', label: 'Leadership' },
-    { id: 'services', label: 'Services' },
-    { id: 'wrc-2027', label: 'WRC-2027' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'hero', label: t('nav.home') },
+    { id: 'leadership', label: t('nav.leadership') },
+    { id: 'services', label: t('nav.services') },
+    { id: 'wrc-2027', label: t('nav.wrc2027') },
+    { id: 'contact', label: t('nav.contact') }
   ];
 
   return (
@@ -58,10 +60,10 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center space-x-3 group">
-            <img 
-              src="https://horizons-cdn.hostinger.com/6d36ddf2-44ee-4e42-a8d1-2714e0635bbe/code_transparente-Rguug.png" 
-              alt="Co.De Aerospace Logo" 
-              className="h-10 w-10 transition-transform duration-300 group-hover:scale-110" 
+            <img
+              src="https://horizons-cdn.hostinger.com/6d36ddf2-44ee-4e42-a8d1-2714e0635bbe/code_transparente-Rguug.png"
+              alt="Co.De Aerospace Logo"
+              className="h-10 w-10 transition-transform duration-300 group-hover:scale-110"
             />
             <span className="text-xl font-bold text-white group-hover:text-[#00d9ff] transition-colors duration-300">
               Co.De Aerospace
@@ -69,7 +71,7 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <button
                 key={link.id}
@@ -81,16 +83,35 @@ const Header = () => {
                 {link.label}
               </button>
             ))}
+
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#00d9ff]/30 text-[#00d9ff] hover:bg-[#00d9ff]/10 transition-colors text-xs font-mono uppercase tracking-wider"
+              title={lang === 'en' ? 'Cambiar a Español' : 'Switch to English'}
+            >
+              <Globe className="w-3.5 h-3.5" />
+              {lang === 'en' ? 'ES' : 'EN'}
+            </button>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-white hover:text-[#00d9ff] transition-colors"
-            aria-label="Toggle mobile menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile: Lang toggle + Menu Button */}
+          <div className="md:hidden flex items-center gap-3">
+            <button
+              onClick={toggleLang}
+              className="flex items-center gap-1 px-2 py-1 rounded border border-[#00d9ff]/30 text-[#00d9ff] text-xs font-mono"
+            >
+              <Globe className="w-3 h-3" />
+              {lang === 'en' ? 'ES' : 'EN'}
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white hover:text-[#00d9ff] transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}

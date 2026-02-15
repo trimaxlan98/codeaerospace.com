@@ -8,8 +8,11 @@ import WRC2027Section from '@/components/WRC2027Section';
 import TripleHelixSection from '@/components/TripleHelixSection';
 import ContactForm from '@/components/ContactForm';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 
 const HomePage = () => {
+  const { t } = useLanguage();
+
   return (
     <>
       <Helmet>
@@ -18,27 +21,14 @@ const HomePage = () => {
       </Helmet>
 
       <div className="bg-[#0a0e27]">
-        
-        {/* Hero Section */}
         <HeroSection />
-
-        {/* Leadership Section - NEW */}
         <LeadershipSection />
-
-        {/* Technical Services Section - NEW */}
         <TechnicalServicesSection />
-
-        {/* WRC 2027 Section */}
         <WRC2027Section />
-        
-        {/* Triple Helix Section */}
         <TripleHelixSection />
 
         {/* Contact Section */}
-        <section
-          id="contact"
-          className="relative py-24 px-6 overflow-hidden bg-[#0a0e27]"
-        >
+        <section id="contact" className="relative py-24 px-6 overflow-hidden bg-[#0a0e27]">
           <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -48,14 +38,11 @@ const HomePage = () => {
             >
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                  Partner With <span className="text-[#00d9ff]">Co.De Aerospace</span>
+                  {t('contact.title1')} <span className="text-[#00d9ff]">Co.De Aerospace</span>
                 </h2>
                 <div className="w-24 h-1 bg-[#00d9ff] mx-auto mb-6" />
-                <p className="text-lg text-[#c0c0c0] max-w-2xl mx-auto">
-                  Ready to collaborate on your next mission? Share your requirements and let's engineer the future together.
-                </p>
+                <p className="text-lg text-[#c0c0c0] max-w-2xl mx-auto">{t('contact.subtitle')}</p>
               </div>
-
               <ContactForm />
             </motion.div>
           </div>
