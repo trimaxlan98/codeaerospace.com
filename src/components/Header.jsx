@@ -14,7 +14,7 @@ const Header = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      const sections = ['hero', 'leadership', 'services', 'wrc-2027', 'contact'];
+      const sections = ['hero', 'leadership', 'services', 'wrc-2027', 'microapps', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -51,6 +51,7 @@ const Header = () => {
     { id: 'leadership', label: t('nav.leadership') },
     { id: 'services', label: t('nav.services') },
     { id: 'wrc-2027', label: t('nav.wrc2027') },
+    { id: 'microapps', label: t('nav.microapps') },
     { id: 'contact', label: t('nav.contact') }
   ];
 

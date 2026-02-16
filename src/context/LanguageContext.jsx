@@ -9,6 +9,7 @@ const translations = {
     leadership: { en: 'Leadership', es: 'Liderazgo' },
     services: { en: 'Services', es: 'Servicios' },
     wrc2027: { en: 'WRC-2027', es: 'WRC-2027' },
+    microapps: { en: 'MicroApps', es: 'MicroApps' },
     contact: { en: 'Contact', es: 'Contacto' },
   },
 
@@ -173,6 +174,89 @@ const translations = {
   // Loading
   loading: {
     init: { en: 'Initializing', es: 'Inicializando' },
+  },
+
+  // MicroApps
+  microapps: {
+    badge: { en: 'Digital Solutions for SMBs', es: 'Soluciones Digitales para MicroNegocios' },
+    title1: { en: 'Your Business', es: 'Tu Negocio' },
+    title2: { en: 'Online in 5 Steps', es: 'En Línea en 5 Pasos' },
+    subtitle: {
+      en: 'Fast, affordable, and custom-built web apps for stores, pharmacies, stationeries, and any small business in Mexico.',
+      es: 'Apps web rápidas, accesibles y a la medida para tiendas, farmacias, papelerías y cualquier micronegocio en México.',
+    },
+    step1: {
+      title: { en: 'Diagnosis', es: 'Diagnóstico' },
+      desc: {
+        en: 'We analyze your business, products, and daily needs to design the ideal solution.',
+        es: 'Analizamos tu negocio, productos y necesidades diarias para diseñar la solución ideal.',
+      },
+    },
+    step2: {
+      title: { en: 'Design', es: 'Diseño' },
+      desc: {
+        en: 'We create the look and structure of your custom web app with your brand identity.',
+        es: 'Creamos el aspecto y estructura de tu app web personalizada con la identidad de tu marca.',
+      },
+    },
+    step3: {
+      title: { en: 'Development', es: 'Desarrollo' },
+      desc: {
+        en: 'We build your app in 5 to 7 business days, ready to use from any device.',
+        es: 'Construimos tu app en 5 a 7 días hábiles, lista para usar desde cualquier dispositivo.',
+      },
+    },
+    step4: {
+      title: { en: 'Launch', es: 'Lanzamiento' },
+      desc: {
+        en: 'Your app goes live with its own domain, SSL security, and personalized training.',
+        es: 'Tu app sale en línea con dominio propio, seguridad SSL y capacitación personalizada.',
+      },
+    },
+    step5: {
+      title: { en: 'Support', es: 'Soporte' },
+      desc: {
+        en: 'Continuous monthly maintenance, updates, hosting, and technical support included.',
+        es: 'Mantenimiento mensual continuo, actualizaciones, hosting y soporte técnico incluido.',
+      },
+    },
+    packages: { en: 'Packages', es: 'Paquetes' },
+    monthly: { en: '/mo', es: '/mes' },
+    oneTime: { en: 'one-time', es: 'único pago' },
+    maintenance: { en: 'Monthly Maintenance', es: 'Mantenimiento Mensual' },
+    maintenanceDesc: {
+      en: 'Hosting, domain, updates, backups, and technical support.',
+      es: 'Hosting, dominio, actualizaciones, respaldos y soporte técnico.',
+    },
+    popular: { en: 'Most Popular', es: 'Más Popular' },
+    cta: { en: 'Get Started', es: 'Comenzar' },
+    basic: {
+      name: { en: 'Starter', es: 'Básico' },
+      price: { en: '$1,500', es: '$1,500' },
+      f1: { en: 'Product/service catalog', es: 'Catálogo de productos/servicios' },
+      f2: { en: 'Business info page', es: 'Página informativa del negocio' },
+      f3: { en: 'WhatsApp contact button', es: 'Botón de contacto por WhatsApp' },
+      f4: { en: 'Mobile responsive design', es: 'Diseño adaptable a celular' },
+      f5: { en: 'Google Maps integration', es: 'Integración con Google Maps' },
+    },
+    pro: {
+      name: { en: 'Professional', es: 'Profesional' },
+      price: { en: '$2,000', es: '$2,000' },
+      f1: { en: 'Everything in Starter', es: 'Todo lo del Básico' },
+      f2: { en: 'Inventory management', es: 'Control de inventario' },
+      f3: { en: 'Sales & expense tracking', es: 'Registro de ventas y gastos' },
+      f4: { en: 'Basic reports & analytics', es: 'Reportes y estadísticas básicas' },
+      f5: { en: 'Customer database', es: 'Base de datos de clientes' },
+    },
+    premium: {
+      name: { en: 'Premium', es: 'Premium' },
+      price: { en: '$3,000', es: '$3,000' },
+      f1: { en: 'Everything in Professional', es: 'Todo lo del Profesional' },
+      f2: { en: 'IoT device integration', es: 'Integración con dispositivos IoT' },
+      f3: { en: 'Attendance & shift control', es: 'Control de asistencia y turnos' },
+      f4: { en: 'Multi-branch support', es: 'Soporte multi-sucursal' },
+      f5: { en: 'Advanced dashboards', es: 'Dashboards avanzados' },
+    },
   },
 };
 

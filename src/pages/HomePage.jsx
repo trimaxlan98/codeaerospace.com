@@ -6,6 +6,7 @@ import LeadershipSection from '@/components/LeadershipSection';
 import TechnicalServicesSection from '@/components/TechnicalServicesSection';
 import WRC2027Section from '@/components/WRC2027Section';
 import TripleHelixSection from '@/components/TripleHelixSection';
+import MicroAppsSection from '@/components/MicroAppsSection';
 import ContactForm from '@/components/ContactForm';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
@@ -26,6 +27,7 @@ const HomePage = () => {
         <TechnicalServicesSection />
         <WRC2027Section />
         <TripleHelixSection />
+        <MicroAppsSection />
 
         {/* Contact Section */}
         <section id="contact" className="relative py-24 px-6 overflow-hidden bg-[#0a0e27]">
