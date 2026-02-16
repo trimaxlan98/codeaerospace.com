@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, GraduationCap, Briefcase, Wrench, Mail } from 'lucide-react';
+import { X, GraduationCap, Briefcase, Wrench, Mail, Download } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const CVModal = ({ isOpen, onClose, member }) => {
@@ -104,6 +104,18 @@ const CVModal = ({ isOpen, onClose, member }) => {
                     <h4 className="text-white font-semibold text-sm uppercase tracking-wider">{t('cv.contact')}</h4>
                   </div>
                   <a href={`mailto:${member.email}`} className="text-sm text-[#00d9ff] hover:underline">{member.email}</a>
+                </div>
+              )}
+
+              {member.cvPdf && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Download className="w-4 h-4 text-[#00d9ff]" />
+                    <h4 className="text-white font-semibold text-sm uppercase tracking-wider">{t('cv.download')}</h4>
+                  </div>
+                  <a href={member.cvPdf} target="_blank" rel="noopener noreferrer" className="text-sm text-[#00d9ff] hover:underline">
+                    {t('cv.downloadLink')}
+                  </a>
                 </div>
               )}
             </div>

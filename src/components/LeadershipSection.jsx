@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Satellite, Code, Microscope } from 'lucide-react';
@@ -87,7 +86,8 @@ const cvData = {
   "Ing. Jair Molina Arce": {
     initials: "JM",
     name: "Ing. Jair Molina Arce",
-    image: "/team/jair-molina.png", // Placeholder path
+    image: "/team/jair-molina.jpeg",
+    cvPdf: "/cv_ipn.pdf",
     title: {
       en: "Principal Software Architect & Researcher",
       es: "Arquitecto Principal de Software e Investigador"
@@ -158,7 +158,7 @@ const cvData = {
 
 const LeadershipSection = () => {
   const [selectedMember, setSelectedMember] = useState(null);
-  const { t, language } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const leaders = [
     {
@@ -180,7 +180,7 @@ const LeadershipSection = () => {
     },
     {
       name: "Ing. Jair Molina Arce",
-      image: "/team/jair-molina.png",
+      image: "/team/jair-molina.jpeg",
       content: {
         en: {
           title: "Principal Software Architect & Researcher",
@@ -216,11 +216,15 @@ const LeadershipSection = () => {
 
   const handleOpenModal = (leaderName) => {
     const memberData = cvData[leaderName];
+    if (!memberData) {
+      console.error("No CV data found for:", leaderName);
+      return;
+    }
     const localizedMemberData = {
       ...memberData,
-      title: memberData.title[language],
-      bio: memberData.bio[language],
-      experience: memberData.experience[language],
+      title: memberData.title[lang],
+      bio: memberData.bio[lang],
+      experience: memberData.experience[lang],
     };
     setSelectedMember(localizedMemberData);
   };
@@ -248,7 +252,7 @@ const LeadershipSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {leaders.map((leader, index) => {
-            const content = leader.content[language] || leader.content.en;
+            const content = leader.content[lang] || leader.content.en;
             return (
               <LeaderCard
                 key={index}

@@ -38,6 +38,8 @@ const translations = {
     skills: { en: 'Key Skills', es: 'Habilidades Clave' },
     contact: { en: 'Contact', es: 'Contacto' },
     close: { en: 'Close', es: 'Cerrar' },
+    download: { en: 'Download CV', es: 'Descargar CV' },
+    downloadLink: { en: 'Open PDF', es: 'Abrir PDF' },
   },
 
   // Services
