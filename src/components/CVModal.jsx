@@ -9,11 +9,15 @@ const CVModal = ({ isOpen, onClose, member }) => {
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   useEffect(() => {
-    const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') onClose();
+    };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
@@ -63,9 +67,10 @@ const CVModal = ({ isOpen, onClose, member }) => {
                   <h4 className="text-white font-semibold text-sm uppercase tracking-wider">{t('cv.education')}</h4>
                 </div>
                 <ul className="space-y-2">
-                  {member.education.map((edu, idx) => (
+                  {(member.education || []).map((edu, idx) => (
                     <li key={idx} className="text-sm text-[#c0c0c0] flex items-start gap-2">
-                      <span className="text-[#00d9ff] mt-0.5 shrink-0">›</span><span>{edu}</span>
+                      <span className="text-[#00d9ff] mt-0.5 shrink-0">&gt;</span>
+                      <span>{edu}</span>
                     </li>
                   ))}
                 </ul>
@@ -77,9 +82,10 @@ const CVModal = ({ isOpen, onClose, member }) => {
                   <h4 className="text-white font-semibold text-sm uppercase tracking-wider">{t('cv.experience')}</h4>
                 </div>
                 <ul className="space-y-2">
-                  {member.experience.map((exp, idx) => (
+                  {(member.experience || []).map((exp, idx) => (
                     <li key={idx} className="text-sm text-[#c0c0c0] flex items-start gap-2">
-                      <span className="text-[#00d9ff] mt-0.5 shrink-0">›</span><span>{exp}</span>
+                      <span className="text-[#00d9ff] mt-0.5 shrink-0">&gt;</span>
+                      <span>{exp}</span>
                     </li>
                   ))}
                 </ul>
@@ -91,7 +97,7 @@ const CVModal = ({ isOpen, onClose, member }) => {
                   <h4 className="text-white font-semibold text-sm uppercase tracking-wider">{t('cv.skills')}</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {member.skills.map((skill, idx) => (
+                  {(member.skills || []).map((skill, idx) => (
                     <span key={idx} className="px-3 py-1 text-xs font-mono bg-[#00d9ff]/10 text-[#00d9ff] border border-[#00d9ff]/20 rounded-full">{skill}</span>
                   ))}
                 </div>

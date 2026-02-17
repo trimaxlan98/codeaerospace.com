@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Palette, Code2, Rocket, Headphones, ShoppingBag, BarChart3, Cpu, Check, Zap, ExternalLink, PawPrint } from 'lucide-react';
+import { Search, Palette, Code2, Rocket, Headphones, ShoppingBag, BarChart3, Cpu, Check, Zap, ExternalLink, PawPrint, Pill } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const stepIcons = [Search, Palette, Code2, Rocket, Headphones];
@@ -172,6 +172,42 @@ const MicroAppsSection = () => {
             </div>
             <Link
               to="/demo/veterinaria"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300 shadow-[0_0_20px_rgba(0,217,255,0.3)] hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] whitespace-nowrap"
+            >
+              {t('microapps.demoLabel')}
+              <ExternalLink className="w-4 h-4" />
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* Pharmacy Demo Showcase Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-24 relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a2847] via-[#0f2027] to-[#1a2847] border border-[#00d9ff]/30 p-8 md:p-12"
+        >
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMGQ5ZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
+                <Pill className="w-8 h-8 text-blue-400" />
+              </div>
+              <div className="text-center md:text-left">
+                <span className="inline-block px-3 py-1 bg-[#00d9ff]/10 border border-[#00d9ff]/30 rounded-full text-[#00d9ff] text-xs font-bold uppercase tracking-wider mb-2">
+                  {t('microapps.demoLabel')}
+                </span>
+                <h3 className="text-xl md:text-2xl font-bold text-white">
+                  FarmaVida Demo
+                </h3>
+                <p className="text-[#c0c0c0] text-sm mt-1 max-w-md">
+                  {t('microapps.demoDesc')}
+                </p>
+              </div>
+            </div>
+            <Link
+              to="/demo/farmacia"
               className="inline-flex items-center gap-2 px-8 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300 shadow-[0_0_20px_rgba(0,217,255,0.3)] hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] whitespace-nowrap"
             >
               {t('microapps.demoLabel')}

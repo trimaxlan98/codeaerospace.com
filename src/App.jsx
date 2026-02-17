@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import HomePage from '@/pages/HomePage';
 import VetClinicDemo from '@/pages/demos/vet-clinic/VetClinicDemo';
+import PharmacyDemo from '@/pages/demos/pharmacy/PharmacyDemo';
 import LoadingScreen from '@/components/LoadingScreen';
 import StarfieldBackground from '@/components/StarfieldBackground';
 import { LanguageProvider } from '@/context/LanguageContext';
@@ -42,6 +43,7 @@ const AppRoutes = () => {
         <ScrollToTop />
         <Routes>
           <Route path="/demo/veterinaria" element={<VetClinicDemo />} />
+          <Route path="/demo/farmacia" element={<PharmacyDemo />} />
         </Routes>
       </DemoLayout>
     );

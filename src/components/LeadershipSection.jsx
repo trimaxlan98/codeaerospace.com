@@ -1,225 +1,351 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Satellite, Code, Microscope } from 'lucide-react';
 import CVModal from './CVModal';
 import { useLanguage } from '@/context/LanguageContext';
 
-const LeaderCard = ({ name, title, role, description, icon: Icon, image, delay, onClickName, t }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6, delay }}
-    className="bg-[#1a2847] rounded-xl border border-[#2a3c5f] p-8 hover:border-[#00d9ff]/50 hover:shadow-[0_0_30px_rgba(0,217,255,0.1)] transition-all duration-300 group flex flex-col h-full text-center items-center"
-  >
-    <img
-      src={image}
-      alt={name}
-      className="w-24 h-24 rounded-full border-4 border-[#2a3c5f] group-hover:border-[#00d9ff]/50 transition-colors mb-4"
-    />
-    <h3
-      onClick={onClickName}
-      className="text-xl font-bold text-white mb-1 group-hover:text-[#00d9ff] transition-colors cursor-pointer hover:underline decoration-[#00d9ff]/50 underline-offset-4"
-      title={t('leadership.clickCv')}
-    >
-      {name}
-    </h3>
-    <p className="text-[#00d9ff] text-sm font-mono mb-4 uppercase tracking-wider opacity-80">
-      {title}
-    </p>
+const API_BASE_URL = (import.meta.env.VITE_CONTENT_API_URL || 'http://localhost:3001').replace(/\/$/, '');
 
-    <div className="space-y-3 mt-auto text-left w-full">
-      <p className="text-sm text-[#c0c0c0] leading-relaxed text-center">{role}</p>
-      <ul className="text-xs text-[#94a3b8] space-y-2 mt-4 border-t border-[#2a3c5f] pt-4">
-        {description.map((item, idx) => (
-          <li key={idx} className="flex items-start gap-2">
-            <span className="text-[#00d9ff] mt-0.5">›</span>
-            {item}
-          </li>
-        ))}
-      </ul>
-      <button
+const iconMap = {
+  satellite: Satellite,
+  code: Code,
+  microscope: Microscope,
+};
+
+const nameToIconKey = {
+  'Ing. Yuritzi Elena Ordaz Huerta': 'satellite',
+  'Ing. Jair Molina Arce': 'code',
+  'M. en C. Alan Rosas Palacios': 'microscope',
+};
+
+const LeaderCard = ({ name, initials, title, role, description, icon: Icon, image, delay, onClickName, t }) => {
+  const [hasImageError, setHasImageError] = useState(false);
+
+  useEffect(() => {
+    setHasImageError(false);
+  }, [image]);
+
+  const showImage = Boolean(image) && !hasImageError;
+  const safeInitials = initials || name.split(' ').map((word) => word[0]).join('').slice(0, 2).toUpperCase();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay }}
+      className="bg-[#1a2847] rounded-xl border border-[#2a3c5f] p-8 hover:border-[#00d9ff]/50 hover:shadow-[0_0_30px_rgba(0,217,255,0.1)] transition-all duration-300 group flex flex-col h-full text-center items-center"
+    >
+      {showImage ? (
+        <img
+          src={image}
+          alt={name}
+          onError={() => setHasImageError(true)}
+          className="w-24 h-24 rounded-full border-4 border-[#2a3c5f] group-hover:border-[#00d9ff]/50 transition-colors mb-4 object-cover"
+        />
+      ) : (
+        <div className="w-24 h-24 rounded-full border-4 border-[#2a3c5f] group-hover:border-[#00d9ff]/50 transition-colors mb-4 bg-[#0f1a2e] flex items-center justify-center relative">
+          <Icon className="w-7 h-7 text-[#00d9ff]/70" />
+          <span className="absolute bottom-1 right-2 text-[10px] font-mono text-[#00d9ff]/80">{safeInitials}</span>
+        </div>
+      )}
+
+      <h3
         onClick={onClickName}
-        className="mt-4 text-xs text-[#00d9ff]/70 hover:text-[#00d9ff] transition-colors font-mono uppercase tracking-wider w-full text-center"
+        className="text-xl font-bold text-white mb-1 group-hover:text-[#00d9ff] transition-colors cursor-pointer hover:underline decoration-[#00d9ff]/50 underline-offset-4"
+        title={t('leadership.clickCv')}
       >
-        {t('leadership.viewCv')}
-      </button>
-    </div>
-  </motion.div>
-);
+        {name}
+      </h3>
+      <p className="text-[#00d9ff] text-sm font-mono mb-4 uppercase tracking-wider opacity-80">
+        {title}
+      </p>
+
+      <div className="space-y-3 mt-auto text-left w-full">
+        <p className="text-sm text-[#c0c0c0] leading-relaxed text-center">{role}</p>
+        <ul className="text-xs text-[#94a3b8] space-y-2 mt-4 border-t border-[#2a3c5f] pt-4">
+          {description.map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2">
+              <span className="text-[#00d9ff] mt-0.5">&gt;</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={onClickName}
+          className="mt-4 text-xs text-[#00d9ff]/70 hover:text-[#00d9ff] transition-colors font-mono uppercase tracking-wider w-full text-center"
+        >
+          {t('leadership.viewCv')}
+        </button>
+      </div>
+    </motion.div>
+  );
+};
 
 const cvData = {
-  "Ing. Yuritzi Elena Ordaz Huerta": {
-    initials: "YO",
-    name: "Ing. Yuritzi Elena Ordaz Huerta",
-    image: "/team/yuritzi-ordaz.png", // Placeholder path
+  'Ing. Yuritzi Elena Ordaz Huerta': {
+    initials: 'YO',
+    name: 'Ing. Yuritzi Elena Ordaz Huerta',
+    image: null,
+    cvPdf: '/cv/yuritzi-ordaz-cv.pdf',
     title: {
-      en: "Lead Systems Engineer",
-      es: "Ingeniera de Sistemas Líder"
+      en: 'Mechatronics Engineer and AI Researcher',
+      es: 'Ingeniera Mecatronica e Investigadora en IA',
     },
     bio: {
-      en: "Systems engineer specializing in satellite tracking, CubeSat mission design, and space systems security. Passionate about developing high-precision orbital propagation algorithms and optimizing mission architectures for next-generation space systems.",
-      es: "Ingeniera de sistemas especializada en seguimiento de satélites, diseño de misiones CubeSat y seguridad de sistemas espaciales. Apasionada por el desarrollo de algoritmos de propagación orbital de alta precisión y la optimización de arquitecturas de misión para sistemas espaciales de próxima generación."
+      en: 'Mechatronics engineer with aerospace research and technical teaching experience. She works on robotics architecture, structural analysis, and AI/cloud workflows for advanced engineering projects.',
+      es: 'Ingeniera mecatronica con experiencia en investigacion aeroespacial y docencia tecnica. Trabaja en arquitectura robotica, analisis estructural y flujos de IA con nube para proyectos avanzados de ingenieria.',
     },
     education: [
-      "B.Eng. in Telecommunications & Electronics Engineering — IPN",
-      "Specialization in Space Systems & Satellite Communications",
-      "Certified in CubeSat Design & Mission Operations"
-    ],
-    experience: {
-        en: [
-            "Lead Systems Engineer at Co.De Aerospace — satellite tracking and ground segment systems",
-            "Research in SGP4/SDP4 orbital propagation models for NGSO constellations",
-            "CubeSat mission architecture design and optimization",
-            "Space systems security protocols and encryption frameworks"
-        ],
-        es: [
-            "Ingeniera de Sistemas Líder en Co.De Aerospace — seguimiento de satélites y sistemas del segmento terrestre",
-            "Investigación en modelos de propagación orbital SGP4/SDP4 para constelaciones NGSO",
-            "Diseño y optimización de la arquitectura de misiones CubeSat",
-            "Protocolos de seguridad y marcos de encriptación para sistemas espaciales"
-        ]
-    },
-    skills: ["SGP4/SDP4", "CubeSat Design", "Orbital Mechanics", "MATLAB", "STK", "Space Security", "RF Engineering", "Mission Planning"],
-    email: "yuritzi@codeaerospace.com"
-  },
-  "Ing. Jair Molina Arce": {
-    initials: "JM",
-    name: "Ing. Jair Molina Arce",
-    image: "/team/jair-molina.jpeg",
-    cvPdf: "/cv_ipn.pdf",
-    title: {
-      en: "Principal Software Architect & Researcher",
-      es: "Arquitecto Principal de Software e Investigador"
-    },
-    bio: {
-        en: "Mechanical Engineering graduate with expertise in control systems, data analysis, and embedded systems development. Expert in thermo-structural analysis and embedded systems design. Author and speaker at international conferences, focused on technological dissemination. Currently pursuing a Master's in Advanced Technologies, specializing in dynamic systems control.",
-        es: "Egresado de Ing. Mecánica con experiencia en sistemas de control, análisis de datos y desarrollo de sistemas embebidos. Experto en análisis térmico-estructural y diseño de sistemas embebidos. Autor y ponente en congresos internacionales, enfocado en divulgación tecnológica. Actualmente cursando la Maestría en Tecnologías Avanzadas, especializándose en control de sistemas dinámicos."
-    },
-    education: [
-      "M.Sc. in Advanced Technologies - IPN (Ongoing)",
-      "B.Eng. in Mechanical Engineering — IPN",
-      "Specialization in Dynamic Systems Control & Instrumentation"
+      'M.Sc. in Advanced Technology, UPIITA-IPN (2026 - ongoing)',
+      'B.Eng. in Mechatronics Engineering, Universidad Veracruzana (2014 - 2019)',
+      'SolidWorks Mechanical Parts Modeling Certification (2018)',
+      'GD&T ASME-2018 Certification (2018)',
     ],
     experience: {
       en: [
-        "Principal Architect at Co.De Aerospace.",
-        "Speaker and co-author at the 75th International Astronautical Congress (IAC 2024).",
-        "Head of Staff at the ICASST 2023 congress.",
-        "National publication in 'Hacia el Espacio' magazine on test benches.",
-        "Technology communicator in presentations and national television (TV Azteca)."
+        'Co-author in WITCOM 2025 research on intelligent satellite communication control systems.',
+        'Principal researcher for IAC project on hybrid robotic swarms for lunar and martian lava tunnels.',
+        'Materials Strength Instructor at UPIITA Rocketry Student Chapter (2025).',
+        'Local Lead for NASA Space Apps Challenge Veracruz 2024.',
+        'Math teacher (secondary and high school) from 2019 to 2023.',
       ],
       es: [
-        "Arquitecto Principal en Co.De Aerospace.",
-        "Ponente y coautor en el 75º Congreso Astronáutico Internacional (IAC 2024).",
-        "Jefe de Staff en el congreso ICASST 2023.",
-        "Publicación nacional en la revista 'Hacia el Espacio' sobre bancos de pruebas.",
-        "Divulgador tecnológico en ponencias y televisión nacional (TV Azteca)."
-      ]
+        'Coautora en investigacion WITCOM 2025 sobre control inteligente de comunicaciones satelitales.',
+        'Investigadora principal en proyecto IAC sobre enjambres de robots hibridos para tuneles lunares y marcianos.',
+        'Instructora de Resistencia de Materiales en el capitulo estudiantil de cohetes UPIITA (2025).',
+        'Local Lead del NASA Space Apps Challenge Veracruz 2024.',
+        'Profesora de matematicas de nivel secundaria y preparatoria entre 2019 y 2023.',
+      ],
     },
-    skills: ["Python", "C/C++", "MATLAB/Simulink", "ANSYS", "SolidWorks", "React", "Docker", "Embedded Systems", "FEA", "Control Systems", "IAC", "ICASST"],
-    email: "jair@codeaerospace.com"
+    skills: [
+      'Robotics Architecture',
+      'Structural Analysis',
+      'TensorFlow',
+      'PyTorch',
+      'Google Cloud',
+      'Python',
+      'Django',
+      'Docker',
+      'SolidWorks',
+      'GD&T',
+      'Git/GitHub',
+      'Technical Mentoring',
+    ],
+    email: 'yuri.ordazhuerta1996@gmail.com',
   },
-  "M. en C. Alan Rosas Palacios": {
-    initials: "AR",
-    name: "M. en C. Alan Rosas Palacios",
-    image: "/team/alan-rosas.png", // Placeholder path
+  'Ing. Jair Molina Arce': {
+    initials: 'JM',
+    name: 'Ing. Jair Molina Arce',
+    image: '/team/jair-molina.jpeg',
+    cvPdf: '/cv_ipn.pdf',
     title: {
-      en: "Principal Researcher",
-      es: "Investigador Principal"
+      en: 'Principal Software Architect and Researcher',
+      es: 'Arquitecto Principal de Software e Investigador',
     },
     bio: {
-      en: "Principal researcher with a Master's degree focused on applied research and strategic innovation in aerospace. Specializing in academic-industrial alignment, advanced aerospace applications, and technology readiness assessment for next-generation orbital systems.",
-      es: "Investigador principal con Maestría en Ciencias, enfocado en investigación aplicada e innovación estratégica en el sector aeroespacial. Especializado en la alineación académico-industrial, aplicaciones aeroespaciales avanzadas y evaluación de la madurez tecnológica para sistemas orbitales de próxima generación."
+      en: 'Mechanical Engineering graduate with expertise in control systems, data analysis, and embedded systems development. Expert in thermo-structural analysis and embedded systems design. Author and speaker at international conferences, focused on technological dissemination. Currently pursuing a master degree in advanced technologies focused on dynamic systems control.',
+      es: 'Egresado de ingenieria mecanica con experiencia en sistemas de control, analisis de datos y desarrollo de sistemas embebidos. Experto en analisis termo-estructural y diseno de sistemas embebidos. Autor y ponente en congresos internacionales, enfocado en divulgacion tecnologica. Actualmente cursa una maestria en tecnologias avanzadas con enfoque en control de sistemas dinamicos.',
     },
     education: [
-      "M.Sc. in Advanced Technology — CICATA-IPN",
-      "B.Eng. in Communications & Electronics Engineering — IPN",
-      "Research Fellowship in Satellite Communications & LEO Systems"
+      'M.Sc. in Advanced Technologies - IPN (ongoing)',
+      'B.Eng. in Mechanical Engineering - IPN',
+      'Specialization in Dynamic Systems Control and Instrumentation',
     ],
     experience: {
-        en: [
-            "Principal Researcher at Co.De Aerospace — R&D and academic partnerships",
-            "Published research on NGSO interference mitigation and spectrum coexistence",
-            "Academic-industrial alignment for aerospace technology transfer",
-            "TRL assessment for advanced aerospace prototypes"
-        ],
-        es: [
-            "Investigador Principal en Co.De Aerospace — I+D y asociaciones académicas",
-            "Investigación publicada sobre mitigación de interferencias NGSO y coexistencia de espectro",
-            "Alineación académico-industrial para la transferencia de tecnología aeroespacial",
-            "Evaluación de TRL para prototipos aeroespaciales avanzados"
-        ]
+      en: [
+        'Principal Architect at Co.De Aerospace.',
+        'Speaker and co-author at the 75th International Astronautical Congress (IAC 2024).',
+        'Head of Staff at ICASST 2023.',
+        "National publication in 'Hacia el Espacio' magazine on test benches.",
+        'Technology communicator in presentations and national television.',
+      ],
+      es: [
+        'Arquitecto Principal en Co.De Aerospace.',
+        'Ponente y coautor en el 75th International Astronautical Congress (IAC 2024).',
+        'Head of Staff en ICASST 2023.',
+        "Publicacion nacional en la revista 'Hacia el Espacio' sobre bancos de pruebas.",
+        'Divulgador tecnologico en ponencias y television nacional.',
+      ],
     },
-    skills: ["Research Methods", "Spectrum Analysis", "MATLAB", "LaTeX", "Statistical Analysis", "ITU Standards", "RF Simulation", "Technical Writing"],
-    email: "alan@codeaerospace.com"
-  }
+    skills: ['Python', 'C/C++', 'MATLAB/Simulink', 'ANSYS', 'SolidWorks', 'React', 'Docker', 'Embedded Systems', 'FEA', 'Control Systems', 'IAC', 'ICASST'],
+    email: 'jair@codeaerospace.com',
+  },
+  'M. en C. Alan Rosas Palacios': {
+    initials: 'AR',
+    name: 'M. en C. Alan Rosas Palacios',
+    image: null,
+    cvPdf: '/cv/alan-rosas-cv.pdf',
+    title: {
+      en: 'Software Engineer and AI Specialist',
+      es: 'Ingeniero de Software y Especialista en IA',
+    },
+    bio: {
+      en: 'Software engineer and AI specialist with a master degree in advanced technology. Focused on intelligent architecture, workflow automation, and deployment of autonomous AI agents for complex operational challenges.',
+      es: 'Ingeniero de software y especialista en IA con maestria en tecnologia avanzada. Enfocado en arquitectura inteligente, automatizacion de flujos de trabajo y despliegue de agentes autonomos para retos operativos complejos.',
+    },
+    education: [
+      'M.Sc. in Advanced Technology, IPN (2024 - 2025)',
+      'B.Eng. in Telematics Engineering, IPN (2018 - 2024)',
+    ],
+    experience: {
+      en: [
+        'Freelance network and systems consultant for SMEs (2025).',
+        'Research collaborator at Mexican Space Agency (AEM) in AI-driven aerospace communications (2024).',
+        'Software Engineer at Mexico Profundo building a React Native + Node.js tourism app (2022 - 2025).',
+        'Published and presented research in IOP, IAA, and WITCOM on satellite links and cyberdefense.',
+      ],
+      es: [
+        'Consultor freelance de redes y sistemas para PyMEs (2025).',
+        'Colaborador de investigacion en la Agencia Espacial Mexicana (AEM) en comunicaciones aeroespaciales impulsadas por IA (2024).',
+        'Ingeniero de software en Mexico Profundo desarrollando app de turismo con React Native + Node.js (2022 - 2025).',
+        'Publicaciones y ponencias en IOP, IAA y WITCOM sobre enlaces satelitales y ciberdefensa.',
+      ],
+    },
+    skills: [
+      'Python',
+      'C/C++',
+      'JavaScript',
+      'TypeScript',
+      'Node.js',
+      'React Native',
+      'LangChain',
+      'OpenAI API',
+      'TensorFlow',
+      'PyTorch',
+      'Docker',
+      'AWS/Azure/GCP',
+    ],
+    email: 'alanrosasp@gmail.com',
+  },
 };
 
 const LeadershipSection = () => {
   const [selectedMember, setSelectedMember] = useState(null);
+  const [apiProfiles, setApiProfiles] = useState(null);
   const { t, lang } = useLanguage();
 
-  const leaders = [
+  const fallbackLeaders = useMemo(() => [
     {
-      name: "Ing. Yuritzi Elena Ordaz Huerta",
-      image: "/team/yuritzi-ordaz.png",
+      name: 'Ing. Yuritzi Elena Ordaz Huerta',
+      initials: 'YO',
+      image: null,
       content: {
         en: {
-          title: "Lead Systems Engineer",
-          role: "Satellite tracking systems & CubeSat mission design",
-          description: ["Space Systems Security", "High-precision orbital propagation algorithms", "Mission architecture optimization"],
+          title: 'Mechatronics Engineer and AI Researcher',
+          role: 'Aerospace research, robotics systems, and technical education',
+          description: ['Satellite communication control research', 'NASA Space Apps local leadership', 'Materials strength and structural analysis'],
         },
         es: {
-          title: "Ingeniera de Sistemas Líder",
-          role: "Sistemas de seguimiento de satélites y diseño de misiones CubeSat",
-          description: ["Seguridad de sistemas espaciales", "Algoritmos de propagación orbital de alta precisión", "Optimización de la arquitectura de la misión"],
-        }
+          title: 'Ingeniera Mecatronica e Investigadora en IA',
+          role: 'Investigacion aeroespacial, sistemas roboticos y docencia tecnica',
+          description: ['Investigacion de control para comunicaciones satelitales', 'Liderazgo local en NASA Space Apps', 'Resistencia de materiales y analisis estructural'],
+        },
       },
-      icon: Satellite
+      icon: Satellite,
     },
     {
-      name: "Ing. Jair Molina Arce",
-      image: "/team/jair-molina.jpeg",
+      name: 'Ing. Jair Molina Arce',
+      initials: 'JM',
+      image: '/team/jair-molina.jpeg',
       content: {
         en: {
-          title: "Principal Software Architect & Researcher",
-          role: "Control systems, data analysis, and embedded systems development.",
-          description: ["Author and speaker at international conferences.", "Expert in thermo-structural analysis (FEA).", "Specializing in dynamic systems control."],
+          title: 'Principal Software Architect and Researcher',
+          role: 'Control systems, data analysis, and embedded systems',
+          description: ['IAC 2024 speaker and co-author', 'Thermo-structural analysis and embedded systems', 'Dynamic systems control specialization'],
         },
         es: {
-          title: "Arquitecto Principal de Software e Investigador",
-          role: "Sistemas de control, análisis de datos y desarrollo de sistemas embebidos.",
-          description: ["Autor y ponente en congresos internacionales.", "Experto en análisis termo-estructural (FEA).", "Especialización en control de sistemas dinámicos."],
-        }
+          title: 'Arquitecto Principal de Software e Investigador',
+          role: 'Sistemas de control, analisis de datos y sistemas embebidos',
+          description: ['Ponente y coautor en IAC 2024', 'Analisis termo-estructural y sistemas embebidos', 'Especializacion en control de sistemas dinamicos'],
+        },
       },
-      icon: Code
+      icon: Code,
     },
     {
-      name: "M. en C. Alan Rosas Palacios",
-      image: "/team/alan-rosas.png",
+      name: 'M. en C. Alan Rosas Palacios',
+      initials: 'AR',
+      image: null,
       content: {
         en: {
-          title: "Principal Researcher",
-          role: "Applied Research & Strategic Innovation",
-          description: ["Academic-Industrial alignment", "Advanced aerospace applications", "Next-gen technology readiness"],
+          title: 'Software Engineer and AI Specialist',
+          role: 'Intelligent systems architecture and AI workflow automation',
+          description: ['Autonomous multi-agent systems', 'Satellite communications research and publications', 'Cloud-native and full-stack engineering'],
         },
         es: {
-          title: "Investigador Principal",
-          role: "Investigación Aplicada e Innovación Estratégica",
-          description: ["Alineación académico-industrial", "Aplicaciones aeroespaciales avanzadas", "Preparación de tecnología de próxima generación"],
-        }
+          title: 'Ingeniero de Software y Especialista en IA',
+          role: 'Arquitectura de sistemas inteligentes y automatizacion con IA',
+          description: ['Sistemas multi-agente autonomos', 'Investigacion y publicaciones en comunicaciones satelitales', 'Ingenieria full-stack y cloud'],
+        },
       },
-      icon: Microscope
+      icon: Microscope,
+    },
+  ], []);
+
+  useEffect(() => {
+    let ignore = false;
+
+    const fetchLeadershipFromApi = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/leadership?lang=${lang}`);
+        if (!response.ok) throw new Error('Leadership API not available');
+        const payload = await response.json();
+        if (!Array.isArray(payload.items)) throw new Error('Invalid payload');
+        if (!ignore) setApiProfiles(payload.items);
+      } catch {
+        if (!ignore) setApiProfiles(null);
+      }
+    };
+
+    fetchLeadershipFromApi();
+    return () => {
+      ignore = true;
+    };
+  }, [lang]);
+
+  const displayedLeaders = useMemo(() => {
+    if (Array.isArray(apiProfiles) && apiProfiles.length > 0) {
+      return apiProfiles.map((profile, index) => ({
+        name: profile.name,
+        initials: profile.initials,
+        image: profile.image || null,
+        title: profile.title,
+        role: profile.role,
+        description: Array.isArray(profile.description) ? profile.description : [],
+        icon: iconMap[profile.iconKey] || iconMap[nameToIconKey[profile.name]] || Code,
+        delay: index * 0.1,
+      }));
     }
-  ];
+
+    return fallbackLeaders.map((leader, index) => {
+      const content = leader.content[lang] || leader.content.en;
+      return {
+        name: leader.name,
+        initials: leader.initials,
+        image: leader.image,
+        ...content,
+        icon: leader.icon,
+        delay: index * 0.1,
+      };
+    });
+  }, [apiProfiles, fallbackLeaders, lang]);
 
   const handleOpenModal = (leaderName) => {
+    if (Array.isArray(apiProfiles) && apiProfiles.length > 0) {
+      const remoteMember = apiProfiles.find((member) => member.name === leaderName);
+      if (remoteMember) {
+        setSelectedMember(remoteMember);
+        return;
+      }
+    }
+
     const memberData = cvData[leaderName];
     if (!memberData) {
-      console.error("No CV data found for:", leaderName);
+      // eslint-disable-next-line no-console
+      console.error('No CV data found for:', leaderName);
       return;
     }
+
     const localizedMemberData = {
       ...memberData,
       title: memberData.title[lang],
@@ -251,21 +377,21 @@ const LeadershipSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {leaders.map((leader, index) => {
-            const content = leader.content[lang] || leader.content.en;
-            return (
-              <LeaderCard
-                key={index}
-                name={leader.name}
-                image={leader.image}
-                {...content}
-                icon={leader.icon}
-                delay={index * 0.1}
-                onClickName={() => handleOpenModal(leader.name)}
-                t={t}
-              />
-            );
-          })}
+          {displayedLeaders.map((leader, index) => (
+            <LeaderCard
+              key={`${leader.name}-${index}`}
+              name={leader.name}
+              initials={leader.initials}
+              image={leader.image}
+              title={leader.title}
+              role={leader.role}
+              description={leader.description}
+              icon={leader.icon}
+              delay={leader.delay}
+              onClickName={() => handleOpenModal(leader.name)}
+              t={t}
+            />
+          ))}
         </div>
       </div>
 
