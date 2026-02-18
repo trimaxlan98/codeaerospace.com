@@ -94,7 +94,7 @@ const Footer = () => {
         <p><strong className="text-white">Data Storage</strong></p>
         <p>Visit counter data is stored locally on your device using browser localStorage. Contact form submissions are processed via email and are not stored in external databases.</p>
         <p><strong className="text-white">Contact</strong></p>
-        <p>For questions about this policy, contact us at <a href="mailto:contact@codeaerospace.com" className="text-[#00d9ff] hover:underline">contact@codeaerospace.com</a></p>
+        <p>For questions about this policy, contact us at <a href="mailto:contacto@codeaerospace.com" className="text-[#00d9ff] hover:underline">contacto@codeaerospace.com</a></p>
       </PolicyModal>
 
       <PolicyModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} title={t('footer.terms')} closeText={t('footer.close')}>
@@ -107,7 +107,7 @@ const Footer = () => {
         <p><strong className="text-white">Limitation of Liability</strong></p>
         <p>Co.De Aerospace provides this website "as is" without warranties of any kind. We are not liable for any damages arising from the use of this website.</p>
         <p><strong className="text-white">Contact</strong></p>
-        <p>For questions about these terms, contact us at <a href="mailto:contact@codeaerospace.com" className="text-[#00d9ff] hover:underline">contact@codeaerospace.com</a></p>
+        <p>For questions about these terms, contact us at <a href="mailto:contacto@codeaerospace.com" className="text-[#00d9ff] hover:underline">contacto@codeaerospace.com</a></p>
       </PolicyModal>
     </footer>
   );

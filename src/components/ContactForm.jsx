@@ -47,7 +47,7 @@ const ContactForm = () => {
     const body = encodeURIComponent(
       `Organization: ${formData.organizationName}\nEmail: ${formData.email}\nService Interest: ${formData.serviceInterest}\n\nMessage:\n${formData.message}`
     );
-    const mailtoLink = `mailto:contact@codeaerospace.com?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:contacto@codeaerospace.com?subject=${subject}&body=${body}`;
 
     await new Promise(resolve => setTimeout(resolve, 400));
     window.location.href = mailtoLink;
