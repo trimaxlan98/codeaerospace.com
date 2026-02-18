@@ -86,7 +86,7 @@ const cvData = {
   'Ing. Yuritzi Elena Ordaz Huerta': {
     initials: 'YO',
     name: 'Ing. Yuritzi Elena Ordaz Huerta',
-    image: '/dist/yuri_ordaz.jpeg',
+    image: '/team/yuri_ordaz.jpeg',
     cvPdf: '/cv/yuritzi-ordaz-cv.pdf',
     title: {
       en: 'Mechatronics Engineer and AI Researcher',
@@ -137,7 +137,7 @@ const cvData = {
   'Ing. Jair Molina Arce': {
     initials: 'JM',
     name: 'Ing. Jair Molina Arce',
-    image: '/dist/jair-molina.jpeg',
+    image: '/team/jair-molina.jpeg',
     cvPdf: '/cv_ipn.pdf',
     title: {
       en: 'Principal Software Architect and Researcher',
@@ -174,7 +174,7 @@ const cvData = {
   'M. en C. Alan Rosas Palacios': {
     initials: 'AR',
     name: 'M. en C. Alan Rosas Palacios',
-    image: '/dist/alan_rosas.jpeg',
+    image: '/team/alan_rosas.jpeg',
     cvPdf: '/cv/alan-rosas-cv.pdf',
     title: {
       en: 'Software Engineer and AI Specialist',
@@ -229,7 +229,7 @@ const LeadershipSection = () => {
     {
       name: 'Ing. Yuritzi Elena Ordaz Huerta',
       initials: 'YO',
-      image: '/dist/yuri_ordaz.jpeg',
+      image: '/team/yuri_ordaz.jpeg',
       content: {
         en: {
           title: 'Mechatronics Engineer and AI Researcher',
@@ -247,7 +247,7 @@ const LeadershipSection = () => {
     {
       name: 'Ing. Jair Molina Arce',
       initials: 'JM',
-      image: '/dist/jair-molina.jpeg',
+      image: '/team/jair-molina.jpeg',
       content: {
         en: {
           title: 'Principal Software Architect and Researcher',
@@ -265,7 +265,7 @@ const LeadershipSection = () => {
     {
       name: 'M. en C. Alan Rosas Palacios',
       initials: 'AR',
-      image: '/dist/alan_rosas.jpeg',
+      image: '/team/alan_rosas.jpeg',
       content: {
         en: {
           title: 'Software Engineer and AI Specialist',
