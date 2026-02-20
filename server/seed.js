@@ -8,6 +8,7 @@ import {
   attachProfileImage,
   DB_PATH,
 } from './db.js';
+import { connectRedis, delCache } from './redis.js';
 
 const leadershipProfiles = [
   {
@@ -274,15 +275,26 @@ function seedImages(db) {
   });
 }
 
-function main() {
+async function main() {
   const db = openDatabase();
   try {
     seedLeadership(db);
     seedImages(db);
+    
+    // Invalidate Redis cache
+    try {
+      await connectRedis();
+      await delCache('cache:*');
+      console.log('Redis cache cleared after seed');
+    } catch (e) {
+      console.warn('Could not clear Redis cache:', e.message);
+    }
+
     console.log(`SQLite initialized at ${DB_PATH}`);
     console.log(`Seeded leadership profiles: ${leadershipProfiles.length}`);
   } finally {
     db.close();
+    process.exit(0);
   }
 }
 

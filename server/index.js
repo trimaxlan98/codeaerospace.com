@@ -11,15 +11,46 @@ import {
   upsertMediaAsset,
   attachProfileImage,
 } from './db.js';
+import { connectRedis, getCache, setCache, delCache } from './redis.js';
 
 const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+const CACHE_TTL = 3600; // 1 hour
 
 const app = express();
 const apiPort = Number(process.env.API_PORT || 3001);
 const db = openDatabase();
 
+// Connect to Redis
+connectRedis();
+
 app.use(cors());
 app.use(express.json({ limit: '8mb' }));
+
+// Cache middleware
+const cacheMiddleware = (ttl = CACHE_TTL) => async (req, res, next) => {
+  if (req.method !== 'GET') return next();
+
+  const lang = normalizeLang(req.query.lang);
+  const cacheKey = `cache:${req.path}:${lang}`;
+
+  try {
+    const cached = await getCache(cacheKey);
+    if (cached) {
+      res.json(cached);
+      return;
+    }
+
+    // Override res.json to store the response in cache
+    const originalJson = res.json.bind(res);
+    res.json = (body) => {
+      setCache(cacheKey, body, ttl);
+      return originalJson(body);
+    };
+    next();
+  } catch (err) {
+    next();
+  }
+};
 
 app.get('/health', (_req, res) => {
   res.json({
@@ -29,15 +60,16 @@ app.get('/health', (_req, res) => {
   });
 });
 
-app.get('/api/leadership', (req, res) => {
+app.get('/api/leadership', cacheMiddleware(), (req, res) => {
   const lang = normalizeLang(req.query.lang);
   const items = getLeadershipProfiles(db, lang);
   res.json({ items, lang });
 });
 
-app.get('/api/leadership/:slug', (req, res) => {
+app.get('/api/leadership/:slug', cacheMiddleware(), (req, res) => {
   const lang = normalizeLang(req.query.lang);
-  const profile = getLeadershipProfileBySlug(db, req.params.slug, lang);
+  const { slug } = req.params;
+  const profile = getLeadershipProfileBySlug(db, slug, lang);
   if (!profile) {
     res.status(404).json({ error: 'Profile not found' });
     return;
@@ -100,6 +132,9 @@ app.post('/api/assets', (req, res) => {
   if (profileSlug) {
     attachProfileImage(db, profileSlug, assetId);
   }
+
+  // Invalidate all API caches when data changes
+  await delCache('cache:*');
 
   res.status(201).json({
     id: assetId,
