@@ -5,6 +5,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
 import HomePage from '@/pages/HomePage';
+import LeadershipPage from '@/pages/LeadershipPage';
+import ServicesPage from '@/pages/ServicesPage';
+import WRC2027Page from '@/pages/WRC2027Page';
+import MicroAppsPage from '@/pages/MicroAppsPage';
+import ContactPage from '@/pages/ContactPage';
 import VetClinicDemo from '@/pages/demos/vet-clinic/VetClinicDemo';
 import PharmacyDemo from '@/pages/demos/pharmacy/PharmacyDemo';
 import LoadingScreen from '@/components/LoadingScreen';
@@ -54,6 +59,11 @@ const AppRoutes = () => {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/leadership" element={<LeadershipPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/wrc-2027" element={<WRC2027Page />} />
+        <Route path="/microapps" element={<MicroAppsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </MainLayout>
   );

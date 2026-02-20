@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/context/LanguageContext';
 
 const HeroSection = () => {
@@ -46,25 +47,19 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={() => {
-                const el = document.getElementById('services');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-8 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300 min-w-[200px] shadow-[0_0_20px_rgba(0,217,255,0.3)] hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] active:scale-95"
+            <Link
+              to="/services"
+              className="px-8 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300 min-w-[200px] shadow-[0_0_20px_rgba(0,217,255,0.3)] hover:shadow-[0_0_30px_rgba(0,217,255,0.5)] active:scale-95 text-center flex items-center justify-center"
             >
               {t('hero.cta1')}
-            </button>
+            </Link>
 
-            <button
-              onClick={() => {
-                const el = document.getElementById('contact');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-8 py-4 bg-transparent border border-[#00d9ff]/50 text-white font-bold rounded-lg hover:bg-[#00d9ff]/10 transition-all duration-300 min-w-[200px] active:scale-95"
+            <Link
+              to="/contact"
+              className="px-8 py-4 bg-transparent border border-[#00d9ff]/50 text-white font-bold rounded-lg hover:bg-[#00d9ff]/10 transition-all duration-300 min-w-[200px] active:scale-95 text-center flex items-center justify-center"
             >
               {t('hero.cta2')}
-            </button>
+            </Link>
           </div>
         </motion.div>
       </div>

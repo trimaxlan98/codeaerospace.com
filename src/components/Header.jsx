@@ -1,58 +1,31 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Globe } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
   const { lang, toggleLang, t } = useLanguage();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-
-      const sections = ['hero', 'leadership', 'services', 'wrc-2027', 'microapps', 'contact'];
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({
-        top: elementPosition,
-        behavior: 'smooth'
-      });
-    }
-    setIsMobileMenuOpen(false);
-  };
-
   const navLinks = [
-    { id: 'hero', label: t('nav.home') },
-    { id: 'leadership', label: t('nav.leadership') },
-    { id: 'services', label: t('nav.services') },
-    { id: 'wrc-2027', label: t('nav.wrc2027') },
-    { id: 'microapps', label: t('nav.microapps') },
-    { id: 'contact', label: t('nav.contact') }
+    { path: '/', label: t('nav.home') },
+    { path: '/leadership', label: t('nav.leadership') },
+    { path: '/services', label: t('nav.services') },
+    { path: '/wrc-2027', label: t('nav.wrc2027') },
+    { path: '/microapps', label: t('nav.microapps') },
+    { path: '/contact', label: t('nav.contact') }
   ];
 
   return (
@@ -74,15 +47,15 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => scrollToSection(link.id)}
+              <Link
+                key={link.path}
+                to={link.path}
                 className={`text-sm font-medium transition-colors duration-300 hover:text-[#00d9ff] ${
-                  activeSection === link.id ? 'text-[#00d9ff]' : 'text-[#c0c0c0]'
+                  location.pathname === link.path ? 'text-[#00d9ff]' : 'text-[#c0c0c0]'
                 }`}
               >
                 {link.label}
-              </button>
+              </Link>
             ))}
 
             {/* Language Toggle */}
@@ -120,17 +93,18 @@ const Header = () => {
           <nav className="md:hidden py-4 border-t border-[#00d9ff]/20 bg-[#0a0e27]">
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => scrollToSection(link.id)}
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={`text-left px-4 py-2 rounded-lg transition-colors duration-300 ${
-                    activeSection === link.id
+                    location.pathname === link.path
                       ? 'text-[#00d9ff] bg-[#00d9ff]/10'
                       : 'text-[#c0c0c0] hover:text-[#00d9ff] hover:bg-[#00d9ff]/5'
                   }`}
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
             </div>
           </nav>

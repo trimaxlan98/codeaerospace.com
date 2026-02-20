@@ -2,14 +2,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import HeroSection from '@/components/HeroSection';
-import LeadershipSection from '@/components/LeadershipSection';
-import TechnicalServicesSection from '@/components/TechnicalServicesSection';
-import WRC2027Section from '@/components/WRC2027Section';
 import TripleHelixSection from '@/components/TripleHelixSection';
-import MicroAppsSection from '@/components/MicroAppsSection';
-import ContactForm from '@/components/ContactForm';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 const HomePage = () => {
   const { t } = useLanguage();
@@ -23,30 +20,70 @@ const HomePage = () => {
 
       <div className="bg-[#0a0e27]">
         <HeroSection />
-        <LeadershipSection />
-        <TechnicalServicesSection />
-        <WRC2027Section />
-        <TripleHelixSection />
-        <MicroAppsSection />
 
-        {/* Contact Section */}
-        <section id="contact" className="relative py-24 px-6 overflow-hidden bg-[#0a0e27]">
-          <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+        <TripleHelixSection />
+
+        {/* Quick Access Section */}
+        <section className="py-24 px-6 bg-[#0a0e27]/50">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Leadership Card */}
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="p-8 rounded-2xl border border-[#00d9ff]/20 bg-[#161b33]/40 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-bold text-white mb-4">{t('nav.leadership')}</h3>
+                <p className="text-[#c0c0c0] mb-6">
+                  {t('leadership.subtitle')}
+                </p>
+                <Link to="/leadership" className="text-[#00d9ff] font-medium flex items-center gap-2 hover:underline">
+                  {t('services.learnMore')} <ArrowRight size={18} />
+                </Link>
+              </motion.div>
+
+              {/* Services Card */}
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="p-8 rounded-2xl border border-[#00d9ff]/20 bg-[#161b33]/40 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-bold text-white mb-4">{t('nav.services')}</h3>
+                <p className="text-[#c0c0c0] mb-6">
+                  {t('services.subtitle')}
+                </p>
+                <Link to="/services" className="text-[#00d9ff] font-medium flex items-center gap-2 hover:underline">
+                  {t('services.learnMore')} <ArrowRight size={18} />
+                </Link>
+              </motion.div>
+
+              {/* MicroApps Card */}
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="p-8 rounded-2xl border border-[#00d9ff]/20 bg-[#161b33]/40 backdrop-blur-sm"
+              >
+                <h3 className="text-2xl font-bold text-white mb-4">{t('nav.microapps')}</h3>
+                <p className="text-[#c0c0c0] mb-6">
+                  {t('microapps.subtitle')}
+                </p>
+                <Link to="/microapps" className="text-[#00d9ff] font-medium flex items-center gap-2 hover:underline">
+                  {t('services.learnMore')} <ArrowRight size={18} />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action */}
+        <section className="py-24 px-6 text-center">
+          <div className="container mx-auto max-w-4xl">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-8">
+              {t('contact.title1')} <span className="text-[#00d9ff]">Co.De Aerospace</span>
+            </h2>
+            <Link
+              to="/contact"
+              className="inline-block px-10 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300 shadow-[0_0_20px_rgba(0,217,255,0.3)]"
             >
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                  {t('contact.title1')} <span className="text-[#00d9ff]">Co.De Aerospace</span>
-                </h2>
-                <div className="w-24 h-1 bg-[#00d9ff] mx-auto mb-6" />
-                <p className="text-lg text-[#c0c0c0] max-w-2xl mx-auto">{t('contact.subtitle')}</p>
-              </div>
-              <ContactForm />
-            </motion.div>
+              {t('hero.cta2')}
+            </Link>
           </div>
         </section>
       </div>

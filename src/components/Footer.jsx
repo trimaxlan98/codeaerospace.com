@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import VisitCounter from './VisitCounter';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -28,15 +29,6 @@ const Footer = () => {
   const [termsOpen, setTermsOpen] = useState(false);
   const { t } = useLanguage();
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.offsetTop - offset;
-      window.scrollTo({ top: elementPosition, behavior: 'smooth' });
-    }
-  };
-
   return (
     <footer className="bg-[#0a0e27] text-[#c0c0c0] relative border-t border-[#1a2847]">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -50,26 +42,26 @@ const Footer = () => {
           <div>
             <h4 className="text-white text-sm font-bold uppercase tracking-wider mb-4">{t('footer.services')}</h4>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => scrollToSection('services')} className="hover:text-[#00d9ff] transition-colors">{t('footer.groundStations')}</button></li>
-              <li><button onClick={() => scrollToSection('services')} className="hover:text-[#00d9ff] transition-colors">{t('footer.cybersecurity')}</button></li>
-              <li><button onClick={() => scrollToSection('services')} className="hover:text-[#00d9ff] transition-colors">{t('footer.missionAnalytics')}</button></li>
-              <li><button onClick={() => scrollToSection('services')} className="hover:text-[#00d9ff] transition-colors">{t('footer.orbitalConsulting')}</button></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.groundStations')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.cybersecurity')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.missionAnalytics')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.orbitalConsulting')}</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white text-sm font-bold uppercase tracking-wider mb-4">{t('footer.company')}</h4>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => scrollToSection('leadership')} className="hover:text-[#00d9ff] transition-colors">{t('nav.leadership')}</button></li>
-              <li><button onClick={() => scrollToSection('triple-helix')} className="hover:text-[#00d9ff] transition-colors">{t('footer.methodology')}</button></li>
-              <li><button onClick={() => scrollToSection('contact')} className="hover:text-[#00d9ff] transition-colors">{t('nav.contact')}</button></li>
+              <li><Link to="/leadership" className="hover:text-[#00d9ff] transition-colors">{t('nav.leadership')}</Link></li>
+              <li><Link to="/" className="hover:text-[#00d9ff] transition-colors">{t('footer.methodology')}</Link></li>
+              <li><Link to="/contact" className="hover:text-[#00d9ff] transition-colors">{t('nav.contact')}</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white text-sm font-bold uppercase tracking-wider mb-4">{t('footer.resources')}</h4>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => scrollToSection('wrc-2027')} className="hover:text-[#00d9ff] transition-colors">WRC-2027 Portal</button></li>
+              <li><Link to="/wrc-2027" className="hover:text-[#00d9ff] transition-colors">WRC-2027 Portal</Link></li>
               <li><a href="https://www.itu.int" target="_blank" rel="noopener noreferrer" className="hover:text-[#00d9ff] transition-colors">ITU Official Site</a></li>
             </ul>
           </div>
