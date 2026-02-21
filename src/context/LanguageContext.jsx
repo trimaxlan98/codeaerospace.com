@@ -10,6 +10,7 @@ const translations = {
     services: { en: 'Services', es: 'Servicios' },
     wrc2027: { en: 'WRC-2027', es: 'WRC-2027' },
     microapps: { en: 'MicroApps', es: 'MicroApps' },
+    research: { en: 'Research', es: 'Investigación' },
     contact: { en: 'Contact', es: 'Contacto' },
   },
 

@@ -9,6 +9,7 @@ import LeadershipPage from '@/pages/LeadershipPage';
 import ServicesPage from '@/pages/ServicesPage';
 import WRC2027Page from '@/pages/WRC2027Page';
 import MicroAppsPage from '@/pages/MicroAppsPage';
+import ResearchDashboardPage from '@/pages/ResearchDashboardPage';
 import ContactPage from '@/pages/ContactPage';
 import VetClinicDemo from '@/pages/demos/vet-clinic/VetClinicDemo';
 import PharmacyDemo from '@/pages/demos/pharmacy/PharmacyDemo';
@@ -63,6 +64,7 @@ const AppRoutes = () => {
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/wrc-2027" element={<WRC2027Page />} />
         <Route path="/microapps" element={<MicroAppsPage />} />
+        <Route path="/research" element={<ResearchDashboardPage />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </MainLayout>
