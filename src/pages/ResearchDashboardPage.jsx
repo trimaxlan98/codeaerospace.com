@@ -87,13 +87,18 @@ const ResearchDashboardPage = () => {
           >
             {activeTab === 'status' && (
               <div className="space-y-6">
-                <div className="flex items-center justify-between px-4">
-                  <h2 className="text-xl font-semibold text-slate-100 flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-cyan-500" /> Estado de Misión / Proyecto
-                  </h2>
+                <div className="flex flex-col md:flex-row md:items-center justify-between px-4 gap-4">
+                  <div>
+                    <h2 className="text-xl font-semibold text-slate-100 flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-cyan-500" /> Estado de Misión / Proyecto
+                    </h2>
+                    <p className="text-xs text-slate-400 font-mono mt-1">
+                      Monitoreo de prototipos funcionales y validación de algoritmos de control para órbitas LEO/NGSO.
+                    </p>
+                  </div>
                   <div className="flex items-center gap-4 text-[10px] font-mono text-slate-500 uppercase tracking-tighter">
-                    <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div> SENSOR_B1</span>
-                    <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div> SAT_LINK_X</span>
+                    <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div> APT_CTRL_V2</span>
+                    <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div> LEO_LINK_X</span>
                   </div>
                 </div>
                 <MissionStatus />

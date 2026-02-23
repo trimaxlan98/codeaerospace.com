@@ -28,55 +28,92 @@ const LeaderCard = ({ name, initials, title, role, description, icon: Icon, imag
   const showImage = Boolean(image) && !hasImageError;
   const safeInitials = initials || name.split(' ').map((word) => word[0]).join('').slice(0, 2).toUpperCase();
 
+  // Extract skills from cvData based on name for badges (if not available in displayedLeaders)
+  const skills = cvData[name]?.skills?.slice(0, 4) || [];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
-      className="bg-[#1a2847] rounded-xl border border-[#2a3c5f] p-8 hover:border-[#00d9ff]/50 hover:shadow-[0_0_30px_rgba(0,217,255,0.1)] transition-all duration-300 group flex flex-col h-full text-center items-center"
+      className="relative bg-[#0a1122] rounded-xl border-2 border-[#1a2847] p-8 hover:border-[#00d9ff] hover:shadow-[0_0_30px_rgba(0,217,255,0.2)] transition-all duration-500 group flex flex-col h-full overflow-hidden"
     >
-      {showImage ? (
-        <img
-          src={image}
-          alt={name}
-          onError={() => setHasImageError(true)}
-          className="w-24 h-24 rounded-full border-4 border-[#2a3c5f] group-hover:border-[#00d9ff]/50 transition-colors mb-4 object-cover"
-        />
-      ) : (
-        <div className="w-24 h-24 rounded-full border-4 border-[#2a3c5f] group-hover:border-[#00d9ff]/50 transition-colors mb-4 bg-[#0f1a2e] flex items-center justify-center relative">
-          <Icon className="w-7 h-7 text-[#00d9ff]/70" />
-          <span className="absolute bottom-1 right-2 text-[10px] font-mono text-[#00d9ff]/80">{safeInitials}</span>
+      {/* Background Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+        backgroundImage: `radial-gradient(#00d9ff 0.5px, transparent 0.5px)`,
+        backgroundSize: '10px 10px'
+      }} />
+
+      {/* Scanning Line Effect */}
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00d9ff]/50 to-transparent -translate-y-full group-hover:animate-scan z-20 pointer-events-none" />
+
+      {/* Inner Border Frame */}
+      <div className="absolute inset-2 border border-[#00d9ff]/10 rounded-lg pointer-events-none group-hover:border-[#00d9ff]/30 transition-colors duration-500" />
+
+      <div className="relative z-10 flex flex-col items-center text-center">
+        <div className="relative mb-6">
+          <div className="absolute inset-0 bg-[#00d9ff]/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative w-28 h-28 bg-[#1a2847] p-1 shadow-2xl" style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)' }}>
+            {showImage ? (
+              <img
+                src={image}
+                alt={name}
+                onError={() => setHasImageError(true)}
+                className="w-full h-full object-cover"
+                style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)' }}
+              />
+            ) : (
+              <div 
+                className="w-full h-full bg-[#0f1a2e] flex items-center justify-center"
+                style={{ clipPath: 'polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%)' }}
+              >
+                <Icon className="w-8 h-8 text-[#00d9ff]/70" />
+              </div>
+            )}
+          </div>
         </div>
-      )}
 
-      <h3
-        onClick={onClickName}
-        className="text-xl font-bold text-white mb-1 group-hover:text-[#00d9ff] transition-colors cursor-pointer hover:underline decoration-[#00d9ff]/50 underline-offset-4"
-        title={t('leadership.clickCv')}
-      >
-        {name}
-      </h3>
-      <p className="text-[#00d9ff] text-sm font-mono mb-4 uppercase tracking-wider opacity-80">
-        {title}
-      </p>
-
-      <div className="space-y-3 mt-auto text-left w-full">
-        <p className="text-sm text-[#c0c0c0] leading-relaxed text-center">{role}</p>
-        <ul className="text-xs text-[#94a3b8] space-y-2 mt-4 border-t border-[#2a3c5f] pt-4">
-          {description.map((item, idx) => (
-            <li key={idx} className="flex items-start gap-2">
-              <span className="text-[#00d9ff] mt-0.5">&gt;</span>
-              {item}
-            </li>
-          ))}
-        </ul>
-        <button
+        <h3
           onClick={onClickName}
-          className="mt-4 text-xs text-[#00d9ff]/70 hover:text-[#00d9ff] transition-colors font-mono uppercase tracking-wider w-full text-center"
+          className="text-xl font-bold text-white mb-1 group-hover:text-[#00d9ff] transition-colors cursor-pointer"
         >
-          {t('leadership.viewCv')}
-        </button>
+          {name}
+        </h3>
+        <p className="text-[#00d9ff] text-[10px] font-mono mb-4 uppercase tracking-[0.2em] font-bold">
+          {title}
+        </p>
+
+        {/* Tech Badges */}
+        <div className="flex flex-wrap justify-center gap-2 mb-6">
+          {skills.map((skill, idx) => (
+            <span key={idx} className="px-2 py-0.5 bg-[#00d9ff]/10 border border-[#00d9ff]/20 rounded text-[9px] font-mono text-[#00d9ff] uppercase tracking-tighter">
+              {skill}
+            </span>
+          ))}
+        </div>
+
+        <div className="space-y-4 mt-auto text-left w-full">
+          <div className="p-3 bg-[#1a2847]/40 rounded-lg border border-[#00d9ff]/5">
+            <p className="text-xs text-[#c0c0c0] leading-relaxed text-center italic">"{role}"</p>
+          </div>
+          
+          <ul className="text-[11px] text-[#94a3b8] space-y-2 mt-4 font-mono">
+            {description.slice(0, 3).map((item, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <span className="text-[#00d9ff] shrink-0 animate-pulse">_</span>
+                <span className="leading-tight">{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          <button
+            onClick={onClickName}
+            className="mt-6 w-full py-3 bg-[#0a1122] border border-[#00d9ff]/30 text-[#00d9ff] text-[10px] font-mono font-bold uppercase tracking-[0.2em] rounded hover:bg-[#00d9ff] hover:text-[#0a1122] transition-all duration-300 shadow-inner group-hover:border-[#00d9ff]"
+          >
+            [ > EXECUTE_VIEW ]
+          </button>
+        </div>
       </div>
     </motion.div>
   );

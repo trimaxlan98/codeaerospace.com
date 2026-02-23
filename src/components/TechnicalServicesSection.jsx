@@ -44,6 +44,21 @@ const ServiceModal = ({ isOpen, onClose, service, t }) => {
               {service.details}
             </p>
 
+            {/* Nexo Comercial */}
+            {(service.id === 'web' || service.id === 'ai_automation') && (
+              <div className="mb-8 p-4 rounded-xl bg-[#00d9ff]/5 border border-[#00d9ff]/20">
+                <p className="text-sm text-[#c0c0c0] mb-3 italic">
+                  {t('services.microappsLink')}
+                </p>
+                <Link
+                  to="/microapps"
+                  className="inline-flex items-center gap-2 text-[#00d9ff] text-sm font-bold hover:underline"
+                >
+                  {t('services.microappsBtn')} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/contact"
@@ -95,36 +110,42 @@ const TechnicalServicesSection = () => {
 
   const services = [
     { 
+      id: 'web',
       icon: Layout, 
       title: t('services.web.title'), 
       description: t('services.web.desc'),
       details: t('services.web.details')
     },
     { 
+      id: 'ai_automation',
       icon: Bot, 
       title: t('services.ai_automation.title'), 
       description: t('services.ai_automation.desc'),
       details: t('services.ai_automation.details')
     },
     { 
+      id: 'mobile',
       icon: Smartphone, 
       title: t('services.mobile.title'), 
       description: t('services.mobile.desc'),
       details: t('services.mobile.details')
     },
     { 
+      id: 'vr_training',
       icon: Eye, 
       title: t('services.vr_training.title'), 
       description: t('services.vr_training.desc'),
       details: t('services.vr_training.details')
     },
     { 
+      id: 'iot_automation',
       icon: Cpu, 
       title: t('services.iot_automation.title'), 
       description: t('services.iot_automation.desc'),
       details: t('services.iot_automation.details')
     },
     { 
+      id: 'project_eng',
       icon: Settings, 
       title: t('services.project_eng.title'), 
       description: t('services.project_eng.desc'),

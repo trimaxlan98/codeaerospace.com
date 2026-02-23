@@ -49,6 +49,8 @@ const translations = {
     title2: { en: 'Services', es: 'Técnicos' },
     subtitle: { en: 'High-level engineering and digital solutions designed to solve complex business challenges with precision.', es: 'Soluciones digitales y de ingeniería de alto nivel diseñadas para resolver desafíos empresariales complejos con precisión.' },
     learnMore: { en: 'Learn More', es: 'Saber Más' },
+    microappsLink: { en: 'Looking for a fast web solution for your business? Explore our MicroApps.', es: '¿Buscas una solución web rápida para tu negocio? Explora nuestras MicroApps.' },
+    microappsBtn: { en: 'View Digital Solutions', es: 'Ver Soluciones Digitales' },
     web: {
       title: { en: 'Enterprise Web Platforms', es: 'Plataformas Web Empresariales' },
       desc: { en: 'Custom dashboards, internal tools, and scalable web architectures using React, Node.js, and Flask.', es: 'Dashboards a medida, herramientas internas y arquitecturas web escalables con React, Node.js y Flask.' },

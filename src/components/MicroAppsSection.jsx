@@ -20,9 +20,14 @@ const StepCard = ({ index, icon: Icon, title, description, delay }) => (
     )}
     {/* Step number badge */}
     <div className="relative z-10 mb-4">
-      <div className="w-20 h-20 rounded-full bg-[#0a0e27] border-2 border-[#00d9ff]/40 flex items-center justify-center group-hover:border-[#00d9ff] group-hover:shadow-[0_0_20px_rgba(0,217,255,0.3)] transition-all duration-300">
+      <motion.div 
+        whileInView={{ rotate: 360 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: delay + 0.2, ease: "easeOut" }}
+        className="w-20 h-20 rounded-full bg-[#0a0e27] border-2 border-[#00d9ff]/40 flex items-center justify-center group-hover:border-[#00d9ff] group-hover:shadow-[0_0_20px_rgba(0,217,255,0.3)] transition-all duration-300"
+      >
         <Icon className="w-8 h-8 text-[#00d9ff]" />
-      </div>
+      </motion.div>
       <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-[#00d9ff] text-[#0a0e27] text-xs font-bold flex items-center justify-center">
         {index + 1}
       </span>
@@ -38,19 +43,26 @@ const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLa
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay }}
-    className={`relative rounded-2xl p-8 flex flex-col h-full transition-all duration-300 ${
+    whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(0,217,255,0.2)" }}
+    className={`relative rounded-2xl p-8 flex flex-col h-full transition-all duration-300 group/card ${
       isPopular
         ? 'bg-gradient-to-b from-[#00d9ff]/10 to-[#1a2847] border-2 border-[#00d9ff] shadow-[0_0_30px_rgba(0,217,255,0.15)]'
-        : 'bg-[#1a2847] border border-[#2a3c5f] hover:border-[#00d9ff]/50'
+        : 'bg-[#1a2847] border border-[#2a3c5f] hover:border-[#00d9ff] shadow-lg'
     }`}
   >
+    {/* Neon glow effect on hover */}
+    {!isPopular && (
+      <div className="absolute inset-0 rounded-2xl transition-opacity duration-300 opacity-0 group-hover/card:opacity-100 pointer-events-none">
+        <div className="absolute inset-[-1px] rounded-2xl bg-[#00d9ff] blur-[2px] opacity-20" />
+      </div>
+    )}
     {isPopular && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#00d9ff] text-[#0a0e27] text-xs font-bold rounded-full uppercase tracking-wider">
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#00d9ff] text-[#0a0e27] text-xs font-bold rounded-full uppercase tracking-wider z-20">
         {popularLabel}
       </div>
     )}
-    <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
-    <div className="mb-6">
+    <h3 className="text-xl font-bold text-white mb-2 relative z-10">{name}</h3>
+    <div className="mb-6 relative z-10">
       <span className="text-4xl font-extrabold text-[#00d9ff]">{price}</span>
       {!isQuote && (
         <>
@@ -60,7 +72,7 @@ const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLa
       )}
       {isQuote && <p className="text-[#c0c0c0] text-xs mt-1">&nbsp;</p>}
     </div>
-    <ul className="space-y-3 mb-8 flex-grow">
+    <ul className="space-y-3 mb-8 flex-grow relative z-10">
       {features.map((feature, i) => (
         <li key={i} className="flex items-start gap-3 text-sm">
           <Check className="w-4 h-4 text-[#00d9ff] mt-0.5 flex-shrink-0" />
@@ -70,10 +82,10 @@ const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLa
     </ul>
     <button
       onClick={onCta}
-      className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
+      className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 relative z-10 ${
         isPopular
           ? 'bg-[#00d9ff] text-[#0a0e27] hover:bg-[#00b8dd] shadow-lg hover:shadow-cyan-500/25'
-          : 'border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff]/10'
+          : 'border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-[#0a0e27]'
       }`}
     >
       {cta}
@@ -274,18 +286,21 @@ const MicroAppsSection = () => {
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {packages.map((pkg, i) => (
-            <PricingCard
-              key={i}
-              {...pkg}
-              popularLabel={t('microapps.popular')}
-              oneTimeLabel={t('microapps.oneTime')}
-              cta={t('microapps.cta')}
-              delay={i * 0.15}
-              onCta={() => handleCta(pkg)}
-            />
-          ))}
+        <div className="relative">
+          <div className="absolute inset-0 bg-[#00d9ff]/5 blur-[120px] rounded-full -z-10" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {packages.map((pkg, i) => (
+              <PricingCard
+                key={i}
+                {...pkg}
+                popularLabel={t('microapps.popular')}
+                oneTimeLabel={t('microapps.oneTime')}
+                cta={t('microapps.cta')}
+                delay={i * 0.15}
+                onCta={() => handleCta(pkg)}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Monthly Maintenance Banner */}

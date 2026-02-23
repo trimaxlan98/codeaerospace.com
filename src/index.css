@@ -45,6 +45,16 @@ body {
   100% { width: 100%; }
 }
 
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(500%); }
+}
+
 .animate-spin-slow {
   animation: spin-slow 2.5s linear infinite;
   will-change: transform;
@@ -59,6 +69,13 @@ body {
 }
 .animate-progress-fill {
   animation: progress-fill 0.9s ease-out forwards;
+}
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+  background-size: 200% 200%;
+}
+.animate-scan {
+  animation: scan 2s linear infinite;
 }
 
 /* === Custom scrollbar === */
