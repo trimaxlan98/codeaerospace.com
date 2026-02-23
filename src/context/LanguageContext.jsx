@@ -690,7 +690,7 @@ const translations = {
 
 export const LanguageProvider = ({ children }) => {
   const [lang, setLang] = useState(() => {
-    return localStorage.getItem('codeaerospace_lang') || 'en';
+    return localStorage.getItem('codeaerospace_lang') || 'es';
   });
 
   const toggleLang = useCallback(() => {
