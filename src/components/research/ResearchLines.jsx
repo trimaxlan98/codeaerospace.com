@@ -8,35 +8,35 @@ import { Cpu, Zap, Radio, Orbit } from 'lucide-react';
 const researchLines = [
   {
     id: 1,
-    title: "Propulsión Iónica de Baja Potencia",
-    icon: <Zap className="w-5 h-5 text-cyan-400" />,
-    equation: "F = \frac{\dot{m} v_e}{2} + (p_e - p_a) A_e",
-    description: "Modelado dinámico de empuje para satélites de baja órbita (LEO) mediante magnetohidrodinámica.",
-    tags: ["LEO", "Plasma", "Eficiencia"]
+    title: "Control de Sistemas Dinámicos y APT",
+    icon: <Orbit className="w-5 h-5 text-[#00d9ff]" />,
+    equation: "G(s) = \\frac{K}{Js^2 + Bs + K}",
+    description: "Diseño e implementación de sistemas de posicionamiento y rastreo automático (APT) para satélites de órbita baja.",
+    tags: ["Control", "Sistemas Dinámicos", "APT"]
   },
   {
     id: 2,
-    title: "Latencia en Redes Espaciales",
-    icon: <Radio className="w-5 h-5 text-amber-400" />,
-    equation: "L(d) = \frac{d}{c} + \sum_{i=1}^{n} T_{hop,i}",
-    description: "Optimización de protocolos de transporte para comunicaciones de larga distancia interplanetaria.",
-    tags: ["SDN", "RF", "QoS"]
+    title: "Comunicaciones NGSO y Coexistencia",
+    icon: <Radio className="w-5 h-5 text-[#00d9ff]" />,
+    equation: "epfd = 10 \\log_{10} \\sum_{i=1}^{N} 10^{\\frac{G_i + P_i - L_i}{10}}",
+    description: "Modelado de interferencia y cumplimiento de límites de densidad de flujo de potencia equivalente (epfd) según la UIT.",
+    tags: ["NGSO", "WRC-27", "Spectrum"]
   },
   {
     id: 3,
-    title: "Navegación Autónoma por Púlsares",
-    icon: <Orbit className="w-5 h-5 text-purple-400" />,
-    equation: "\Delta 	au = \frac{1}{c} \mathbf{n} \cdot \mathbf{r} + \mathcal{O}(c^{-2})",
-    description: "Algoritmos de posicionamiento tri-dimensional utilizando señales de radiofrecuencia estelar.",
-    tags: ["Deep Space", "XNAV", "SLAM"]
+    title: "Agentes de IA y Automatización",
+    icon: <Cpu className="w-5 h-5 text-[#00d9ff]" />,
+    equation: "\\mathcal{L}(\\theta) = \\mathbb{E}_{\\pi} [\\sum r_t]",
+    description: "Orquestación de sistemas multi-agente para la automatización de flujos de trabajo técnicos y análisis de telemetría.",
+    tags: ["AI Agents", "LangChain", "Autonomía"]
   },
   {
     id: 4,
-    title: "Arquitecturas de Computación In-Orbit",
-    icon: <Cpu className="w-5 h-5 text-emerald-400" />,
-    equation: "P_{comp} = \alpha C f V_{dd}^2 + I_{leak} V_{dd}",
-    description: "Sistemas embebidos tolerantes a radiación para el procesamiento de imágenes en tiempo real.",
-    tags: ["FPGA", "Edge AI", "Rad-Hard"]
+    title: "Análisis Térmico-Estructural y Propulsión",
+    icon: <Zap className="w-5 h-5 text-[#00d9ff]" />,
+    equation: "F = \\dot{m} v_e + (p_e - p_a) A_e",
+    description: "Desarrollo de bancos de prueba y simulación por elementos finitos (FEA) para sistemas de propulsión y soporte mecánico.",
+    tags: ["FEA", "Propulsión", "Termodinámica"]
   }
 ];
 

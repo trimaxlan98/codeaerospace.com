@@ -46,28 +46,56 @@ const translations = {
   // Services
   services: {
     title1: { en: 'Technical', es: 'Servicios' },
-    title2: { en: 'Services', es: 'Tecnicos' },
-    subtitle: { en: 'Engineering solutions designed for the rigors of the space environment.', es: 'Soluciones de ingenieria disenadas para las exigencias del entorno espacial.' },
-    learnMore: { en: 'Learn More', es: 'Saber Mas' },
-    gs: {
-      title: { en: 'Ground Station GS-SW', es: 'Estacion Terrena GS-SW' },
-      desc: { en: 'Automation of tracking using SGP4/SDP4 models and real-time Doppler compensation for precise satellite communication links.', es: 'Automatizacion de rastreo usando modelos SGP4/SDP4 y compensacion Doppler en tiempo real para enlaces de comunicacion satelital precisos.' },
+    title2: { en: 'Services', es: 'Técnicos' },
+    subtitle: { en: 'High-level engineering and digital solutions designed to solve complex business challenges with precision.', es: 'Soluciones digitales y de ingeniería de alto nivel diseñadas para resolver desafíos empresariales complejos con precisión.' },
+    learnMore: { en: 'Learn More', es: 'Saber Más' },
+    web: {
+      title: { en: 'Enterprise Web Platforms', es: 'Plataformas Web Empresariales' },
+      desc: { en: 'Custom dashboards, internal tools, and scalable web architectures using React, Node.js, and Flask.', es: 'Dashboards a medida, herramientas internas y arquitecturas web escalables con React, Node.js y Flask.' },
+      details: { 
+        es: "Desarrollo de ecosistemas digitales robustos. Incluye: Arquitecturas escalables con React/Node.js, integración de APIs RESTful, bases de datos optimizadas (PostgreSQL/Redis) y despliegue en contenedores Docker.", 
+        en: "Development of robust digital ecosystems. Includes: Scalable architectures with React/Node.js, RESTful API integration, optimized databases (PostgreSQL/Redis), and Docker container deployment." 
+      }
     },
-    ngso: {
-      title: { en: 'NGSO Communications', es: 'Comunicaciones NGSO' },
-      desc: { en: 'Advanced modeling for interference mitigation, spectrum coexistence, and frequency allocation optimization for non-geostationary orbits.', es: 'Modelado avanzado para mitigacion de interferencia, coexistencia espectral y optimizacion de asignacion de frecuencias para orbitas no geoestacionarias.' },
+    ai_automation: {
+      title: { en: 'AI & Agentic Automation', es: 'IA y Automatización Agéntica' },
+      desc: { en: 'Orchestration of AI agents to automate complex workflows and data analysis using LangChain.', es: 'Orquestación de agentes de IA para automatizar flujos de trabajo complejos y análisis de datos con LangChain.' },
+      details: { 
+        es: "Implementación de flujos autónomos. Especialidad en: Orquestación de agentes con LangChain, automatización de reportes técnicos, fine-tuning de LLMs y procesamiento de lenguaje natural (NLP) para análisis de datos masivos.", 
+        en: "Implementation of autonomous workflows. Specialty: Agent orchestration with LangChain, technical report automation, LLM fine-tuning, and NLP for massive data analysis." 
+      }
     },
-    cyber: {
-      title: { en: 'Space Cybersecurity', es: 'Ciberseguridad Espacial' },
-      desc: { en: '"Security by Design" implementation featuring AES-256 encryption for data-links and secure telecommand (TC) authentication protocols.', es: 'Implementacion de "Seguridad por Diseno" con cifrado AES-256 para enlaces de datos y protocolos seguros de autenticacion de telecomandos (TC).' },
+    mobile: {
+      title: { en: 'Full-Stack Mobile Apps', es: 'Apps Móviles Full-Stack' },
+      desc: { en: 'Cross-platform mobile solutions (iOS/Android) integrated with cloud infrastructure.', es: 'Soluciones móviles multiplataforma (iOS/Android) integradas con infraestructura en la nube.' },
+      details: { 
+        es: "Aplicaciones móviles nativas y multiplataforma. Enfoque en: Experiencia de usuario (UX) de alto nivel, sincronización en tiempo real, integración con hardware y arquitecturas seguras para iOS y Android.", 
+        en: "Native and cross-platform mobile apps. Focus on: High-level UX, real-time synchronization, hardware integration, and secure architectures for iOS and Android." 
+      }
     },
-    analytics: {
-      title: { en: 'Mission-Critical Analytics', es: 'Analitica de Mision Critica' },
-      desc: { en: 'Processing of complex telemetry for satellite health monitoring, payload status verification, and predictive anomaly detection.', es: 'Procesamiento de telemetria compleja para monitoreo de salud satelital, verificacion de estado de carga util y deteccion predictiva de anomalias.' },
+    vr_training: {
+      title: { en: 'Industrial VR Training', es: 'Capacitación en Realidad Virtual' },
+      desc: { en: 'Immersive VR simulations for industrial safety, training, and operational efficiency.', es: 'Simulaciones inmersivas en RV para seguridad industrial, capacitación y eficiencia operativa.' },
+      details: { 
+        es: "Entornos inmersivos para industria. Desarrollo en Unity/C# de simuladores de seguridad (STPS), capacitación operativa en VR y gemelos digitales para visualización de procesos complejos.", 
+        en: "Immersive environments for industry. Unity/C# development of safety simulators (STPS), operational VR training, and digital twins for complex process visualization." 
+      }
     },
-    consulting: {
-      title: { en: 'Orbital Consulting', es: 'Consultoria Orbital' },
-      desc: { en: 'Strategic planning for technical sovereignty, regulatory intelligence, and roadmap development for the emerging NewSpace economy.', es: 'Planificacion estrategica para soberania tecnologica, inteligencia regulatoria y desarrollo de hojas de ruta para la economia NewSpace emergente.' },
+    iot_automation: {
+      title: { en: 'Industrial IoT & Control', es: 'IoT Industrial y Control' },
+      desc: { en: 'Embedded systems and IoT solutions for process monitoring and hardware automation.', es: 'Sistemas embebidos y soluciones IoT para monitoreo de procesos y automatización de hardware.' },
+      details: { 
+        es: "Digitalización de procesos físicos. Expertos en: Sistemas embebidos (STM32/ESP32), protocolos de comunicación industrial, instrumentación avanzada y control de sistemas dinámicos en tiempo real.", 
+        en: "Digitalization of physical processes. Experts in: Embedded systems (STM32/ESP32), industrial communication protocols, advanced instrumentation, and real-time dynamic systems control." 
+      }
+    },
+    project_eng: {
+      title: { en: 'Custom Project Engineering', es: 'Ingeniería de Proyectos a Medida' },
+      desc: { en: 'Technical consulting, structural analysis (FEA), and mechanical design for industrial challenges.', es: 'Consultoría técnica, análisis estructural (FEA) y diseño mecánico para desafíos industriales.' },
+      details: { 
+        es: "Consultoría de ingeniería integral. Servicios de: Análisis por elementos finitos (FEA) térmico-estructural, diseño mecánico avanzado en SolidWorks y gestión de proyectos tecnológicos de alta complejidad.", 
+        en: "Comprehensive engineering consultancy. Services: Thermal-structural FEA analysis, advanced mechanical design in SolidWorks, and management of high-complexity technological projects." 
+      }
     },
   },
 
