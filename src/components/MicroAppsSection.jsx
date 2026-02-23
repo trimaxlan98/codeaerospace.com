@@ -32,7 +32,7 @@ const StepCard = ({ index, icon: Icon, title, description, delay }) => (
   </motion.div>
 );
 
-const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLabel, cta, delay, onCta }) => (
+const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLabel, cta, delay, onCta, isQuote }) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -52,8 +52,13 @@ const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLa
     <h3 className="text-xl font-bold text-white mb-2">{name}</h3>
     <div className="mb-6">
       <span className="text-4xl font-extrabold text-[#00d9ff]">{price}</span>
-      <span className="text-[#c0c0c0] text-sm ml-1">MXN</span>
-      <p className="text-[#c0c0c0] text-xs mt-1">{oneTimeLabel}</p>
+      {!isQuote && (
+        <>
+          <span className="text-[#c0c0c0] text-sm ml-1">MXN</span>
+          <p className="text-[#c0c0c0] text-xs mt-1">{oneTimeLabel}</p>
+        </>
+      )}
+      {isQuote && <p className="text-[#c0c0c0] text-xs mt-1">&nbsp;</p>}
     </div>
     <ul className="space-y-3 mb-8 flex-grow">
       {features.map((feature, i) => (
@@ -106,12 +111,28 @@ const MicroAppsSection = () => {
       features: [t('microapps.premium.f1'), t('microapps.premium.f2'), t('microapps.premium.f3'), t('microapps.premium.f4'), t('microapps.premium.f5')],
       isPopular: false,
     },
+    {
+      name: t('microapps.enterprise.name'),
+      price: t('microapps.enterprise.price'),
+      features: [t('microapps.enterprise.f1'), t('microapps.enterprise.f2'), t('microapps.enterprise.f3'), t('microapps.enterprise.f4'), t('microapps.enterprise.f5')],
+      isPopular: false,
+      isQuote: true,
+      action: 'email'
+    },
   ];
 
   const scrollToContact = () => {
     const el = document.getElementById('contact');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleCta = (pkg) => {
+    if (pkg.action === 'email') {
+      window.location.href = 'mailto:contacto@codeaerospace.com?subject=Inquiry: Custom/Enterprise Systems';
+    } else {
+      scrollToContact();
     }
   };
 
@@ -127,7 +148,7 @@ const MicroAppsSection = () => {
           className="text-center mb-20"
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00d9ff]/10 border border-[#00d9ff]/30 text-[#00d9ff] text-xs font-bold uppercase tracking-widest mb-6">
-            <Zap className="w-3.5 h-3.5" />
+            <Rocket className="w-3.5 h-3.5" />
             {t('microapps.badge')}
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
@@ -143,6 +164,28 @@ const MicroAppsSection = () => {
             <StepCard key={i} index={i} {...step} delay={i * 0.1} />
           ))}
         </div>
+
+        {/* Funding Note Banner */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-20 p-8 rounded-2xl bg-gradient-to-r from-[#00d9ff]/20 via-[#0a0e27] to-[#00d9ff]/20 border border-[#00d9ff]/40 text-center relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMGQ5ZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
+          <div className="relative z-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Cpu className="w-8 h-8 text-[#00d9ff]" />
+              <h3 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wider">
+                {t('microapps.badge')}
+              </h3>
+            </div>
+            <p className="text-[#00d9ff] text-lg md:text-xl font-medium max-w-3xl mx-auto">
+              "{t('microapps.fundingNote')}"
+            </p>
+          </div>
+        </motion.div>
 
         {/* Demo Showcase Banner */}
         <motion.div
@@ -231,7 +274,7 @@ const MicroAppsSection = () => {
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {packages.map((pkg, i) => (
             <PricingCard
               key={i}
@@ -240,7 +283,7 @@ const MicroAppsSection = () => {
               oneTimeLabel={t('microapps.oneTime')}
               cta={t('microapps.cta')}
               delay={i * 0.15}
-              onCta={scrollToContact}
+              onCta={() => handleCta(pkg)}
             />
           ))}
         </div>

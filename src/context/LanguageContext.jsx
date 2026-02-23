@@ -181,12 +181,17 @@ const translations = {
 
   // MicroApps
   microapps: {
-    badge: { en: 'Digital Solutions for SMBs', es: 'Soluciones Digitales para MicroNegocios' },
+    badge: { en: 'Technology Funding Unit', es: 'Unidad de Fondeo Tecnológico' },
+    fundingTitle: { en: 'Web Development & Project Funding', es: 'Desarrollo Web y Fondeo de Proyectos' },
     title1: { en: 'Your Business', es: 'Tu Negocio' },
     title2: { en: 'Online in 5 Steps', es: 'En Línea en 5 Pasos' },
     subtitle: {
-      en: 'Fast, affordable, and custom-built web apps for stores, pharmacies, stationeries, and any small business in Mexico.',
-      es: 'Apps web rápidas, accesibles y a la medida para tiendas, farmacias, papelerías y cualquier micronegocio en México.',
+      en: 'High-performance digital solutions. The development of these applications directly funds our NGSO satellite communications research and supports technical sovereignty.',
+      es: 'Soluciones digitales de alto rendimiento. El desarrollo de estas aplicaciones financia directamente nuestra investigación en comunicaciones satelitales NGSO y el apoyo a la soberanía tecnológica.',
+    },
+    fundingNote: {
+      en: 'By hiring a service, you drive the development of Mexican aerospace technology.',
+      es: 'Al contratar un servicio, impulsas el desarrollo de tecnología aeroespacial mexicana.',
     },
     step1: {
       title: { en: 'Diagnosis', es: 'Diagnóstico' },
@@ -259,6 +264,15 @@ const translations = {
       f3: { en: 'Attendance & shift control', es: 'Control de asistencia y turnos' },
       f4: { en: 'Multi-branch support', es: 'Soporte multi-sucursal' },
       f5: { en: 'Advanced dashboards', es: 'Dashboards avanzados' },
+    },
+    enterprise: {
+      name: { en: 'Custom/Enterprise', es: 'Sistemas a Medida' },
+      price: { en: 'Quote', es: 'Cotización' },
+      f1: { en: 'Complex API integration', es: 'Integración de APIs complejas' },
+      f2: { en: 'Custom dashboards', es: 'Dashboards personalizados' },
+      f3: { en: 'Dedicated support', es: 'Soporte dedicado' },
+      f4: { en: 'Scalable architecture', es: 'Arquitectura escalable' },
+      f5: { en: 'Whitelabel solutions', es: 'Soluciones marca blanca' },
     },
     demoLabel: { en: 'See Live Demo', es: 'Ver Demo en Vivo' },
     demoDesc: { en: 'Check out a real example of what we build for small businesses', es: 'Mira un ejemplo real de lo que construimos para micronegocios' },

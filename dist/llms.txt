@@ -1,2 +1,7 @@
 ## Pages
 - [Co.De Aerospace | Research-Driven Engineering for NewSpace](/home): Co.De Aerospace provides advanced engineering solutions for the NewSpace economy, including ground station software, space cybersecurity, and mission analytics.
+- [Contact | Co.De Aerospace](/contact): No description available
+- [Leadership | Co.De Aerospace](/leadership): No description available
+- [MicroApps | Co.De Aerospace](/microapps): No description available
+- [Technical Services | Co.De Aerospace](/services): No description available
+- [WRC-2027 | Co.De Aerospace](/wrc2027): No description available
