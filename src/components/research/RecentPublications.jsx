@@ -6,30 +6,30 @@ import { motion } from 'framer-motion';
 const publications = [
   {
     id: 1,
-    title: "Optimized Trajectory Algorithms for Low-Energy Satellite Clusters",
-    authors: "Rosas, A., Ordaz, Y., et al.",
-    journal: "Journal of Aerospace Information Systems",
-    date: "2025-11-14",
-    doi: "10.2514/1.I011245",
-    abstract: "Propuesta de una nueva clase de algoritmos de optimización multi-objetivo para la coordinación de enjambres de satélites en órbitas bajas, minimizando el consumo de combustible en un 15%."
+    title: "Machine Learning-Driven Cyberdefense for Dynamic Anti-jamming Strategies in Ku and Ka Band Satellite Links",
+    authors: "Rosas, A., Ordaz, Y., Molina, J., et al.",
+    journal: "Springer NAture Link",
+    date: "2025-10-31",
+    doi: "10.1007/978-3-032-09735-4_15",
+    abstract: "Novel machine learning-driven cyberdefense architecture that utilizes distributed intelligence across space and ground segments for dynamic anti-jamming."
   },
   {
     id: 2,
-    title: "Quantum-Resistant Communication Protocols for Deep Space Networks",
-    authors: "Molina, J., et al.",
-    journal: "IEEE Transactions on Aerospace and Electronic Systems",
-    date: "2025-08-22",
-    doi: "10.1109/TAES.2025.321456",
-    abstract: "Investigación sobre la implementación de criptografía post-cuántica en enlaces de radiofrecuencia para misiones de exploración a Marte, considerando latencias extremas."
+    title: "Radiofrequency and optical satellite link budgeting calculator",
+    authors: "Rosas, A., et al.",
+    journal: "Journal of Physics: Conference Series",
+    date: "2023-11-19",
+    doi: "10.1088/1742-6596/2804/1/012004",
+    abstract: "Construction of a web application that includes the link budget calculation process for both radio and optical satellite systems."
   },
   {
     id: 3,
-    title: "Radiation-Hardened Edge Computing for Real-time Space Imagery",
-    authors: "Rosas, A., et al.",
-    journal: "Acta Astronautica",
-    date: "2025-05-10",
-    doi: "10.1016/j.actaastro.2025.04.012",
-    abstract: "Evaluación de arquitecturas SoC (System on Chip) para el procesamiento de redes neuronales convolucionales en entornos de alta radiación sin pérdida de precisión."
+    title: "Design of a Scientific Experiment Aboard a 3U CubeSat for the Detection of Pollutant Particles Using Infrared Spectrometry",
+    authors: "Rosas, A., Molina, J., et al.",
+    journal: "International Astronautical Federation (IAF)",
+    date: "2024-10-18",
+    doi: "10.52202/078365-0120",
+    abstract: "The project incorporates a scientific experiment based on Fourier-transform infrared spectrometry, a method for obtaining the emission or absorption spectrum, subsequently analyzed using a mathematical algorithm."
   }
 ];
 
