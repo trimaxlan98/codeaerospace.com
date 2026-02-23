@@ -3,10 +3,24 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import HeroSection from '@/components/HeroSection';
 import TripleHelixSection from '@/components/TripleHelixSection';
+import StatsSection from '@/components/StatsSection';
+import TechStack from '@/components/TechStack';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Orbit, Rocket } from 'lucide-react';
+
+const RevealSection = ({ children, className }) => (
+  <motion.section
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 0.8, ease: "easeOut" }}
+    className={className}
+  >
+    {children}
+  </motion.section>
+);
 
 const HomePage = () => {
   const { t } = useLanguage();
@@ -21,10 +35,57 @@ const HomePage = () => {
       <div className="bg-[#0a0e27]">
         <HeroSection />
 
-        <TripleHelixSection />
+        <StatsSection />
+
+        <RevealSection>
+          <TripleHelixSection />
+        </RevealSection>
+
+        {/* Current Mission Section */}
+        <RevealSection className="py-24 px-6 bg-gradient-to-b from-[#0a0e27] to-[#1a2847]/20">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6">
+                  <Rocket className="w-3.5 h-3.5" />
+                  Current Mission: JPL 2027
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                  Advancing <span className="text-[#00d9ff]">Orbital Autonomy</span>
+                </h2>
+                <p className="text-[#c0c0c0] text-lg mb-8 leading-relaxed">
+                  Our core research is focused on the **NASA JPL 2027 Roadmap**, specifically developing high-precision **Automatic Positioning and Tracking (APT)** systems. This technology, derived from advanced master's thesis research, enables seamless LEO satellite communication through real-time Doppler compensation and SGP4/SDP4 orbital modeling.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                  <div className="p-4 rounded-xl border border-[#2a3c5f] bg-[#1a2847]/40">
+                    <Orbit className="w-6 h-6 text-[#00d9ff] mb-2" />
+                    <h4 className="text-white font-bold mb-1">APT Control</h4>
+                    <p className="text-[#c0c0c0] text-xs">Closed-loop dynamics for high-precision antenna positioning.</p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-[#2a3c5f] bg-[#1a2847]/40">
+                    <Rocket className="w-6 h-6 text-[#00d9ff] mb-2" />
+                    <h4 className="text-white font-bold mb-1">JPL Alignment</h4>
+                    <p className="text-[#c0c0c0] text-xs">Strategic integration with 2027 deep space communication goals.</p>
+                  </div>
+                </div>
+                <Link to="/research" className="inline-flex items-center gap-2 px-8 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300">
+                  Explore Research <ArrowRight size={18} />
+                </Link>
+              </div>
+              <div className="flex-1 relative">
+                <div className="absolute inset-0 bg-[#00d9ff]/20 blur-[100px] rounded-full" />
+                <img 
+                  src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000" 
+                  alt="Orbital Technology" 
+                  className="relative z-10 rounded-2xl border border-[#00d9ff]/30 shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </RevealSection>
 
         {/* Quick Access Section */}
-        <section className="py-24 px-6 bg-[#0a0e27]/50">
+        <RevealSection className="py-24 px-6 bg-[#0a0e27]/50">
           <div className="container mx-auto max-w-6xl">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Leadership Card */}
@@ -74,10 +135,14 @@ const HomePage = () => {
               </motion.div>
             </div>
           </div>
-        </section>
+        </RevealSection>
+
+        <RevealSection>
+          <TechStack />
+        </RevealSection>
 
         {/* Call to Action */}
-        <section className="py-24 px-6 text-center">
+        <RevealSection className="py-24 px-6 text-center">
           <div className="container mx-auto max-w-4xl">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-8">
               {t('contact.title1')} <span className="text-[#00d9ff]">Co.De Aerospace</span>
@@ -89,7 +154,7 @@ const HomePage = () => {
               {t('hero.cta2')}
             </Link>
           </div>
-        </section>
+        </RevealSection>
       </div>
     </>
   );

@@ -3,21 +3,35 @@ import React, { useMemo } from 'react';
 const StarfieldBackground = () => {
   const stars = useMemo(() => {
     const result = [];
-    for (let i = 0; i < 18; i++) {
+    // Deep layer (smaller, slower)
+    for (let i = 0; i < 100; i++) {
       result.push({
-        id: i,
+        id: `deep-${i}`,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        size: Math.random() * 1 + 0.2,
+        duration: Math.random() * 10 + 10,
+        delay: Math.random() * 10,
+        opacity: Math.random() * 0.3 + 0.1,
+      });
+    }
+    // Middle layer (standard)
+    for (let i = 0; i < 50; i++) {
+      result.push({
+        id: `mid-${i}`,
         left: `${Math.random() * 100}%`,
         top: `${Math.random() * 100}%`,
         size: Math.random() * 1.5 + 0.5,
         duration: Math.random() * 5 + 4,
         delay: Math.random() * 6,
+        opacity: Math.random() * 0.6 + 0.3,
       });
     }
     return result;
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#050714]" aria-hidden="true">
       {stars.map((star) => (
         <div
           key={star.id}
@@ -29,12 +43,14 @@ const StarfieldBackground = () => {
             height: `${star.size}px`,
             animationDuration: `${star.duration}s`,
             animationDelay: `${star.delay}s`,
+            opacity: star.opacity,
             willChange: 'opacity',
           }}
         />
       ))}
-      {/* Single subtle nebula — GPU composited via transform */}
-      <div className="absolute top-1/4 left-1/3 w-72 h-72 bg-[#00d9ff]/[0.015] rounded-full blur-[80px] animate-nebula-pulse" />
+      {/* Nebulas */}
+      <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#00d9ff]/[0.03] rounded-full blur-[120px] animate-nebula-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/[0.02] rounded-full blur-[100px] animate-nebula-pulse" style={{ animationDelay: '2s' }} />
     </div>
   );
 };
