@@ -57,12 +57,13 @@ const HeroSection = () => {
               ]
             }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="text-6xl md:text-9xl font-black mb-8 leading-none tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white via-[#00d9ff] to-white"
+            whileHover={{ scale: 1.02 }}
+            className="text-6xl md:text-9xl font-black mb-8 leading-none tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white via-[#00d9ff] to-white cursor-default"
           >
             Co.De <br className="md:hidden" /> Aerospace
           </motion.h1>
 
-          <p className="text-xl md:text-2xl text-[#c0c0c0] mb-4 max-w-3xl mx-auto font-light">
+          <p className="text-xl md:text-2xl text-slate-200 mb-4 max-w-3xl mx-auto font-light leading-relaxed">
             {t('hero.subtitle')} <span className="text-[#00d9ff] font-medium">{t('hero.subtitleHighlight')}</span>
           </p>
 

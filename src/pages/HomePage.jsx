@@ -5,6 +5,7 @@ import HeroSection from '@/components/HeroSection';
 import TripleHelixSection from '@/components/TripleHelixSection';
 import StatsSection from '@/components/StatsSection';
 import TechStack from '@/components/TechStack';
+import InvestorPanel from '@/components/InvestorPanel';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { Link } from 'react-router-dom';
@@ -41,6 +42,10 @@ const HomePage = () => {
           <TripleHelixSection />
         </RevealSection>
 
+        <RevealSection>
+          <InvestorPanel />
+        </RevealSection>
+
         {/* Current Mission Section */}
         <RevealSection className="py-24 px-6 bg-gradient-to-b from-[#0a0e27] to-[#1a2847]/20">
           <div className="container mx-auto max-w-6xl">
@@ -48,28 +53,28 @@ const HomePage = () => {
               <div className="flex-1">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6">
                   <Rocket className="w-3.5 h-3.5" />
-                  Current Mission: JPL 2027
+                  {t('home.mission.badge')}
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                  Advancing <span className="text-[#00d9ff]">Orbital Autonomy</span>
+                  {t('home.mission.title')}
                 </h2>
-                <p className="text-[#c0c0c0] text-lg mb-8 leading-relaxed">
-                  Our core research is focused on the **NASA JPL 2027 Roadmap**, specifically developing high-precision **Automatic Positioning and Tracking (APT)** systems. This technology, derived from advanced master's thesis research, enables seamless LEO satellite communication through real-time Doppler compensation and SGP4/SDP4 orbital modeling.
+                <p className="text-slate-300 text-xl mb-8 leading-relaxed">
+                  {t('home.mission.desc')}
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                   <div className="p-4 rounded-xl border border-[#2a3c5f] bg-[#1a2847]/40">
                     <Orbit className="w-6 h-6 text-[#00d9ff] mb-2" />
-                    <h4 className="text-white font-bold mb-1">APT Control</h4>
-                    <p className="text-[#c0c0c0] text-xs">Closed-loop dynamics for high-precision antenna positioning.</p>
+                    <h4 className="text-white font-bold mb-1">{t('home.mission.aptControl')}</h4>
+                    <p className="text-[#c0c0c0] text-xs">{t('home.mission.aptDesc')}</p>
                   </div>
                   <div className="p-4 rounded-xl border border-[#2a3c5f] bg-[#1a2847]/40">
                     <Rocket className="w-6 h-6 text-[#00d9ff] mb-2" />
-                    <h4 className="text-white font-bold mb-1">JPL Alignment</h4>
-                    <p className="text-[#c0c0c0] text-xs">Strategic integration with 2027 deep space communication goals.</p>
+                    <h4 className="text-white font-bold mb-1">{t('home.mission.jplAlignment')}</h4>
+                    <p className="text-[#c0c0c0] text-xs">{t('home.mission.jplDesc')}</p>
                   </div>
                 </div>
                 <Link to="/research" className="inline-flex items-center gap-2 px-8 py-4 bg-[#00d9ff] text-[#0a0e27] font-bold rounded-lg hover:bg-[#00b8dd] transition-all duration-300">
-                  Explore Research <ArrowRight size={18} />
+                  {t('home.mission.explore')} <ArrowRight size={18} />
                 </Link>
               </div>
               <div className="flex-1 relative">
@@ -119,7 +124,7 @@ const HomePage = () => {
               {/* MicroApps Card */}
               <motion.div
                 whileHover={{ y: -5, scale: 1.02 }}
-                className="p-8 rounded-2xl border-2 border-[#00d9ff] bg-gradient-to-br from-[#1a2847] to-[#0a0e27] shadow-[0_0_20px_rgba(0,217,255,0.2)] relative overflow-hidden group"
+                className="p-8 rounded-2xl border-2 border-[#00d9ff] bg-gradient-to-br from-[#1a2847] to-[#0a0e27] shadow-[0_0_20px_rgba(0,217,255,0.2)] relative overflow-hidden group animate-border-pulse"
               >
                 <div className="absolute top-0 right-0 w-24 h-24 bg-[#00d9ff]/10 rounded-bl-full -mr-10 -mt-10 transition-all group-hover:bg-[#00d9ff]/20" />
                 <h3 className="text-2xl font-bold text-white mb-4">{t('nav.microapps')}</h3>
@@ -139,6 +144,10 @@ const HomePage = () => {
 
         <RevealSection>
           <TechStack />
+        </RevealSection>
+
+        <RevealSection>
+          <InvestorPanel />
         </RevealSection>
 
         {/* Call to Action */}

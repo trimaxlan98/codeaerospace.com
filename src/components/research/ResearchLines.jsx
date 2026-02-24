@@ -48,31 +48,31 @@ const ResearchLines = () => {
           key={line.id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          whileHover={{ borderColor: 'rgba(34, 211, 238, 0.4)' }}
-          className="bg-[#0f172a]/80 border border-slate-800 p-6 rounded-lg shadow-xl backdrop-blur-sm transition-all duration-300"
+          whileHover={{ borderColor: 'rgba(34, 211, 238, 0.4)', scale: 1.02 }}
+          className="bg-[#0f172a]/80 border border-slate-800 p-6 rounded-lg shadow-xl backdrop-blur-sm transition-all duration-300 group"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-slate-900 rounded-md border border-slate-700">
+            <div className="p-2 bg-slate-900 rounded-md border border-slate-700 group-hover:border-[#00d9ff]/50 transition-colors">
               {line.icon}
             </div>
-            <h3 className="text-lg font-semibold text-slate-100 font-sans tracking-tight">
+            <h3 className="text-xl font-semibold text-slate-100 font-sans tracking-tight">
               {line.title}
             </h3>
           </div>
           
           <div className="bg-slate-900/50 p-4 rounded-md mb-4 border border-slate-800/50 flex justify-center items-center overflow-x-auto">
-            <div className="text-cyan-200/90 text-sm md:text-base font-mono">
+            <div className="text-cyan-200/90 text-base md:text-lg font-mono">
               <BlockMath math={line.equation} />
             </div>
           </div>
           
-          <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+          <p className="text-slate-300 text-base mb-4 leading-relaxed">
             {line.description}
           </p>
           
           <div className="flex flex-wrap gap-2">
             {line.tags.map((tag) => (
-              <span key={tag} className="px-2 py-0.5 bg-slate-800 text-[10px] font-mono text-slate-500 uppercase tracking-widest rounded">
+              <span key={tag} className="px-2.5 py-1 bg-slate-800 text-xs font-mono text-[#00d9ff] uppercase tracking-widest rounded border border-[#00d9ff]/10">
                 {tag}
               </span>
             ))}

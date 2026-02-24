@@ -37,12 +37,12 @@ const LeaderCard = ({ name, initials, title, role, description, icon: Icon, imag
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
-      className="relative bg-[#0a1122] rounded-xl border-2 border-[#1a2847] p-8 hover:border-[#00d9ff] hover:shadow-[0_0_30px_rgba(0,217,255,0.2)] transition-all duration-500 group flex flex-col h-full overflow-hidden"
+      className="relative bg-[#0a1122] rounded-xl border-2 border-[#00d9ff]/20 p-8 hover:border-[#00d9ff] hover:shadow-[0_0_30px_rgba(0,217,255,0.3)] shadow-[0_0_15px_rgba(0,217,255,0.05)] transition-all duration-500 group flex flex-col h-full overflow-hidden"
     >
       {/* Background Grid Pattern */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-        backgroundImage: `radial-gradient(#00d9ff 0.5px, transparent 0.5px)`,
-        backgroundSize: '10px 10px'
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none" style={{
+        backgroundImage: `radial-gradient(#00d9ff 0.8px, transparent 0.8px)`,
+        backgroundSize: '12px 12px'
       }} />
 
       {/* Scanning Line Effect */}
@@ -76,31 +76,31 @@ const LeaderCard = ({ name, initials, title, role, description, icon: Icon, imag
 
         <h3
           onClick={onClickName}
-          className="text-xl font-bold text-white mb-1 group-hover:text-[#00d9ff] transition-colors cursor-pointer"
+          className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-[#00d9ff] transition-all cursor-pointer"
         >
           {name}
         </h3>
-        <p className="text-[#00d9ff] text-[10px] font-mono mb-4 uppercase tracking-[0.2em] font-bold">
+        <p className="text-[#00d9ff] text-sm font-mono mb-6 uppercase tracking-[0.2em] font-bold">
           {title}
         </p>
 
         {/* Tech Badges */}
-        <div className="flex flex-wrap justify-center gap-2 mb-6">
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
           {skills.map((skill, idx) => (
-            <span key={idx} className="px-2 py-0.5 bg-[#00d9ff]/10 border border-[#00d9ff]/20 rounded text-[9px] font-mono text-[#00d9ff] uppercase tracking-tighter">
+            <span key={idx} className="px-3 py-1 bg-[#00d9ff]/10 border border-[#00d9ff]/20 rounded text-xs font-mono text-[#00d9ff] uppercase tracking-tighter hover:scale-110 transition-transform cursor-default">
               {skill}
             </span>
           ))}
         </div>
 
-        <div className="space-y-4 mt-auto text-left w-full">
-          <div className="p-3 bg-[#1a2847]/40 rounded-lg border border-[#00d9ff]/5">
-            <p className="text-xs text-[#c0c0c0] leading-relaxed text-center italic">"{role}"</p>
+        <div className="space-y-6 mt-auto text-left w-full">
+          <div className="p-4 bg-[#1a2847]/40 rounded-lg border border-[#00d9ff]/10">
+            <p className="text-base md:text-lg text-slate-200 leading-relaxed text-center italic">"{role}"</p>
           </div>
           
-          <ul className="text-[11px] text-[#94a3b8] space-y-2 mt-4 font-mono">
+          <ul className="text-sm md:text-base text-slate-300 space-y-3 mt-6 font-mono">
             {description.slice(0, 3).map((item, idx) => (
-              <li key={idx} className="flex items-start gap-2">
+              <li key={idx} className="flex items-start gap-2 hover:translate-x-1 transition-transform cursor-default">
                 <span className="text-[#00d9ff] shrink-0 animate-pulse">_</span>
                 <span className="leading-tight">{item}</span>
               </li>
@@ -111,7 +111,7 @@ const LeaderCard = ({ name, initials, title, role, description, icon: Icon, imag
             onClick={onClickName}
             className="mt-6 w-full py-3 bg-[#0a1122] border border-[#00d9ff]/30 text-[#00d9ff] text-[10px] font-mono font-bold uppercase tracking-[0.2em] rounded hover:bg-[#00d9ff] hover:text-[#0a1122] transition-all duration-300 shadow-inner group-hover:border-[#00d9ff]"
           >
-            [ > EXECUTE_VIEW ]
+            {t('leadership.execute')}
           </button>
         </div>
       </div>

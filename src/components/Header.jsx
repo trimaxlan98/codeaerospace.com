@@ -57,7 +57,7 @@ const Header = () => {
                     location.pathname === link.path ? 'text-[#00d9ff]' : 'text-[#c0c0c0]'
                   } ${isMicroApps ? 'bg-clip-text text-transparent bg-gradient-to-r from-[#00d9ff] via-white to-[#00d9ff] bg-[length:200%_auto] animate-gradient-x font-bold' : ''}`}
                 >
-                  {link.label}
+                  {isMicroApps ? 'MICROAPPS' : link.label}
                   {isMicroApps && (
                     <span className="absolute -top-3 -right-6 flex h-4 w-8">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d9ff] opacity-75"></span>
@@ -115,7 +115,7 @@ const Header = () => {
                       : 'text-[#c0c0c0] hover:text-[#00d9ff] hover:bg-[#00d9ff]/5'
                   }`}
                 >
-                  {link.label}
+                  {link.path === '/microapps' ? 'MICROAPPS' : link.label}
                 </Link>
               ))}
             </div>

@@ -17,30 +17,59 @@ const translations = {
   // Hero
   hero: {
     badge: { en: 'Advanced Space Systems for NGSO', es: 'Sistemas Espaciales Avanzados para NGSO' },
-    subtitle: { en: 'Research-Driven Engineering for the', es: 'Ingenieria Impulsada por la Investigacion para la' },
-    subtitleHighlight: { en: 'NewSpace Economy', es: 'Economia NewSpace' },
+    subtitle: { en: 'Research-Driven Engineering for the', es: 'Ingeniería basada en Investigación para la' },
+    subtitleHighlight: { en: 'NewSpace Economy', es: 'Economía NewSpace' },
     cta1: { en: 'Explore Solutions', es: 'Explorar Soluciones' },
-    cta2: { en: 'Contact Us', es: 'Contactanos' },
+    cta2: { en: 'Contact Us', es: 'Contáctanos' },
   },
 
   // Leadership
   leadership: {
     title1: { en: 'Technical', es: 'Liderazgo' },
-    title2: { en: 'Leadership', es: 'Tecnico' },
-    subtitle: { en: 'Guiding the future of aerospace engineering with precision and vision.', es: 'Guiando el futuro de la ingenieria aeroespacial con precision y vision.' },
+    title2: { en: 'Leadership', es: 'Técnico' },
+    subtitle: { en: 'Guiding the future of aerospace engineering with precision and vision.', es: 'Guiando el futuro de la ingeniería aeroespacial con precisión y visión.' },
     viewCv: { en: '[ View Full CV ]', es: '[ Ver CV Completo ]' },
     clickCv: { en: 'Click to view CV', es: 'Clic para ver CV' },
+    execute: { en: '[ > EXECUTE_VIEW ]', es: '[ > EJECUTAR_VISTA ]' },
+  },
+
+  // Home
+  home: {
+    mission: {
+      title: { en: "Advancing Orbital Autonomy", es: "Avanzando en la Autonomía Orbital" },
+      badge: { en: "Current Mission: JPL 2027", es: "Misión Actual: JPL 2027" },
+      desc: { en: "Our core research is focused on the NASA JPL 2027 Roadmap, specifically developing APT systems.", es: "Nuestra investigación central se enfoca en el Mapa de Ruta NASA JPL 2027, específicamente en el desarrollo de sistemas de Posicionamiento y Rastreo Automático (APT)." },
+      explore: { en: "Explore Research", es: "Explorar Investigación" },
+      aptControl: { en: "APT Control", es: "Control APT" },
+      aptDesc: { en: "Closed-loop dynamics for high-precision antenna positioning.", es: "Dinámica de lazo cerrado para posicionamiento de antena de alta precisión." },
+      jplAlignment: { en: "JPL Alignment", es: "Alineación con JPL" },
+      jplDesc: { en: "Strategic integration with 2027 deep space communication goals.", es: "Integración estratégica con los objetivos de comunicación de espacio profundo 2027." }
+    }
   },
 
   // CV Modal
   cv: {
-    education: { en: 'Education', es: 'Educacion' },
+    education: { en: 'Education', es: 'Educación' },
     experience: { en: 'Experience', es: 'Experiencia' },
     skills: { en: 'Key Skills', es: 'Habilidades Clave' },
     contact: { en: 'Contact', es: 'Contacto' },
     close: { en: 'Close', es: 'Cerrar' },
     download: { en: 'Download CV', es: 'Descargar CV' },
     downloadLink: { en: 'Open PDF', es: 'Abrir PDF' },
+  },
+
+  // Investor Panel
+  investor: {
+    badge: { en: 'Investor Relations', es: 'Relación con Inversionistas' },
+    title1: { en: 'Technological', es: 'Desarrollo de' },
+    title2: { en: 'Funding Engine', es: 'Fondeo Tecnológico' },
+    fund: { en: 'Research Fund', es: 'Fondo de Investigación' },
+    apps: { en: 'Active MicroApps', es: 'MicroApps Activas' },
+    goal: { en: 'Mission 2027 Goal', es: 'Meta Misión 2027' },
+    startup_guarantee: {
+      en: 'The continuity of our digital solutions is backed by the technical infrastructure of our aerospace division.',
+      es: 'La continuidad de nuestras soluciones digitales está respaldada por la infraestructura técnica de nuestra división aeroespacial.'
+    }
   },
 
   // Services

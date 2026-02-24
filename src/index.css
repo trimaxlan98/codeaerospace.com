@@ -55,6 +55,11 @@ body {
   100% { transform: translateY(500%); }
 }
 
+@keyframes border-pulse {
+  0%, 100% { border-color: rgba(0, 217, 255, 1); }
+  50% { border-color: rgba(255, 255, 255, 1); }
+}
+
 .animate-spin-slow {
   animation: spin-slow 2.5s linear infinite;
   will-change: transform;
@@ -76,6 +81,9 @@ body {
 }
 .animate-scan {
   animation: scan 2s linear infinite;
+}
+.animate-border-pulse {
+  animation: border-pulse 2s infinite;
 }
 
 /* === Custom scrollbar === */
