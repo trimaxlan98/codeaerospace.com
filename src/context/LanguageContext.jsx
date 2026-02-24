@@ -21,6 +21,8 @@ const translations = {
     subtitleHighlight: { en: 'NewSpace Economy', es: 'Economía NewSpace' },
     cta1: { en: 'Explore Solutions', es: 'Explorar Soluciones' },
     cta2: { en: 'Contact Us', es: 'Contáctanos' },
+    explore: { en: 'EXPLORE ECOSYSTEM', es: 'EXPLORAR ECOSISTEMA' },
+    scroll: { en: 'EXPLORE ECOSYSTEM', es: 'EXPLORAR ECOSISTEMA' },
   },
 
   // Leadership
@@ -69,6 +71,33 @@ const translations = {
     startup_guarantee: {
       en: 'The continuity of our digital solutions is backed by the technical infrastructure of our aerospace division.',
       es: 'La continuidad de nuestras soluciones digitales está respaldada por la infraestructura técnica de nuestra división aeroespacial.'
+    },
+    validationTitle: { en: 'Startup Validation', es: 'Validación Startup' },
+    sectors: {
+      health: { en: 'Health', es: 'Salud' },
+      logistics: { en: 'Logistics', es: 'Logística' },
+      education: { en: 'Education', es: 'Educación' }
+    }
+  },
+
+  // Roadmap
+  roadmap: {
+    title: { en: 'Mission Roadmap', es: 'Mapa de Ruta de la Misión' },
+    y2024: {
+      title: { en: 'Foundation', es: 'Fundación de Co.De Aerospace' },
+      desc: { en: 'Establishment of Co.De Aerospace and core research principles.', es: 'Establecimiento del laboratorio y principios fundamentales de investigación.' }
+    },
+    y2025: {
+      title: { en: 'MicroApps & WITCOM', es: 'División MicroApps & WITCOM 2025' },
+      desc: { en: 'Launch of commercial digital solutions and publication at WITCOM 2025.', es: 'Lanzamiento de soluciones digitales y presentación en el congreso WITCOM 2025.' }
+    },
+    y2026: {
+      title: { en: 'APT Beta Phase', es: 'Fase Beta del Sistema APT' },
+      desc: { en: 'Advanced development of Automatic Positioning and Tracking systems (Master Thesis).', es: 'Desarrollo avanzado de sistemas de posicionamiento automático (Tesis de Maestría).' }
+    },
+    y2027: {
+      title: { en: 'NASA JPL & WRC-27', es: 'NASA JPL & WRC-27' },
+      desc: { en: 'Strategic stay at JPL and technical support for ITU WRC-27.', es: 'Estancia estratégica en JPL y soporte técnico para la UIT WRC-27.' }
     }
   },
 
@@ -80,6 +109,10 @@ const translations = {
     learnMore: { en: 'Learn More', es: 'Saber Más' },
     microappsLink: { en: 'Looking for a fast web solution for your business? Explore our MicroApps.', es: '¿Buscas una solución web rápida para tu negocio? Explora nuestras MicroApps.' },
     microappsBtn: { en: 'View Digital Solutions', es: 'Ver Soluciones Digitales' },
+    ui: {
+      serial: { en: 'MOD-HW', es: 'MOD-HW' },
+      command: { en: '> EXECUTE_LEARN', es: '> EJECUTAR_SABER' },
+    },
     web: {
       title: { en: 'Enterprise Web Platforms', es: 'Plataformas Web Empresariales' },
       desc: { en: 'Custom dashboards, internal tools, and scalable web architectures using React, Node.js, and Flask.', es: 'Dashboards a medida, herramientas internas y arquitecturas web escalables con React, Node.js y Flask.' },

@@ -6,6 +6,7 @@ import TripleHelixSection from '@/components/TripleHelixSection';
 import StatsSection from '@/components/StatsSection';
 import TechStack from '@/components/TechStack';
 import InvestorPanel from '@/components/InvestorPanel';
+import MissionRoadmap from '@/components/MissionRoadmap';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { Link } from 'react-router-dom';
@@ -89,6 +90,10 @@ const HomePage = () => {
           </div>
         </RevealSection>
 
+        <RevealSection>
+          <MissionRoadmap />
+        </RevealSection>
+
         {/* Quick Access Section */}
         <RevealSection className="py-24 px-6 bg-[#0a0e27]/50">
           <div className="container mx-auto max-w-6xl">
@@ -144,10 +149,6 @@ const HomePage = () => {
 
         <RevealSection>
           <TechStack />
-        </RevealSection>
-
-        <RevealSection>
-          <InvestorPanel />
         </RevealSection>
 
         {/* Call to Action */}

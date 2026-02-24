@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const keywords = ["SATELLITE SYSTEMS", "NGSO COMMUNICATIONS", "AI AUTOMATION", "ORBITAL DYNAMICS"];
@@ -99,6 +100,24 @@ const HeroSection = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center"
+      >
+        <span className="text-[10px] font-mono text-[#00d9ff] uppercase tracking-[0.3em] mb-2 block">
+          {t('hero.scroll')}
+        </span>
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <ChevronDown className="w-6 h-6 text-[#00d9ff] mx-auto opacity-50" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Rocket, Target, ShieldCheck } from 'lucide-react';
+import { TrendingUp, Rocket, Target, ShieldCheck, HeartPulse, Truck, GraduationCap } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const InvestorPanel = () => {
@@ -10,6 +10,12 @@ const InvestorPanel = () => {
     { label: t('investor.fund'), value: '$2.5M+', icon: TrendingUp },
     { label: t('investor.apps'), value: '12', icon: Rocket },
     { label: t('investor.goal'), value: '2027', icon: Target },
+  ];
+
+  const validationSectors = [
+    { name: t('investor.sectors.health'), icon: HeartPulse },
+    { name: t('investor.sectors.logistics'), icon: Truck },
+    { name: t('investor.sectors.education'), icon: GraduationCap },
   ];
 
   return (
@@ -51,14 +57,29 @@ const InvestorPanel = () => {
           ))}
         </div>
 
+        {/* Validation Sectors */}
+        <div className="mb-16 text-center">
+          <h3 className="text-xl font-bold text-white mb-8 uppercase tracking-widest opacity-60">
+            {t('investor.validationTitle')}
+          </h3>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+            {validationSectors.map((sector, i) => (
+              <div key={i} className="flex items-center gap-3 text-slate-400 group">
+                <sector.icon className="w-6 h-6 group-hover:text-[#00d9ff] transition-colors" />
+                <span className="text-lg font-semibold tracking-wide">{sector.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="p-8 rounded-2xl bg-gradient-to-r from-[#00d9ff]/20 via-[#0a0e27] to-[#00d9ff]/20 border-2 border-[#00d9ff]/40 text-center"
+          className="p-10 rounded-2xl bg-gradient-to-r from-[#00d9ff]/10 via-[#0a0e27] to-[#00d9ff]/10 border-2 border-[#00d9ff]/40 animate-border-pulse text-center"
         >
-          <p className="text-xl md:text-2xl font-bold text-white leading-relaxed">
-            <span className="text-[#00d9ff]">GARANTÍA STARTUP:</span> {t('investor.startup_guarantee')}
+          <p className="text-2xl md:text-3xl font-black text-white leading-relaxed">
+            <span className="text-[#00d9ff]">GARANTÍA DE CONTINUIDAD:</span> {t('investor.startup_guarantee')}
           </p>
         </motion.div>
       </div>
