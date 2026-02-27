@@ -8,6 +8,7 @@ const translations = {
     home: { en: 'Home', es: 'Inicio' },
     leadership: { en: 'Leadership', es: 'Liderazgo' },
     services: { en: 'Services', es: 'Servicios' },
+    impact: { en: 'Impact', es: 'Impacto' },
     wrc2027: { en: 'WRC-2027', es: 'WRC-2027' },
     microapps: { en: 'MicroApps', es: 'MicroApps' },
     research: { en: 'Research', es: 'Investigación' },
@@ -339,7 +340,7 @@ const translations = {
     cta: { en: 'Get Started', es: 'Comenzar' },
     basic: {
       name: { en: 'Starter', es: 'Básico' },
-      price: { en: '$1,800', es: '$1,800' },
+      price: { en: 'From $1,800', es: 'Desde $1,800' },
       f1: { en: 'Product/service catalog', es: 'Catálogo de productos/servicios' },
       f2: { en: 'Business info page', es: 'Página informativa del negocio' },
       f3: { en: 'WhatsApp contact button', es: 'Botón de contacto por WhatsApp' },
@@ -348,7 +349,7 @@ const translations = {
     },
     pro: {
       name: { en: 'Professional', es: 'Profesional' },
-      price: { en: '$2,500', es: '$2,500' },
+      price: { en: 'From $2,500', es: 'Desde $2,500' },
       f1: { en: 'Everything in Starter', es: 'Todo lo del Básico' },
       f2: { en: 'Inventory management', es: 'Control de inventario' },
       f3: { en: 'Sales & expense tracking', es: 'Registro de ventas y gastos' },
@@ -357,7 +358,7 @@ const translations = {
     },
     premium: {
       name: { en: 'Premium', es: 'Premium' },
-      price: { en: '$3,500', es: '$3,500' },
+      price: { en: 'From $3,500', es: 'Desde $3,500' },
       f1: { en: 'Everything in Professional', es: 'Todo lo del Profesional' },
       f2: { en: 'IoT device integration', es: 'Integración con dispositivos IoT' },
       f3: { en: 'Attendance & shift control', es: 'Control de asistencia y turnos' },
@@ -409,16 +410,22 @@ const translations = {
 
   // Impact & Training
   impact: {
-    title: { es: "Impacto y Formación Profesional", en: "Professional Impact & Training" },
+    title: { es: "Trayectoria e Impacto", en: "Trajectory & Impact" },
     subtitle: { 
       es: "Nuestra presencia activa en foros internacionales y académicos respalda nuestra capacidad técnica y compromiso con la excelencia.", 
       en: "Our active presence in international and academic forums backs our technical capability and commitment to excellence." 
     },
-    gallery_desc: { es: "Galería de Conferencias y Eventos", en: "Conference & Events Gallery" },
-    workshops_title: { es: "Cursos y Capacitación", en: "Courses & Training" },
-    consulting_title: { es: "Consultoría de Ingeniería", en: "Engineering Consulting" },
-    consulting_desc: { es: "Asesoría estratégica para desafíos de misión crítica en los sectores industrial y aeroespacial.", en: "Strategic advisory for mission-critical challenges in industrial and aerospace sectors." },
-    consulting_cta: { es: "Solicitar Consultoría Técnica", en: "Request Technical Consulting" },
+    gallery_title: { es: "Galería de Misión", en: "Mission Gallery" },
+    gallery_desc: { es: "Visualizando nuestro compromiso con la innovación y la formación.", en: "Visualizing our commitment to innovation and training." },
+    workshops_title: { es: "Formación Especializada", en: "Specialized Training" },
+    consulting_title: { es: "Consultoría Estratégica", en: "Strategic Consulting" },
+    consulting_desc: { es: "Asesoría técnica de alto nivel para desafíos de misión crítica en los sectores industrial y aeroespacial.", en: "High-level technical advisory for mission-critical challenges in industrial and aerospace sectors." },
+    consulting_cta: { es: "Solicitar Asesoría", en: "Request Advisory" },
+    metrics: {
+      hours: { es: "500+ Horas de Capacitación", en: "500+ Training Hours" },
+      engineers: { es: "150+ Ingenieros Formados", en: "150+ Engineers Trained" },
+      conferences: { es: "10+ Conferencias Internacionales", en: "10+ International Conferences" },
+    },
     events: {
       witcom: { es: "WITCOM 2025: Ponencia Internacional", en: "WITCOM 2025: International Speaker" },
       nasa: { es: "NASA Space Apps: Mentoría y Desarrollo", en: "NASA Space Apps: Mentorship & Development" },
@@ -426,21 +433,25 @@ const translations = {
     },
     workshops: {
       ai: {
-        title: { es: "IA y Automatización Agéntica", en: "AI & Agentic Automation" },
+        title: { es: "IA Agéntica con LangChain", en: "Agentic AI with LangChain" },
         desc: { es: "Especialización en orquestación de agentes con LangChain y automatización de flujos técnicos.", en: "Specialization in agent orchestration with LangChain and technical workflow automation." },
       },
       control: {
-        title: { es: "Control de Sistemas y APT", en: "Systems Control & APT" },
+        title: { es: "Control de Sistemas APT", en: "APT Systems Control" },
         desc: { es: "Diseño de algoritmos para rastreo satelital y control de precisión en tiempo real.", en: "Algorithm design for satellite tracking and real-time precision control." },
       },
       mechanical: {
-        title: { es: "Diseño e Ingeniería Mecánica", en: "Mechanical Design & Engineering" },
+        title: { es: "Ingeniería con SolidWorks & FEA", en: "Engineering with SolidWorks & FEA" },
         desc: { es: "Modelado avanzado en SolidWorks y análisis por elementos finitos (FEA) estructural.", en: "Advanced SolidWorks modeling and structural Finite Element Analysis (FEA)." },
       },
       enroll: { es: "Inscribirse", en: "Enroll Now" },
     },
     email: {
       consulting_subject: { es: "[Consultoría] Solicitud de Asesoría Técnica", en: "[Consulting] Technical Advisory Request" },
+      consulting_body: { 
+        es: "Hola equipo de Co.De Aerospace,\n\nMe gustaría solicitar una consultoría estratégica para el siguiente proyecto:\n\n[Describe tu proyecto aquí]\n\nSaludos.",
+        en: "Hello Co.De Aerospace team,\n\nI would like to request a strategic consultancy for the following project:\n\n[Describe your project here]\n\nBest regards."
+      },
       workshop_subject: { es: "[Capacitación] Interés en Taller: {name}", en: "[Training] Interest in Workshop: {name}" },
     }
   },

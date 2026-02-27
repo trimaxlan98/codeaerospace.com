@@ -7,6 +7,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 import HomePage from '@/pages/HomePage';
 import LeadershipPage from '@/pages/LeadershipPage';
 import ServicesPage from '@/pages/ServicesPage';
+import ImpactPage from '@/pages/ImpactPage';
 import WRC2027Page from '@/pages/WRC2027Page';
 import MicroAppsPage from '@/pages/MicroAppsPage';
 import ResearchDashboardPage from '@/pages/ResearchDashboardPage';
@@ -62,6 +63,7 @@ const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/leadership" element={<LeadershipPage />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/impact" element={<ImpactPage />} />
         <Route path="/wrc-2027" element={<WRC2027Page />} />
         <Route path="/microapps" element={<MicroAppsPage />} />
         <Route path="/research" element={<ResearchDashboardPage />} />

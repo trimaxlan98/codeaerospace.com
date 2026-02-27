@@ -23,6 +23,7 @@ const Header = () => {
     { path: '/', label: t('nav.home') },
     { path: '/leadership', label: t('nav.leadership') },
     { path: '/services', label: t('nav.services') },
+    { path: '/impact', label: t('nav.impact') },
     { path: '/wrc-2027', label: t('nav.wrc2027') },
     { path: '/microapps', label: t('nav.microapps') },
     { path: '/research', label: t('nav.research') },
@@ -53,7 +54,7 @@ const Header = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative text-sm font-medium transition-colors duration-300 hover:text-[#00d9ff] ${
+                  className={`relative text-lg font-medium transition-colors duration-300 hover:text-[#00d9ff] ${
                     location.pathname === link.path ? 'text-[#00d9ff]' : 'text-[#c0c0c0]'
                   } ${isMicroApps ? 'bg-clip-text text-transparent bg-gradient-to-r from-[#00d9ff] via-white to-[#00d9ff] bg-[length:200%_auto] animate-gradient-x font-bold' : ''}`}
                 >

@@ -93,13 +93,14 @@ const ContactForm = () => {
         <label htmlFor="serviceInterest" className="block text-[#c0c0c0] mb-2 font-medium">{t('contact.serviceInterest')}</label>
         <select id="serviceInterest" name="serviceInterest" value={formData.serviceInterest} onChange={handleChange} className={inputClass('serviceInterest')}>
           <option value="">{t('contact.selectService')}</option>
-          <option value="Enterprise Web Platforms">Enterprise Web Platforms</option>
-          <option value="AI & Agentic Automation">AI & Agentic Automation</option>
-          <option value="Full-Stack Mobile Apps">Full-Stack Mobile Apps</option>
-          <option value="Industrial VR Training">Industrial VR Training</option>
-          <option value="Industrial IoT & Control">Industrial IoT & Control</option>
-          <option value="Custom Project Engineering">Custom Project Engineering</option>
-          <option value="MicroApp Solution">MicroApp Solution</option>
+          <option value="Plataformas Web">Plataformas Web</option>
+          <option value="IA">IA</option>
+          <option value="Apps Móviles">Apps Móviles</option>
+          <option value="VR Training">VR Training</option>
+          <option value="IoT">IoT</option>
+          <option value="Ingeniería de Proyectos">Ingeniería de Proyectos</option>
+          <option value="MicroApps">MicroApps</option>
+          <option value="Consultoría Técnica">Consultoría Técnica</option>
           <option value="Other">Other</option>
         </select>
         {errors.serviceInterest && <p className="text-red-500 text-sm mt-1">{errors.serviceInterest}</p>}

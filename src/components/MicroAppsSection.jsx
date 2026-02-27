@@ -141,17 +141,10 @@ const MicroAppsSection = () => {
     },
   ];
 
-  const scrollToContact = () => {
-    const el = document.getElementById('contact');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      navigate('/contact');
-    }
-  };
-
-  const handleCta = () => {
-    navigate('/contact');
+  const handleCta = (pkg) => {
+    const subject = encodeURIComponent(t('microapps.email.subject').replace('{name}', pkg.name));
+    const body = encodeURIComponent(t('microapps.email.body').replace('{name}', pkg.name));
+    window.location.href = `mailto:contacto@codeaerospace.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -303,7 +296,7 @@ const MicroAppsSection = () => {
                 updateSuffix={t('microapps.updateSuffix')}
                 cta={t('microapps.cta')}
                 delay={i * 0.15}
-                onCta={handleCta}
+                onCta={() => handleCta(pkg)}
               />
             ))}
           </div>
