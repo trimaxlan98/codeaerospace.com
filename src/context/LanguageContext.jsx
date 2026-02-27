@@ -407,6 +407,44 @@ const translations = {
     }
   },
 
+  // Impact & Training
+  impact: {
+    title: { es: "Impacto y Formación Profesional", en: "Professional Impact & Training" },
+    subtitle: { 
+      es: "Nuestra presencia activa en foros internacionales y académicos respalda nuestra capacidad técnica y compromiso con la excelencia.", 
+      en: "Our active presence in international and academic forums backs our technical capability and commitment to excellence." 
+    },
+    gallery_desc: { es: "Galería de Conferencias y Eventos", en: "Conference & Events Gallery" },
+    workshops_title: { es: "Cursos y Capacitación", en: "Courses & Training" },
+    consulting_title: { es: "Consultoría de Ingeniería", en: "Engineering Consulting" },
+    consulting_desc: { es: "Asesoría estratégica para desafíos de misión crítica en los sectores industrial y aeroespacial.", en: "Strategic advisory for mission-critical challenges in industrial and aerospace sectors." },
+    consulting_cta: { es: "Solicitar Consultoría Técnica", en: "Request Technical Consulting" },
+    events: {
+      witcom: { es: "WITCOM 2025: Ponencia Internacional", en: "WITCOM 2025: International Speaker" },
+      nasa: { es: "NASA Space Apps: Mentoría y Desarrollo", en: "NASA Space Apps: Mentorship & Development" },
+      ipn: { es: "Ponencias IPN: Formando Futuros Ingenieros", en: "IPN Lectures: Training Future Engineers" },
+    },
+    workshops: {
+      ai: {
+        title: { es: "IA y Automatización Agéntica", en: "AI & Agentic Automation" },
+        desc: { es: "Especialización en orquestación de agentes con LangChain y automatización de flujos técnicos.", en: "Specialization in agent orchestration with LangChain and technical workflow automation." },
+      },
+      control: {
+        title: { es: "Control de Sistemas y APT", en: "Systems Control & APT" },
+        desc: { es: "Diseño de algoritmos para rastreo satelital y control de precisión en tiempo real.", en: "Algorithm design for satellite tracking and real-time precision control." },
+      },
+      mechanical: {
+        title: { es: "Diseño e Ingeniería Mecánica", en: "Mechanical Design & Engineering" },
+        desc: { es: "Modelado avanzado en SolidWorks y análisis por elementos finitos (FEA) estructural.", en: "Advanced SolidWorks modeling and structural Finite Element Analysis (FEA)." },
+      },
+      enroll: { es: "Inscribirse", en: "Enroll Now" },
+    },
+    email: {
+      consulting_subject: { es: "[Consultoría] Solicitud de Asesoría Técnica", en: "[Consulting] Technical Advisory Request" },
+      workshop_subject: { es: "[Capacitación] Interés en Taller: {name}", en: "[Training] Interest in Workshop: {name}" },
+    }
+  },
+
   // Vet Demo
   vetDemo: {
     header: {

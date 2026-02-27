@@ -7,6 +7,7 @@ import StatsSection from '@/components/StatsSection';
 import TechStack from '@/components/TechStack';
 import InvestorPanel from '@/components/InvestorPanel';
 import MissionRoadmap from '@/components/MissionRoadmap';
+import ImpactSection from '@/components/ImpactSection';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { Link } from 'react-router-dom';
@@ -92,6 +93,10 @@ const HomePage = () => {
 
         <RevealSection>
           <MissionRoadmap />
+        </RevealSection>
+
+        <RevealSection>
+          <ImpactSection />
         </RevealSection>
 
         {/* Quick Access Section */}
