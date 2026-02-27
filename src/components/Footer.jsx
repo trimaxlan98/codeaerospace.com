@@ -36,16 +36,19 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-1">
             <h3 className="text-white text-lg font-bold mb-3">Co.De Aerospace</h3>
             <p className="text-sm text-[#94a3b8] mb-2 leading-relaxed">{t('footer.tagline')}</p>
+            <a href={`mailto:${t('footer.email')}`} className="text-sm text-[#00d9ff] hover:underline block mt-2 mb-4">
+              {t('footer.email')}
+            </a>
             <VisitCounter />
           </div>
 
           <div>
             <h4 className="text-white text-sm font-bold uppercase tracking-wider mb-4">{t('footer.services')}</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.groundStations')}</Link></li>
-              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.cybersecurity')}</Link></li>
-              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.missionAnalytics')}</Link></li>
-              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.orbitalConsulting')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.web')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.ai')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.mobile')}</Link></li>
+              <li><Link to="/services" className="hover:text-[#00d9ff] transition-colors">{t('footer.engineering')}</Link></li>
             </ul>
           </div>
 

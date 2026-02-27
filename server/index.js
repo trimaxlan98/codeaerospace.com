@@ -95,7 +95,7 @@ app.get('/api/assets/:assetId', (req, res) => {
   res.send(asset.data);
 });
 
-app.post('/api/assets', (req, res) => {
+app.post('/api/assets', async (req, res) => {
   const {
     assetKey,
     filename,

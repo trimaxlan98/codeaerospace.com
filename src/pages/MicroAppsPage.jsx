@@ -2,6 +2,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import MicroAppsSection from '@/components/MicroAppsSection';
+import FAQSection from '@/components/FAQSection';
 
 const MicroAppsPage = () => {
   return (
@@ -11,6 +12,7 @@ const MicroAppsPage = () => {
       </Helmet>
       <div className="pt-20">
         <MicroAppsSection />
+        <FAQSection />
       </div>
     </>
   );

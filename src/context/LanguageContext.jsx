@@ -40,7 +40,10 @@ const translations = {
     mission: {
       title: { en: "Advancing Orbital Autonomy", es: "Avanzando en la Autonomía Orbital" },
       badge: { en: "Current Mission: JPL 2027", es: "Misión Actual: JPL 2027" },
-      desc: { en: "Our core research is focused on the NASA JPL 2027 Roadmap, specifically developing APT systems.", es: "Nuestra investigación central se enfoca en el Mapa de Ruta NASA JPL 2027, específicamente en el desarrollo de sistemas de Posicionamiento y Rastreo Automático (APT)." },
+      desc: { 
+        en: "Our cutting-edge engineering aligns with the NASA JPL 2027 Roadmap. We develop Automatic Positioning and Tracking (APT) systems that define the future of deep space communications.", 
+        es: "Nuestra ingeniería de vanguardia se alinea con el Roadmap de la NASA JPL 2027. Desarrollamos sistemas de Posicionamiento y Rastreo Automático (APT) que definen el futuro de las comunicaciones en el espacio profundo." 
+      },
       explore: { en: "Explore Research", es: "Explorar Investigación" },
       aptControl: { en: "APT Control", es: "Control APT" },
       aptDesc: { en: "Closed-loop dynamics for high-precision antenna positioning.", es: "Dinámica de lazo cerrado para posicionamiento de antena de alta precisión." },
@@ -69,8 +72,8 @@ const translations = {
     apps: { en: 'Active MicroApps', es: 'MicroApps Activas' },
     goal: { en: 'Mission 2027 Goal', es: 'Meta Misión 2027' },
     startup_guarantee: {
-      en: 'The continuity of our digital solutions is backed by the technical infrastructure of our aerospace division.',
-      es: 'La continuidad de nuestras soluciones digitales está respaldada por la infraestructura técnica de nuestra división aeroespacial.'
+      en: 'BACKING & CONTINUITY: As a diversified startup, our MicroApps\' stability is shielded by the technical infrastructure of our aerospace division. Your service doesn\'t depend on an individual, but on a mission-critical engineering organization.',
+      es: 'RESPALDO Y CONTINUIDAD: Al ser una startup diversificada, la estabilidad de nuestras MicroApps está blindada por la infraestructura técnica de nuestra división aeroespacial. Tu servicio no depende de un individuo, sino de una organización de ingeniería de misión crítica.'
     },
     validationTitle: { en: 'Startup Validation', es: 'Validación Startup' },
     sectors: {
@@ -165,23 +168,23 @@ const translations = {
 
   // WRC-2027
   wrc: {
-    title1: { en: 'Strategic Support for', es: 'Apoyo Estrategico para' },
+    title1: { en: 'Strategic Support for', es: 'Apoyo Estratégico para' },
     title2: { en: 'ITU WRC-2027', es: 'UIT WRC-2027' },
-    subtitle: { en: 'As the global inflection point for orbital frequency bands approaches, we empower nations and organizations to achieve', es: 'A medida que se acerca el punto de inflexion global para las bandas de frecuencia orbital, empoderamos a naciones y organizaciones para lograr' },
-    sovereignty: { en: 'Technological Sovereignty', es: 'Soberania Tecnologica' },
+    subtitle: { en: 'As the global inflection point for orbital frequency bands approaches, we empower nations and organizations to achieve', es: 'A medida que se acerca el punto de inflexión global para las bandas de frecuencia orbital, empoderamos a naciones y organizaciones para lograr' },
+    sovereignty: { en: 'Technological Sovereignty', es: 'Soberanía Tecnológica' },
     while: { en: 'while ensuring', es: 'mientras aseguramos la' },
     coexistence: { en: 'Spectrum Coexistence', es: 'Coexistencia Espectral' },
     interference: {
-      title: { en: 'Interference Mitigation', es: 'Mitigacion de Interferencia' },
-      desc: { en: 'Advanced modeling for NGSO constellations, ensuring compliance with ITU equivalent power flux-density (epfd) limits to protect GSO networks.', es: 'Modelado avanzado para constelaciones NGSO, asegurando cumplimiento con los limites de densidad de flujo de potencia equivalente (epfd) de la UIT para proteger redes GSO.' },
+      title: { en: 'Interference Mitigation', es: 'Mitigación de Interferencia' },
+      desc: { en: 'Advanced modeling for NGSO constellations, ensuring compliance with ITU equivalent power flux-density (epfd) limits to protect GSO networks.', es: 'Modelado avanzado para constelaciones NGSO, asegurando cumplimiento con los límites de densidad de flujo de potencia equivalente (epfd) de la UIT para proteger redes GSO.' },
     },
     spectrum: {
-      title: { en: 'Spectrum Consultancy', es: 'Consultoria Espectral' },
-      desc: { en: 'Strategic technical consultancy for radio-frequency allocation, navigating the complex regulatory landscape of international compliance.', es: 'Consultoria tecnica estrategica para asignacion de radiofrecuencias, navegando el complejo panorama regulatorio de cumplimiento internacional.' },
+      title: { en: 'Spectrum Consultancy', es: 'Consultoría Espectral' },
+      desc: { en: 'Strategic technical consultancy for radio-frequency allocation, navigating the complex regulatory landscape of international compliance.', es: 'Consultoría técnica estratégica para asignación de radiofrecuencias, navegando el complejo panorama regulatorio de cumplimiento internacional.' },
     },
     payload: {
-      title: { en: 'Next-Gen Payload R&D', es: 'I+D de Carga Util de Nueva Generacion' },
-      desc: { en: 'Research and development of adaptive payloads designed for orbital assets, maximizing spectral efficiency in crowded LEO environments.', es: 'Investigacion y desarrollo de cargas utiles adaptativas disenadas para activos orbitales, maximizando la eficiencia espectral en ambientes LEO congestionados.' },
+      title: { en: 'Next-Gen Payload R&D', es: 'I+D de Carga Útil de Nueva Generación' },
+      desc: { en: 'Research and development of adaptive payloads designed for orbital assets, maximizing spectral efficiency in crowded LEO environments.', es: 'Investigación y desarrollo de cargas útiles adaptativas diseñadas para activos orbitales, maximizando la eficiencia espectral en ambientes LEO congestionados.' },
     },
     ituBadge: { en: 'Official ITU WRC-27 Resource', es: 'Recurso Oficial UIT WRC-27' },
     ituTitle: { en: 'Global Regulatory Portal: WRC-27', es: 'Portal Regulatorio Global: WRC-27' },
@@ -192,70 +195,74 @@ const translations = {
   // Triple Helix
   helix: {
     badge: { en: 'Operational Model', es: 'Modelo Operativo' },
-    title1: { en: 'Innovation Ecosystem: The', es: 'Ecosistema de Innovacion: La' },
-    title2: { en: 'Triple Helix', es: 'Triple Helice' },
-    subtitle: { en: 'Co.De Aerospace operates at the intersection of critical sectors, leveraging a synergistic model to accelerate space technology readiness.', es: 'Co.De Aerospace opera en la interseccion de sectores criticos, aprovechando un modelo sinergico para acelerar la madurez tecnologica espacial.' },
+    title1: { en: 'Innovation Ecosystem: The', es: 'Ecosistema de Innovación: La' },
+    title2: { en: 'Triple Helix', es: 'Triple Hélice' },
+    subtitle: { en: 'Co.De Aerospace operates at the intersection of critical sectors, leveraging a synergistic model to accelerate space technology readiness.', es: 'Co.De Aerospace opera en la intersección de sectores críticos, aprovechando un modelo sinérgico para acelerar la madurez tecnológica espacial.' },
     gov: {
-      title: { en: 'Government & Regulatory', es: 'Gobierno y Regulacion' },
-      role: { en: 'Policy & Compliance', es: 'Politica y Cumplimiento' },
-      desc: { en: 'Providing technical support for national frequency planning and comprehensive spectrum management reports to ensure sovereignty and international alignment.', es: 'Brindando soporte tecnico para la planificacion de frecuencias nacionales y reportes integrales de gestion espectral para asegurar soberania y alineacion internacional.' },
+      title: { en: 'Government & Regulatory', es: 'Gobierno y Regulación' },
+      role: { en: 'Policy & Compliance', es: 'Política y Cumplimiento' },
+      desc: { en: 'Providing technical support for national frequency planning and comprehensive spectrum management reports to ensure sovereignty and international alignment.', es: 'Brindando soporte técnico para la planificación de frecuencias nacionales y reportes integrales de gestión espectral para asegurar soberanía y alineación internacional.' },
     },
     industry: {
       title: { en: 'Industry I+D', es: 'Industria I+D' },
-      role: { en: 'Applied Engineering', es: 'Ingenieria Aplicada' },
-      desc: { en: 'Development of functional prototypes, control algorithms, and ground station architectures driving the new Non-Geostationary (NGSO) economy.', es: 'Desarrollo de prototipos funcionales, algoritmos de control y arquitecturas de estaciones terrenas impulsando la nueva economia no geoestacionaria (NGSO).' },
+      role: { en: 'Applied Engineering', es: 'Ingeniería Aplicada' },
+      desc: { en: 'Development of functional prototypes, control algorithms, and ground station architectures driving the new Non-Geostationary (NGSO) economy.', es: 'Desarrollo de prototipos funcionales, algoritmos de control y arquitecturas de estaciones terrenas impulsando la nueva economía no geoestacionaria (NGSO).' },
     },
     academic: {
-      title: { en: 'Academic Frontier', es: 'Frontera Academica' },
-      role: { en: 'Research & Talent', es: 'Investigacion y Talento' },
-      desc: { en: 'Fostering high-level talent pipelines and supporting advanced satellite communication research to push the boundaries of what is possible in LEO.', es: 'Fomentando canales de talento de alto nivel y apoyando investigacion avanzada en comunicaciones satelitales para ampliar los limites de lo posible en LEO.' },
+      title: { en: 'Academic Frontier', es: 'Frontera Académica' },
+      role: { en: 'Research & Talent', es: 'Investigación y Talento' },
+      desc: { en: 'Fostering high-level talent pipelines and supporting advanced satellite communication research to push the boundaries of what is possible in LEO.', es: 'Fomentando canales de talento de alto nivel y apoyando investigación avanzada en comunicaciones satelitales para ampliar los límites de lo posible en LEO.' },
     },
   },
 
   // Contact
   contact: {
     title1: { en: 'Partner With', es: 'Colabora Con' },
-    subtitle: { en: "Ready to collaborate on your next mission? Share your requirements and let's engineer the future together.", es: 'Listo para colaborar en tu proxima mision? Comparte tus requerimientos y diseñemos el futuro juntos.' },
-    orgName: { en: 'Organization Name *', es: 'Nombre de la Organizacion *' },
-    orgPlaceholder: { en: 'Your Organization', es: 'Tu Organizacion' },
+    subtitle: { en: "Ready to collaborate on your next mission? Share your requirements and let's engineer the future together.", es: '¿Listo para colaborar en tu próxima misión? Comparte tus requerimientos y diseñemos el futuro juntos.' },
+    orgName: { en: 'Organization Name *', es: 'Nombre de la Organización *' },
+    orgPlaceholder: { en: 'Your Organization', es: 'Tu Organización' },
     email: { en: 'Contact Email *', es: 'Correo de Contacto *' },
-    serviceInterest: { en: 'Service Interest *', es: 'Servicio de Interes *' },
+    serviceInterest: { en: 'Service Interest *', es: 'Servicio de Interés *' },
     selectService: { en: 'Select a service', es: 'Selecciona un servicio' },
     message: { en: 'Message *', es: 'Mensaje *' },
-    messagePlaceholder: { en: 'Tell us about your project requirements...', es: 'Cuentanos sobre los requerimientos de tu proyecto...' },
+    messagePlaceholder: { en: 'Tell us about your project requirements...', es: 'Cuéntanos sobre los requerimientos de tu proyecto...' },
     submit: { en: 'Submit Inquiry', es: 'Enviar Consulta' },
     submitting: { en: 'Opening Email Client...', es: 'Abriendo Cliente de Correo...' },
-    emailNote: { en: 'This will open your default email client with the inquiry details pre-filled.', es: 'Esto abrira tu cliente de correo predeterminado con los detalles de la consulta pre-llenados.' },
-    thankYou: { en: 'Thank You!', es: 'Gracias!' },
-    thankYouMsg: { en: 'Your email client has been opened. Please send the email to complete your inquiry. We\'ll get back to you as soon as possible.', es: 'Tu cliente de correo ha sido abierto. Por favor envia el email para completar tu consulta. Te responderemos lo antes posible.' },
+    emailNote: { en: 'This will open your default email client with the inquiry details pre-filled.', es: 'Esto abrirá tu cliente de correo predeterminado con los detalles de la consulta pre-llenados.' },
+    thankYou: { en: 'Thank You!', es: '¡Gracias!' },
+    thankYouMsg: { en: 'Your email client has been opened. Please send the email to complete your inquiry. We\'ll get back to you as soon as possible.', es: 'Tu cliente de correo ha sido abierto. Por favor envía el email para completar tu consulta. Te responderemos lo antes posible.' },
     errors: {
-      orgRequired: { en: 'Organization name is required', es: 'El nombre de la organizacion es requerido' },
+      orgRequired: { en: 'Organization name is required', es: 'El nombre de la organización es requerido' },
       emailRequired: { en: 'Email is required', es: 'El correo es requerido' },
-      emailInvalid: { en: 'Please enter a valid email address', es: 'Por favor ingresa un correo valido' },
-      serviceRequired: { en: 'Please select a service interest', es: 'Por favor selecciona un servicio de interes' },
+      emailInvalid: { en: 'Please enter a valid email address', es: 'Por favor ingresa un correo válido' },
+      serviceRequired: { en: 'Please select a service interest', es: 'Por favor selecciona un servicio de interés' },
       messageRequired: { en: 'Message is required', es: 'El mensaje es requerido' },
       messageMin: { en: 'Message must be at least 10 characters', es: 'El mensaje debe tener al menos 10 caracteres' },
-      validation: { en: 'Validation Error', es: 'Error de Validacion' },
+      validation: { en: 'Validation Error', es: 'Error de Validación' },
       validationDesc: { en: 'Please correct the errors in the form', es: 'Por favor corrige los errores en el formulario' },
     },
     emailOpened: { en: 'Email Client Opened', es: 'Cliente de Correo Abierto' },
-    emailOpenedDesc: { en: 'Your default email client has been opened with the inquiry details. Please send the email to complete your submission.', es: 'Tu cliente de correo predeterminado ha sido abierto con los detalles de la consulta. Por favor envia el email para completar tu envio.' },
+    emailOpenedDesc: { en: 'Your default email client has been opened with the inquiry details. Please send the email to complete your submission.', es: 'Tu cliente de correo predeterminado ha sido abierto con los detalles de la consulta. Por favor envía el email para completar tu envío.' },
   },
 
   // Footer
   footer: {
-    tagline: { en: 'Research-Driven Engineering for the NewSpace Economy.', es: 'Ingenieria Impulsada por la Investigacion para la Economia NewSpace.' },
+    tagline: { 
+      en: 'High-impact engineering and scalable digital solutions. Mexican startup driving technological sovereignty from Earth to orbit.', 
+      es: 'Ingeniería de alto impacto y soluciones digitales escalables. Startup mexicana impulsando la soberanía tecnológica desde la Tierra hasta la órbita.' 
+    },
+    email: { en: 'Direct Channel: contacto@codeaerospace.com', es: 'Canal Directo: contacto@codeaerospace.com' },
     services: { en: 'Services', es: 'Servicios' },
-    groundStations: { en: 'Ground Stations', es: 'Estaciones Terrenas' },
-    cybersecurity: { en: 'Cybersecurity', es: 'Ciberseguridad' },
-    missionAnalytics: { en: 'Mission Analytics', es: 'Analitica de Mision' },
-    orbitalConsulting: { en: 'Orbital Consulting', es: 'Consultoria Orbital' },
+    web: { en: 'Web Platforms', es: 'Plataformas Web' },
+    ai: { en: 'AI Automation', es: 'Automatización IA' },
+    mobile: { en: 'Mobile Apps', es: 'Apps Móviles' },
+    engineering: { en: 'Project Engineering', es: 'Ingeniería de Proyectos' },
     company: { en: 'Company', es: 'Empresa' },
-    methodology: { en: 'Methodology', es: 'Metodologia' },
+    methodology: { en: 'Methodology', es: 'Metodología' },
     resources: { en: 'Resources', es: 'Recursos' },
     rights: { en: 'All rights reserved.', es: 'Todos los derechos reservados.' },
-    privacy: { en: 'Privacy Policy', es: 'Politica de Privacidad' },
-    terms: { en: 'Terms of Service', es: 'Terminos de Servicio' },
+    privacy: { en: 'Privacy Policy', es: 'Política de Privacidad' },
+    terms: { en: 'Terms of Service', es: 'Términos de Servicio' },
     close: { en: 'Close', es: 'Cerrar' },
   },
 
@@ -316,23 +323,23 @@ const translations = {
     step5: {
       title: { en: 'Support', es: 'Soporte' },
       desc: {
-        en: 'Continuous monthly maintenance, updates, hosting, and technical support included.',
-        es: 'Mantenimiento mensual continuo, actualizaciones, hosting y soporte técnico incluido.',
+        en: 'On-demand system updates, security patches, and technical support for $600 MXN.',
+        es: 'Actualizaciones de sistema bajo demanda, parches de seguridad y soporte por $600 MXN.',
       },
     },
     packages: { en: 'Packages', es: 'Paquetes' },
-    monthly: { en: '/mo', es: '/mes' },
-    oneTime: { en: 'one-time', es: 'único pago' },
-    maintenance: { en: 'Monthly Maintenance', es: 'Mantenimiento Mensual' },
+    maintenance: { en: 'Update Cost', es: 'Costo por Actualización' },
     maintenanceDesc: {
-      en: 'Hosting, domain, updates, backups, and technical support.',
-      es: 'Hosting, dominio, actualizaciones, respaldos y soporte técnico.',
+      en: 'System optimization, security patches, and content updates.',
+      es: 'Optimización de sistema, parches de seguridad y cambios de contenido.',
     },
+    updatePrice: { en: '$600', es: '$600' },
+    updateSuffix: { en: 'per request', es: 'por actualización solicitada' },
     popular: { en: 'Most Popular', es: 'Más Popular' },
     cta: { en: 'Get Started', es: 'Comenzar' },
     basic: {
       name: { en: 'Starter', es: 'Básico' },
-      price: { en: '$1,500', es: '$1,500' },
+      price: { en: '$1,800', es: '$1,800' },
       f1: { en: 'Product/service catalog', es: 'Catálogo de productos/servicios' },
       f2: { en: 'Business info page', es: 'Página informativa del negocio' },
       f3: { en: 'WhatsApp contact button', es: 'Botón de contacto por WhatsApp' },
@@ -341,7 +348,7 @@ const translations = {
     },
     pro: {
       name: { en: 'Professional', es: 'Profesional' },
-      price: { en: '$2,000', es: '$2,000' },
+      price: { en: '$2,500', es: '$2,500' },
       f1: { en: 'Everything in Starter', es: 'Todo lo del Básico' },
       f2: { en: 'Inventory management', es: 'Control de inventario' },
       f3: { en: 'Sales & expense tracking', es: 'Registro de ventas y gastos' },
@@ -350,7 +357,7 @@ const translations = {
     },
     premium: {
       name: { en: 'Premium', es: 'Premium' },
-      price: { en: '$3,000', es: '$3,000' },
+      price: { en: '$3,500', es: '$3,500' },
       f1: { en: 'Everything in Professional', es: 'Todo lo del Profesional' },
       f2: { en: 'IoT device integration', es: 'Integración con dispositivos IoT' },
       f3: { en: 'Attendance & shift control', es: 'Control de asistencia y turnos' },
@@ -368,6 +375,36 @@ const translations = {
     },
     demoLabel: { en: 'See Live Demo', es: 'Ver Demo en Vivo' },
     demoDesc: { en: 'Check out a real example of what we build for small businesses', es: 'Mira un ejemplo real de lo que construimos para micronegocios' },
+    continuity: {
+      title: { en: 'Continuity Guarantee', es: 'Garantía de Continuidad' },
+      desc: { 
+        en: 'Your application will never stop working; support is available on demand for only $600 MXN.',
+        es: 'Tu aplicación nunca dejará de funcionar; el soporte está disponible bajo demanda por solo $600 MXN.'
+      }
+    },
+    faq: {
+      title: { en: 'Frequently Asked Questions', es: 'Preguntas Frecuentes' },
+      q1: { es: "¿Cómo funciona el mantenimiento?", en: "How does maintenance work?" },
+      a1: { 
+        en: "We have evolved to a 'Pay for Value' model. We've eliminated forced monthly fees; now you only invest $600 MXN when you decide to update your system or content. This ensures your budget is used efficiently without long-term commitments.", 
+        es: "Hemos evolucionado a un modelo de 'Pago por Valor'. Eliminamos las mensualidades forzosas; ahora solo inviertes $600 MXN cuando decidas actualizar tu sistema o contenido. Esto garantiza que tu presupuesto se use de forma eficiente sin compromisos a largo plazo." 
+      },
+      q2: { es: "¿Qué incluyen las actualizaciones de $600?", en: "What do the $600 updates include?" },
+      a2: { es: "Cubre optimización de rendimiento, parches de seguridad, actualización de menús/precios y soporte técnico preventivo para asegurar la continuidad de tu app.", en: "It covers performance optimization, security patches, menu/price updates, and preventive technical support to ensure your app's continuity." },
+      q3: { es: "¿Cuánto tiempo toma la entrega?", en: "How long is the delivery time?" },
+      a3: { es: "Nuestras MicroApps están diseñadas para un despliegue rápido, generalmente entre 3 y 5 días hábiles después de recibir tu información.", en: "Our MicroApps are designed for rapid deployment, usually between 3 and 5 business days after receiving your information." },
+      cta: { en: "Still have questions?", es: "¿Aún tengo dudas?" }
+    },
+    email: {
+      subject: { 
+        es: "[Co.De Aerospace] Cotización: Paquete {name} MicroApp", 
+        en: "[Co.De Aerospace] Quote: {name} MicroApp Package" 
+      },
+      body: {
+        es: "Hola equipo de Co.De Aerospace,\n\nMe interesa contratar el Paquete {name} para mi negocio. Entiendo que el costo por actualización es de $600 MXN y me gustaría iniciar el proceso.\n\nSaludos.",
+        en: "Hello Co.De Aerospace team,\n\nI am interested in the {name} Package for my business. I understand that the cost per update is $600 MXN and I would like to start the process.\n\nBest regards."
+      }
+    }
   },
 
   // Vet Demo

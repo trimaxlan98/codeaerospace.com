@@ -86,7 +86,8 @@ const ServiceCard = ({ id, icon: Icon, title, description, learnMore, delay, onO
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay }}
     whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(0,217,255,0.15)' }}
-    className="relative bg-gradient-to-br from-[#1a2847] to-[#0a0e27] p-8 rounded-xl border border-[#2a3c5f] hover:border-[#00d9ff] transition-all duration-300 group h-full flex flex-col overflow-hidden will-change-transform"
+    onClick={onOpen}
+    className="relative bg-gradient-to-br from-[#1a2847] to-[#0a0e27] p-8 rounded-xl border border-[#2a3c5f] hover:border-[#00d9ff] transition-all duration-300 group h-full flex flex-col overflow-hidden will-change-transform cursor-pointer"
   >
     {/* Inner Border Frame */}
     <div className="absolute inset-1 border border-[#00d9ff]/5 rounded-lg pointer-events-none group-hover:border-[#00d9ff]/20 transition-colors" />
@@ -115,7 +116,6 @@ const ServiceCard = ({ id, icon: Icon, title, description, learnMore, delay, onO
 
     <div className="mt-8 pt-6 border-t border-[#2a3c5f] group-hover:border-[#00d9ff]/30 transition-colors">
       <button 
-        onClick={onOpen}
         className="text-[#00d9ff] text-sm font-mono font-bold uppercase tracking-widest flex items-center gap-3 group/btn"
       >
         <span className="animate-pulse">_</span> {t('services.ui.command')}

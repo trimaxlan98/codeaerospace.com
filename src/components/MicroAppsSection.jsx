@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Palette, Code2, Rocket, Headphones, ShoppingBag, BarChart3, Cpu, Check, Zap, ExternalLink, PawPrint, Pill } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -37,9 +37,11 @@ const StepCard = ({ index, icon: Icon, title, description, delay }) => (
   </motion.div>
 );
 
-const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLabel, cta, delay, onCta, isQuote }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
+const PricingCard = ({ name, price, features, isPopular, popularLabel, cta, delay, onCta, isQuote, updateSuffix }) => {
+  const { t } = useLanguage();
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay }}
@@ -67,7 +69,7 @@ const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLa
       {!isQuote && (
         <>
           <span className="text-[#c0c0c0] text-sm ml-1">MXN</span>
-          <p className="text-[#c0c0c0] text-xs mt-1">{oneTimeLabel}</p>
+          <p className="text-[#c0c0c0] text-xs mt-1">+{t('microapps.updatePrice')} {updateSuffix}</p>
         </>
       )}
       {isQuote && <p className="text-[#c0c0c0] text-xs mt-1">&nbsp;</p>}
@@ -91,10 +93,12 @@ const PricingCard = ({ name, price, features, isPopular, popularLabel, oneTimeLa
       {cta}
     </button>
   </motion.div>
-);
+  );
+};
 
 const MicroAppsSection = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const steps = [
     { icon: stepIcons[0], title: t('microapps.step1.title'), description: t('microapps.step1.desc') },
@@ -110,18 +114,21 @@ const MicroAppsSection = () => {
       price: t('microapps.basic.price'),
       features: [t('microapps.basic.f1'), t('microapps.basic.f2'), t('microapps.basic.f3'), t('microapps.basic.f4'), t('microapps.basic.f5')],
       isPopular: false,
+      subject: 'Starter MicroApp Package'
     },
     {
       name: t('microapps.pro.name'),
       price: t('microapps.pro.price'),
       features: [t('microapps.pro.f1'), t('microapps.pro.f2'), t('microapps.pro.f3'), t('microapps.pro.f4'), t('microapps.pro.f5')],
       isPopular: true,
+      subject: 'Professional MicroApp Package'
     },
     {
       name: t('microapps.premium.name'),
       price: t('microapps.premium.price'),
       features: [t('microapps.premium.f1'), t('microapps.premium.f2'), t('microapps.premium.f3'), t('microapps.premium.f4'), t('microapps.premium.f5')],
       isPopular: false,
+      subject: 'Premium MicroApp Package'
     },
     {
       name: t('microapps.enterprise.name'),
@@ -129,7 +136,8 @@ const MicroAppsSection = () => {
       features: [t('microapps.enterprise.f1'), t('microapps.enterprise.f2'), t('microapps.enterprise.f3'), t('microapps.enterprise.f4'), t('microapps.enterprise.f5')],
       isPopular: false,
       isQuote: true,
-      action: 'email'
+      action: 'email',
+      subject: 'Custom/Enterprise Systems Inquiry'
     },
   ];
 
@@ -137,15 +145,13 @@ const MicroAppsSection = () => {
     const el = document.getElementById('contact');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/contact');
     }
   };
 
-  const handleCta = (pkg) => {
-    if (pkg.action === 'email') {
-      window.location.href = 'mailto:contacto@codeaerospace.com?subject=Inquiry: Custom/Enterprise Systems';
-    } else {
-      scrollToContact();
-    }
+  const handleCta = () => {
+    navigate('/contact');
   };
 
   return (
@@ -294,34 +300,30 @@ const MicroAppsSection = () => {
                 key={i}
                 {...pkg}
                 popularLabel={t('microapps.popular')}
-                oneTimeLabel={t('microapps.oneTime')}
+                updateSuffix={t('microapps.updateSuffix')}
                 cta={t('microapps.cta')}
                 delay={i * 0.15}
-                onCta={() => handleCta(pkg)}
+                onCta={handleCta}
               />
             ))}
           </div>
         </div>
 
-        {/* Monthly Maintenance Banner */}
+        {/* Continuity Guarantee Banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a2847] to-[#0a0e27] border border-[#2a3c5f] p-8 text-center"
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a2847] to-[#0a0e27] border border-[#00d9ff]/30 p-8 text-center"
         >
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMGQ5ZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
           <div className="relative z-10">
             <div className="flex items-center justify-center gap-3 mb-3">
-              <Headphones className="w-6 h-6 text-[#00d9ff]" />
-              <h4 className="text-xl font-bold text-white">{t('microapps.maintenance')}</h4>
+              <Check className="w-6 h-6 text-[#00d9ff]" />
+              <h4 className="text-xl font-bold text-white">{t('microapps.continuity.title')}</h4>
             </div>
-            <div className="mb-3">
-              <span className="text-3xl font-extrabold text-[#00d9ff]">$500</span>
-              <span className="text-[#c0c0c0] text-sm ml-1">MXN{t('microapps.monthly')}</span>
-            </div>
-            <p className="text-[#c0c0c0] text-sm max-w-md mx-auto">{t('microapps.maintenanceDesc')}</p>
+            <p className="text-[#c0c0c0] text-lg max-w-2xl mx-auto">{t('microapps.continuity.desc')}</p>
           </div>
         </motion.div>
       </div>
