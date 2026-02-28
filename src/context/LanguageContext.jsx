@@ -410,64 +410,25 @@ const translations = {
 
   // Impact & Training
   impact: {
-    title: { es: "Trayectoria e Impacto", en: "Trajectory & Impact" },
-    subtitle: { 
-      es: "Liderazgo técnico y compromiso académico en la frontera de la ingeniería aeroespacial.", 
-      en: "Technical leadership and academic commitment at the frontier of aerospace engineering." 
-    },
-    gallery_title: { es: "Registro de Misión", en: "Mission Log" },
-    gallery_desc: { es: "Documentando nuestra evolución técnica y el impacto en la comunidad científica.", en: "Documenting our technical evolution and scientific community impact." },
-    workshops_title: { es: "TALLERES", en: "Workshops" },
-    consulting_title: { es: "CONSULTORÍA", en: "Consulting" },
-    consulting_desc: { es: "Ingeniería de vanguardia y asesoría técnica especializada para desafíos de misión crítica en entornos de alta complejidad.", en: "Cutting-edge engineering and specialized technical advisory for mission-critical challenges in highly complex environments." },
-    consulting_cta: { es: "Solicitar Asesoría", en: "Request Advisory" },
+    title: { es: "Trayectoria e Impacto", en: "Impact & Trajectory" },
+    subtitle: { es: "Liderazgo técnico y formación académica de alto nivel.", en: "High-level technical leadership and academic training." },
+    gallery_title: { es: "Galería de Misión", en: "Mission Gallery" },
+    gallery_desc: { es: "Evidencia de nuestra participación en foros internacionales y académicos.", en: "Evidence of our participation in international and academic forums." },
     metrics: {
-      hours: { es: "500+ Horas de Formación", en: "500+ Training Hours" },
-      engineers: { es: "150+ Especialistas Formados", en: "150+ Specialists Trained" },
-      conferences: { es: "10+ Foros Internacionales", en: "10+ International Forums" },
+      hours: { es: "Horas de Capacitación", en: "Training Hours" },
+      engineers: { es: "Ingenieros Formados", en: "Engineers Trained" },
+      conferences: { es: "Conferencias", en: "Conferences" }
     },
-    gallery: {
-      img1: { es: "NASA Space Apps", en: "NASA Space Apps" },
-      img2: { es: "Sistemas de Ingeniería", en: "Engineering Systems" },
-      img3: { es: "Conferencia WITCOM", en: "WITCOM Conference" },
-      img4: { es: "Diseño Satelital", en: "Satellite Design" },
-      img5: { es: "Ponencia IPN", en: "IPN Lecture" },
-      img6: { es: "Mentoría NASA", en: "NASA Mentorship" },
-      img7: { es: "Desarrollo NASA", en: "NASA Development" },
-      img8: { es: "Investigación 2025", en: "Research 2025" },
-      img9: { es: "Prototipo APT", en: "APT Prototype" },
-      img10: { es: "Panel WITCOM", en: "WITCOM Panel" },
-      img11: { es: "Networking WITCOM", en: "WITCOM Networking" },
-      img12: { es: "Clausura WITCOM", en: "WITCOM Closing" },
-    },
-    events: {
-      witcom: { es: "WITCOM 2025: Ponencia Internacional", en: "WITCOM 2025: International Speaker" },
-      nasa: { es: "NASA Space Apps: Mentoría y Desarrollo", en: "NASA Space Apps: Mentorship & Development" },
-      ipn: { es: "Ponencias IPN: Formando Futuros Ingenieros", en: "IPN Lectures: Training Future Engineers" },
-    },
+    workshops_title: { es: "Formación Especializada", en: "Specialized Training" },
     workshops: {
-      ai: {
-        title: { es: "IA Agéntica con LangChain", en: "Agentic AI with LangChain" },
-        desc: { es: "Especialización en orquestación de agentes con LangChain y automatización de flujos técnicos.", en: "Specialization in agent orchestration with LangChain and technical workflow automation." },
-      },
-      control: {
-        title: { es: "Control de Sistemas APT", en: "APT Systems Control" },
-        desc: { es: "Diseño de algoritmos para rastreo satelital y control de precisión en tiempo real.", en: "Algorithm design for satellite tracking and real-time precision control." },
-      },
-      mechanical: {
-        title: { es: "Ingeniería con SolidWorks & FEA", en: "Engineering with SolidWorks & FEA" },
-        desc: { es: "Modelado avanzado en SolidWorks y análisis por elementos finitos (FEA) estructural.", en: "Advanced SolidWorks modeling and structural Finite Element Analysis (FEA)." },
-      },
       enroll: { es: "Inscribirse", en: "Enroll Now" },
+      ai: { title: { es: "IA Agéntica", en: "Agentic AI" }, desc: { es: "Automatización avanzada con LangChain.", en: "Advanced automation with LangChain." } },
+      control: { title: { es: "Sistemas APT", en: "APT Systems" }, desc: { es: "Control y rastreo satelital.", en: "Satellite control and tracking." } },
+      mechanical: { title: { es: "Ingeniería FEA", en: "FEA Engineering" }, desc: { es: "Análisis estructural y SolidWorks.", en: "Structural analysis and SolidWorks." } }
     },
-    email: {
-      consulting_subject: { es: "[Consultoría] Solicitud de Asesoría Técnica", en: "[Consulting] Technical Advisory Request" },
-      consulting_body: { 
-        es: "Hola equipo de Co.De Aerospace,\n\nMe gustaría solicitar una consultoría estratégica para el siguiente proyecto:\n\n[Describe tu proyecto aquí]\n\nSaludos.",
-        en: "Hello Co.De Aerospace team,\n\nI would like to request a strategic consultancy for the following project:\n\n[Describe your project here]\n\nBest regards."
-      },
-      workshop_subject: { es: "[Capacitación] Interés en Taller: {name}", en: "[Training] Interest in Workshop: {name}" },
-    }
+    consulting_title: { es: "Consultoría Estratégica", en: "Strategic Consulting" },
+    consulting_desc: { es: "Asesoría técnica para desafíos industriales complejos.", en: "Technical advisory for complex industrial challenges." },
+    consulting_cta: { es: "Solicitar Asesoría", en: "Request Advisory" }
   },
 
   // Vet Demo

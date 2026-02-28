@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useSpring, useTransform, animate } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useSpring, useTransform, animate, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { Award, Users, Globe, BookOpen, Briefcase, Send, ChevronRight, ChevronLeft } from 'lucide-react';
 
 const AnimatedNumber = ({ value, suffix = "" }) => {
   const ref = useRef(null);
-  const numericValue = parseInt(value.replace(/\D/g, ''));
+  const numericValue = value ? parseInt(value.toString().replace(/\D/g, '')) : 0;
 
   useEffect(() => {
     const node = ref.current;
@@ -56,7 +56,7 @@ const CourseCard = ({ title, desc, delay }) => {
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-[#00d9ff]/5 -mr-16 -mt-16 rounded-full blur-3xl group-hover:bg-[#00d9ff]/10 transition-colors" />
       <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tight">{title}</h3>
-      <p className="text-[#c0c0c0] text-lg mb-8 flex-grow leading-relaxed font-light">{desc}</p>
+      <p className="text-slate-300 text-lg mb-8 flex-grow leading-relaxed font-light">{desc}</p>
       <button className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#00d9ff] text-[#0a0e27] font-black rounded-lg border-2 border-[#00d9ff] hover:bg-transparent hover:text-[#00d9ff] transition-all duration-300 uppercase tracking-widest text-sm shadow-[0_0_15px_rgba(0,217,255,0.3)]">
         {t('impact.workshops.enroll')} <ChevronRight className="w-4 h-4" />
       </button>
@@ -112,15 +112,18 @@ const GallerySection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="relative group max-w-5xl mx-auto shadow-[0_0_50px_rgba(0,217,255,0.15)] rounded-2xl overflow-hidden border border-[#00d9ff]/20">
           <div className="overflow-hidden aspect-video relative bg-[#1a2847]">
-            <motion.img
-              key={currentIndex}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              src={images[currentIndex].url}
-              alt={images[currentIndex].title}
-              className="w-full h-full object-cover"
-            />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentIndex}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                src={images[currentIndex].url}
+                alt={images[currentIndex].title}
+                className="w-full h-full object-cover"
+              />
+            </AnimatePresence>
             
             {/* Overlay Gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8">
@@ -194,7 +197,7 @@ const ImpactPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <h1 className="text-5xl md:text-7xl font-black tracking-[0.1em] uppercase leading-tight text-transparent [-webkit-text-stroke:1px_rgba(0,217,255,0.6)] drop-shadow-[0_0_15px_rgba(0,217,255,0.2)] mb-6">
+            <h1 className="text-5xl md:text-7xl font-black tracking-[0.1em] uppercase leading-tight text-transparent [-webkit-text-stroke:1px_rgba(0,217,255,0.6)] drop-shadow-[0_0_15px_rgba(0,217,255,0.2)] mb-6 mt-10">
               {t('impact.title')}
             </h1>
             <motion.p 
