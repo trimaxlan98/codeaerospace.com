@@ -249,8 +249,8 @@ const translations = {
   // Footer
   footer: {
     tagline: { 
-      en: 'High-impact engineering and scalable digital solutions. Mexican startup driving technological sovereignty from Earth to orbit.', 
-      es: 'Ingeniería de alto impacto y soluciones digitales escalables. Startup mexicana impulsando la soberanía tecnológica desde la Tierra hasta la órbita.' 
+      en: 'Advanced engineering ecosystem and high-impact technical training.', 
+      es: 'Ecosistema de ingeniería avanzada y formación técnica de alto impacto.' 
     },
     email: { en: 'Direct Channel: contacto@codeaerospace.com', es: 'Canal Directo: contacto@codeaerospace.com' },
     services: { en: 'Services', es: 'Servicios' },
@@ -412,19 +412,33 @@ const translations = {
   impact: {
     title: { es: "Trayectoria e Impacto", en: "Trajectory & Impact" },
     subtitle: { 
-      es: "Nuestra presencia activa en foros internacionales y académicos respalda nuestra capacidad técnica y compromiso con la excelencia.", 
-      en: "Our active presence in international and academic forums backs our technical capability and commitment to excellence." 
+      es: "Liderazgo técnico y compromiso académico en la frontera de la ingeniería aeroespacial.", 
+      en: "Technical leadership and academic commitment at the frontier of aerospace engineering." 
     },
-    gallery_title: { es: "Galería de Misión", en: "Mission Gallery" },
-    gallery_desc: { es: "Visualizando nuestro compromiso con la innovación y la formación.", en: "Visualizing our commitment to innovation and training." },
-    workshops_title: { es: "Formación Especializada", en: "Specialized Training" },
-    consulting_title: { es: "Consultoría Estratégica", en: "Strategic Consulting" },
-    consulting_desc: { es: "Asesoría técnica de alto nivel para desafíos de misión crítica en los sectores industrial y aeroespacial.", en: "High-level technical advisory for mission-critical challenges in industrial and aerospace sectors." },
+    gallery_title: { es: "Registro de Misión", en: "Mission Log" },
+    gallery_desc: { es: "Documentando nuestra evolución técnica y el impacto en la comunidad científica.", en: "Documenting our technical evolution and scientific community impact." },
+    workshops_title: { es: "TALLERES", en: "Workshops" },
+    consulting_title: { es: "CONSULTORÍA", en: "Consulting" },
+    consulting_desc: { es: "Ingeniería de vanguardia y asesoría técnica especializada para desafíos de misión crítica en entornos de alta complejidad.", en: "Cutting-edge engineering and specialized technical advisory for mission-critical challenges in highly complex environments." },
     consulting_cta: { es: "Solicitar Asesoría", en: "Request Advisory" },
     metrics: {
-      hours: { es: "500+ Horas de Capacitación", en: "500+ Training Hours" },
-      engineers: { es: "150+ Ingenieros Formados", en: "150+ Engineers Trained" },
-      conferences: { es: "10+ Conferencias Internacionales", en: "10+ International Conferences" },
+      hours: { es: "500+ Horas de Formación", en: "500+ Training Hours" },
+      engineers: { es: "150+ Especialistas Formados", en: "150+ Specialists Trained" },
+      conferences: { es: "10+ Foros Internacionales", en: "10+ International Forums" },
+    },
+    gallery: {
+      img1: { es: "NASA Space Apps", en: "NASA Space Apps" },
+      img2: { es: "Sistemas de Ingeniería", en: "Engineering Systems" },
+      img3: { es: "Conferencia WITCOM", en: "WITCOM Conference" },
+      img4: { es: "Diseño Satelital", en: "Satellite Design" },
+      img5: { es: "Ponencia IPN", en: "IPN Lecture" },
+      img6: { es: "Mentoría NASA", en: "NASA Mentorship" },
+      img7: { es: "Desarrollo NASA", en: "NASA Development" },
+      img8: { es: "Investigación 2025", en: "Research 2025" },
+      img9: { es: "Prototipo APT", en: "APT Prototype" },
+      img10: { es: "Panel WITCOM", en: "WITCOM Panel" },
+      img11: { es: "Networking WITCOM", en: "WITCOM Networking" },
+      img12: { es: "Clausura WITCOM", en: "WITCOM Closing" },
     },
     events: {
       witcom: { es: "WITCOM 2025: Ponencia Internacional", en: "WITCOM 2025: International Speaker" },
