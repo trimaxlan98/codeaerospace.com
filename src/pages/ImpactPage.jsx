@@ -64,34 +64,29 @@ const CourseCard = ({ title, desc, delay }) => {
 const GallerySection = () => {
   const { t } = useLanguage();
   
-  // Actual images uploaded to public/gallery
-  const galleryFiles = [
-    "20250925_120329.jpg",
-    "20251028_132242.jpg",
-    "20251105_134338.jpg",
-    "20251127_154203.jpg",
-    "20260116_112757.jpg",
-    "IMG-20240123-WA0024.jpg",
-    "IMG-20241015-WA0065.jpg",
-    "IMG-20250311-WA0014.jpg",
-    "IMG-20250516-WA0013.jpg",
-    "IMG-20250925-WA0054.jpg",
-    "IMG-20250925-WA0083(1)(1).jpg",
-    "IMG-20250925-WA0084.jpg"
-  ];
+  // Mapeo manual de nombres para cada archivo en public/gallery/
+  // Puedes cambiar el texto a la derecha por el nombre real de la misión.
+  const imageMapping = {
+    "NASAAPPS_YURI.jpeg": "NASA Space Apps: Sesión de Apertura",
+    "20251028_132242.jpg": "Evento Técnico: Demostración de Sistemas",
+    "20251105_134338.jpg": "Misión WITCOM: Sesión de Apertura",
+    "20251127_154203.jpg": "Taller de Ingeniería: Diseño de Satélites",
+    "20260116_112757.jpg": "Ponencia IPN: Futuros Ingenieros",
+    "IMG-20240123-WA0024.jpg": "NASA Space Apps: Mentoría Inicial",
+    "IMG-20241015-WA0065.jpg": "NASA Space Apps: Desarrollo de Proyectos",
+    "IMG-20250311-WA0014.jpg": "Reunión de Investigación: Avances 2025",
+    "IMG-20250516-WA0013.jpg": "Presentación de Prototipo: Sistema APT",
+    "IMG-20250925-WA0054.jpg": "Galería WITCOM: Panel de Expertos",
+    "IMG-20250925-WA0083(1)(1).jpg": "Galería WITCOM: Networking Internacional",
+    "IMG-20250925-WA0084.jpg": "Galería WITCOM: Clausura del Evento"
+  };
 
-  const images = galleryFiles.map((file, index) => {
-    // Map specific files to titles if possible, otherwise use a generic title or sequence
-    let title = t('impact.gallery_title');
-    if (file.includes("20250925")) title = t('impact.events.witcom');
-    if (file.includes("20241015")) title = t('impact.events.nasa');
-    if (file.includes("20260116")) title = t('impact.events.ipn');
-    
-    return {
-      url: `/gallery/${file}`,
-      title: `${title} - ${index + 1}`
-    };
-  });
+  const galleryFiles = Object.keys(imageMapping);
+
+  const images = galleryFiles.map((file) => ({
+    url: `/gallery/${file}`,
+    title: imageMapping[file] || t('impact.gallery_title')
+  }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
