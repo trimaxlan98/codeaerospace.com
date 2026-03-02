@@ -40,7 +40,7 @@ const MetricCard = ({ icon: Icon, value, label, delay }) => (
     <div className="text-6xl font-black text-white mb-3 tracking-tighter">
       <AnimatedNumber value={value} suffix="+" />
     </div>
-    <div className="text-[#c0c0c0] text-sm uppercase tracking-[0.2em] font-black">{label}</div>
+    <div className="text-[#c0c0c0] text-sm uppercase tracking-wide font-black">{label}</div>
   </motion.div>
 );
 
@@ -56,7 +56,7 @@ const CourseCard = ({ title, desc, delay }) => {
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-[#00d9ff]/5 -mr-16 -mt-16 rounded-full blur-3xl group-hover:bg-[#00d9ff]/10 transition-colors" />
       <h3 className="text-2xl font-black text-white mb-4 uppercase tracking-tight">{title}</h3>
-      <p className="text-slate-300 text-lg mb-8 flex-grow leading-relaxed font-light">{desc}</p>
+      <p className="text-slate-300 text-lg mb-8 flex-grow leading-relaxed font-normal opacity-90 tracking-wide">{desc}</p>
       <button className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#00d9ff] text-[#0a0e27] font-black rounded-lg border-2 border-[#00d9ff] hover:bg-transparent hover:text-[#00d9ff] transition-all duration-300 uppercase tracking-widest text-sm shadow-[0_0_15px_rgba(0,217,255,0.3)]">
         {t('impact.workshops.enroll')} <ChevronRight className="w-4 h-4" />
       </button>
@@ -95,9 +95,9 @@ const GallerySection = () => {
   };
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 4000);
+    const timer = setInterval(nextSlide, 8000);
     const progressTimer = setInterval(() => {
-      setProgress((prev) => Math.min(prev + (100 / 40), 100));
+      setProgress((prev) => Math.min(prev + (100 / 80), 100));
     }, 100);
 
     return () => {
@@ -171,6 +171,20 @@ const GallerySection = () => {
   );
 };
 
+const LogoRibbon = () => (
+  <div className="w-full py-12 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden mt-12">
+    <div className="max-w-7xl mx-auto px-6">
+      <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+        <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase border border-white/20 px-4 py-1 rounded italic">IPN</div>
+        <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex items-center gap-3">
+          <Globe className="w-6 h-6 text-[#00d9ff]" /> NASA Space Apps
+        </div>
+        <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase border-b-2 border-[#00d9ff]/40 px-2">WITCOM</div>
+      </div>
+    </div>
+  </div>
+);
+
 const ImpactPage = () => {
   const { t } = useLanguage();
 
@@ -201,9 +215,9 @@ const ImpactPage = () => {
             </h1>
             <motion.p 
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
+              animate={{ opacity: 0.9 }}
               transition={{ delay: 0.5, duration: 1 }}
-              className="text-lg md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-light tracking-wide px-6"
+              className="text-lg md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-normal tracking-wide px-6 opacity-90"
             >
               {t('impact.subtitle')}
             </motion.p>
@@ -213,12 +227,22 @@ const ImpactPage = () => {
         {/* Gallery Integrated into Hero Flow */}
         <div className="w-full relative z-10 -mt-4">
           <GallerySection />
+          <LogoRibbon />
         </div>
       </section>
 
       {/* Metrics Section (Stats) with Scroll Reveal */}
       <section className="py-24 px-6 relative border-y border-[#00d9ff]/10 bg-[#0a0e27]/40 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto relative">
+          {/* Status Nominal Window */}
+          <div className="absolute -top-16 right-0 flex items-center gap-2 bg-[#050816]/60 backdrop-blur-md border border-[#00d9ff]/20 px-4 py-2 rounded-lg z-10 shadow-[0_0_20px_rgba(0,217,255,0.1)]">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-[10px] md:text-xs uppercase font-bold text-green-400 tracking-widest font-mono">Status: Nominal</span>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <MetricCard icon={BookOpen} value="500+" label={t('impact.metrics.hours')} delay={0.1} />
             <MetricCard icon={Users} value="150+" label={t('impact.metrics.engineers')} delay={0.2} />
@@ -251,17 +275,17 @@ const ImpactPage = () => {
 
       {/* Consulting Block */}
       <section className="py-48 px-6 bg-[#050816]/80 relative overflow-hidden border-t border-[#00d9ff]/10">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="relative group overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#00d9ff]/10 to-transparent border border-[#00d9ff]/20 p-16 md:p-32 text-center shadow-[0_0_100px_rgba(0,217,255,0.05)] backdrop-blur-xl">
+        <div className="max-w-3xl mx-auto relative z-10">
+          <div className="relative group overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#00d9ff]/10 to-transparent border border-[#00d9ff]/20 p-10 md:p-14 text-center shadow-[0_0_100px_rgba(0,217,255,0.05)] backdrop-blur-xl">
             <div className="absolute top-0 right-0 p-8 opacity-5">
-              <Briefcase size={400} className="text-[#00d9ff]" />
+              <Briefcase size={120} className="text-[#00d9ff]" />
             </div>
             <div className="relative z-10">
               <motion.h2 
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="text-4xl md:text-7xl font-black text-white/90 mb-10 tracking-[0.2em] uppercase"
+                className="text-2xl md:text-4xl font-black text-white/90 mb-10 tracking-[0.2em] uppercase"
               >
                 {t('impact.consulting_title')}
               </motion.h2>
@@ -269,7 +293,7 @@ const ImpactPage = () => {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 0.7 }}
                 viewport={{ once: true }}
-                className="text-white/70 text-2xl md:text-3xl mb-16 max-w-5xl mx-auto leading-relaxed font-light"
+                className="text-white/70 text-xl md:text-2xl mb-16 max-w-2xl mx-auto leading-relaxed font-light"
               >
                 {t('impact.consulting_desc')}
               </motion.p>
