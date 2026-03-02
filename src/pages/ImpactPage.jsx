@@ -68,18 +68,17 @@ const GallerySection = () => {
   const { t } = useLanguage();
   
   const images = [
-    { url: "/gallery/NASAAPPS_YURI.jpeg", title: t('impact.gallery.img1') },
-    { url: "/gallery/20251028_132242.jpg", title: t('impact.gallery.img2') },
-    { url: "/gallery/20251105_134338.jpg", title: t('impact.gallery.img3') },
-    { url: "/gallery/20251127_154203.jpg", title: t('impact.gallery.img4') },
-    { url: "/gallery/20260116_112757.jpg", title: t('impact.gallery.img5') },
-    { url: "/gallery/IMG-20240123-WA0024.jpg", title: t('impact.gallery.img6') },
-    { url: "/gallery/IMG-20241015-WA0065.jpg", title: t('impact.gallery.img7') },
-    { url: "/gallery/IMG-20250311-WA0014.jpg", title: t('impact.gallery.img8') },
-    { url: "/gallery/IMG-20250516-WA0013.jpg", title: t('impact.gallery.img9') },
-    { url: "/gallery/IMG-20250925-WA0054.jpg", title: t('impact.gallery.img10') },
-    { url: "/gallery/IMG-20250925-WA0083(1)(1).jpg", title: t('impact.gallery.img11') },
-    { url: "/gallery/IMG-20250925-WA0084.jpg", title: t('impact.gallery.img12') }
+    { url: "/gallery/NASAAPPS_YURI.jpeg", title: t('Organización Nasa Space Apps Boca del Río') },
+    { url: "/gallery/20251028_132242.jpg", title: t('Conferencias de Ciberseguridad Espacial') },
+    { url: "/gallery/20251105_134338.jpg", title: t('Participación en Congresos Nacionales') },
+    { url: "/gallery/20251127_154203.jpg", title: t('Divulgación Cietífica en Instituciones') },
+    { url: "/gallery/20260116_112757.jpg", title: t('Defensa de Investigaciones Científicas') },
+    { url: "/gallery/IMG-20240123-WA0024.jpg", title: t('Entrevistas Televisivas') },
+    { url: "/gallery/IMG-20241015-WA0065.jpg", title: t('Participación en Congresos Internacionales') },
+    { url: "/gallery/IMG-20250311-WA0014.jpg", title: t('Reunieones con Instituciones Gubernamentales') },
+    { url: "/gallery/IMG-20250516-WA0013.jpg", title: t('Difusión Científica en Instituciones Públicas') },
+    { url: "/gallery/IMG-20250925-WA0054.jpg", title: t('Conferencias en MexSat') },
+    { url: "/gallery/IMG-20250925-WA0084.jpg", title: t('Apoyo a Estrategías Gubernamentales') }
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
