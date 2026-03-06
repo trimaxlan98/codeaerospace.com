@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useSpring, useTransform, animate, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
-import { Award, Users, Globe, BookOpen, Briefcase, Send, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Award, Users, Globe, BookOpen, Briefcase, Send, ChevronRight, ChevronLeft, ChevronDown } from 'lucide-react';
 
 const AnimatedNumber = ({ value, suffix = "" }) => {
   const ref = useRef(null);
@@ -66,7 +66,7 @@ const CourseCard = ({ title, desc, delay }) => {
 
 const GallerySection = () => {
   const { t } = useLanguage();
-  
+
   const images = [
     { url: "/gallery/NASAAPPS_YURI.jpeg", title: t('Organización Nasa Space Apps Boca del Río') },
     { url: "/gallery/20251028_132242.jpg", title: t('Conferencias de Ciberseguridad Espacial') },
@@ -75,7 +75,7 @@ const GallerySection = () => {
     { url: "/gallery/20260116_112757.jpg", title: t('Defensa de Investigaciones Científicas') },
     { url: "/gallery/IMG-20240123-WA0024.jpg", title: t('Entrevistas Televisivas') },
     { url: "/gallery/IMG-20241015-WA0065.jpg", title: t('Participación en Congresos Internacionales') },
-    { url: "/gallery/IMG-20250311-WA0014.jpg", title: t('Reunieones con Instituciones Gubernamentales') },
+    { url: "/gallery/IMG-20250311-WA0014.jpg", title: t('Reuniones con Instituciones Gubernamentales') },
     { url: "/gallery/IMG-20250516-WA0013.jpg", title: t('Difusión Científica en Instituciones Públicas') },
     { url: "/gallery/IMG-20250925-WA0054.jpg", title: t('Conferencias en MexSat') },
     { url: "/gallery/IMG-20250925-WA0084.jpg", title: t('Apoyo a Estrategías Gubernamentales') }
@@ -99,74 +99,139 @@ const GallerySection = () => {
     const progressTimer = setInterval(() => {
       setProgress((prev) => Math.min(prev + (100 / 80), 100));
     }, 100);
-
     return () => {
       clearInterval(timer);
       clearInterval(progressTimer);
     };
   }, [nextSlide]);
 
+  const heroRef = React.useRef(null);
+
+  const scrollPastHero = () => {
+    if (heroRef.current) {
+      const bottom = heroRef.current.getBoundingClientRect().bottom + window.scrollY;
+      window.scrollTo({ top: bottom, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="py-12 px-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="relative group max-w-5xl mx-auto shadow-[0_0_50px_rgba(0,217,255,0.15)] rounded-2xl overflow-hidden border border-[#00d9ff]/20">
-          <div className="overflow-hidden aspect-video relative bg-[#1a2847]">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentIndex}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                src={images[currentIndex].url}
-                alt={images[currentIndex].title}
-                className="w-full h-full object-cover"
-              />
-            </AnimatePresence>
-            
-            {/* Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-8">
-              <motion.h3 
-                key={`title-${currentIndex}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-white text-xl md:text-3xl font-bold tracking-tight"
-              >
-                {images[currentIndex].title}
-              </motion.h3>
-            </div>
+    <section ref={heroRef} className="w-full relative" style={{ height: `calc(95vh - 80px)`, minHeight: '600px' }}>
 
-            {/* Progress Bar */}
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10">
-              <motion.div 
-                className="h-full bg-[#00d9ff] shadow-[0_0_10px_#00d9ff]"
-                initial={{ width: "0%" }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.1, ease: "linear" }}
-              />
-            </div>
-          </div>
+      {/* ── Slides ── */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex].url}
+          alt={images[currentIndex].title}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.75, ease: 'easeInOut' }}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: 'center center' }}
+        />
+      </AnimatePresence>
 
-          {/* Navigation Buttons */}
-          <button onClick={prevSlide} className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 text-white rounded-full hover:bg-[#00d9ff] hover:text-[#0a0e27] transition-all z-10 opacity-0 group-hover:opacity-100 backdrop-blur-sm">
-            <ChevronLeft size={24} />
-          </button>
-          <button onClick={nextSlide} className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 text-white rounded-full hover:bg-[#00d9ff] hover:text-[#0a0e27] transition-all z-10 opacity-0 group-hover:opacity-100 backdrop-blur-sm">
-            <ChevronRight size={24} />
-          </button>
-        </div>
-        
-        {/* Indicators */}
-        <div className="flex justify-center gap-2 mt-8 flex-wrap">
-          {images.map((_, i) => (
-            <button 
-              key={i} 
-              onClick={() => { setCurrentIndex(i); setProgress(0); }}
-              className={`h-1.5 rounded-full transition-all duration-300 ${currentIndex === i ? 'bg-[#00d9ff] w-8' : 'bg-[#1a2847] w-3 hover:bg-[#00d9ff]/50'}`}
-            />
-          ))}
-        </div>
+      {/* ── Overlay layers ── */}
+      {/* Top vignette — ties image into navbar */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0e27]/70 via-transparent to-transparent pointer-events-none" />
+      {/* Bottom gradient — legibility for title + stats */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0e27]/95 via-[#0a0e27]/40 to-transparent pointer-events-none" />
+
+      {/* ── Thin progress bar (top) ── */}
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-white/5 z-20">
+        <motion.div
+          className="h-full bg-[#00d9ff]/50"
+          initial={{ width: '0%' }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.1, ease: 'linear' }}
+        />
       </div>
+
+      {/* ── Main title + subtitle — bottom-left ── */}
+      <div className="absolute left-8 md:left-16 right-8 md:right-[38%] z-10 bottom-36 md:bottom-44">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease: 'easeOut' }}
+        >
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-serif font-light tracking-[0.08em] uppercase leading-[1.05] text-white mb-3 md:mb-4"
+            style={{ textShadow: '0 0 20px rgba(0,240,255,0.12), 0 0 60px rgba(0,240,255,0.05)' }}
+          >
+            {t('impact.title')}
+          </h1>
+          <p className="text-sm md:text-base text-white/60 font-light tracking-[0.18em] italic">
+            {t('impact.subtitle')}
+          </p>
+        </motion.div>
+      </div>
+
+      {/* ── Slide image caption — bottom strip ── */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 px-8 md:px-16 pb-14 md:pb-16 pt-6"
+        style={{ background: 'linear-gradient(to top, rgba(10,14,39,0.9) 60%, transparent)' }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={`caption-${currentIndex}`}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-white/80 text-base md:text-lg font-light tracking-wide max-w-2xl"
+          >
+            {images[currentIndex].title}
+          </motion.p>
+        </AnimatePresence>
+        {/* Slide counter */}
+        <span className="absolute right-8 md:right-16 bottom-14 md:bottom-16 text-white/30 text-[10px] font-mono tracking-[0.2em]">
+          {String(currentIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* ── Navigation arrows ── */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 md:p-4 bg-black/35 text-white rounded-full hover:bg-[#00d9ff]/15 hover:border-[#00d9ff]/40 border border-white/12 transition-all duration-300 z-20 backdrop-blur-sm"
+      >
+        <ChevronLeft size={22} />
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 p-3 md:p-4 bg-black/35 text-white rounded-full hover:bg-[#00d9ff]/15 hover:border-[#00d9ff]/40 border border-white/12 transition-all duration-300 z-20 backdrop-blur-sm"
+      >
+        <ChevronRight size={22} />
+      </button>
+
+      {/* ── Dot indicators ── */}
+      <div className="absolute left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bottom-8">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setCurrentIndex(i); setProgress(0); }}
+            className={`h-[3px] rounded-full transition-all duration-300 ${
+              currentIndex === i ? 'bg-[#00d9ff] w-6' : 'bg-white/25 w-3 hover:bg-white/50'
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* ── Scroll indicator ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        onClick={scrollPastHero}
+        className="absolute right-8 md:right-16 bottom-6 text-center cursor-pointer z-20 flex flex-col items-center gap-0.5"
+      >
+        <span className="text-[10px] font-mono text-[#00d9ff] uppercase tracking-[0.3em]">scroll</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown className="w-5 h-5 text-[#00d9ff] opacity-50" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
@@ -174,12 +239,16 @@ const GallerySection = () => {
 const LogoRibbon = () => (
   <div className="w-full py-12 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden mt-12">
     <div className="max-w-7xl mx-auto px-6">
-      <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+      <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
         <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase border border-white/20 px-4 py-1 rounded italic">IPN</div>
         <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex items-center gap-3">
           <Globe className="w-6 h-6 text-[#00d9ff]" /> NASA Space Apps
         </div>
         <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase border-b-2 border-[#00d9ff]/40 px-2">WITCOM</div>
+        <div className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex flex-col items-center leading-tight border border-[#00d9ff]/30 px-4 py-1 rounded">
+          <span>IAC</span>
+          <span className="text-[10px] md:text-xs font-mono text-[#00d9ff]/70 tracking-widest normal-case">IAF</span>
+        </div>
       </div>
     </div>
   </div>
@@ -195,41 +264,15 @@ const ImpactPage = () => {
   };
 
   return (
-    <div className="pt-20 bg-[#0a0e27] min-h-screen antialiased relative overflow-hidden">
-      {/* Dynamic Technical Grid */}
+    <div className="pt-20 bg-[#0a0e27] min-h-screen antialiased relative overflow-x-hidden">
+      {/* Background grid — below hero */}
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0e27] via-transparent to-[#0a0e27] pointer-events-none" />
-      
-      {/* Hero Section: Cinematographic Layout */}
-      <section className="relative pt-24 pb-12 px-6 flex flex-col items-center justify-center overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_top,rgba(0,217,255,0.1)_0%,transparent_70%)] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto relative z-10 text-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <h1 className="text-5xl md:text-7xl font-black tracking-[0.1em] uppercase leading-tight text-transparent [-webkit-text-stroke:1px_rgba(0,217,255,0.6)] drop-shadow-[0_0_15px_rgba(0,217,255,0.2)] mb-6 mt-10">
-              {t('impact.title')}
-            </h1>
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.9 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="text-lg md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed font-normal tracking-wide px-6 opacity-90"
-            >
-              {t('impact.subtitle')}
-            </motion.p>
-          </motion.div>
-        </div>
 
-        {/* Gallery Integrated into Hero Flow */}
-        <div className="w-full relative z-10 -mt-4">
-          <GallerySection />
-          <LogoRibbon />
-        </div>
-      </section>
+      {/* Full-screen Hero Carousel + Logo Ribbon */}
+      <div className="w-full relative z-10">
+        <GallerySection />
+        <LogoRibbon />
+      </div>
 
       {/* Metrics Section (Stats) with Scroll Reveal */}
       <section className="py-24 px-6 relative border-y border-[#00d9ff]/10 bg-[#0a0e27]/40 backdrop-blur-md">

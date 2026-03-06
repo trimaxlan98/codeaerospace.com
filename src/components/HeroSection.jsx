@@ -49,8 +49,8 @@ const HeroSection = () => {
             </span>
           </div>
 
-          <motion.h1 
-            animate={{ 
+          <motion.h1
+            animate={{
               textShadow: [
                 "0 0 20px rgba(0,217,255,0.2)",
                 "0 0 40px rgba(0,217,255,0.4)",
@@ -59,9 +59,10 @@ const HeroSection = () => {
             }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             whileHover={{ scale: 1.02 }}
-            className="text-6xl md:text-9xl font-black mb-8 leading-none tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white via-[#00d9ff] to-white cursor-default"
+            className="mb-8 leading-none bg-clip-text text-transparent bg-gradient-to-b from-white via-[#00d9ff] to-white cursor-default whitespace-nowrap text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10rem]"
+            style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, letterSpacing: '0.02em' }}
           >
-            Co.De <br className="md:hidden" /> Aerospace
+            Co.De <span style={{ fontWeight: 600, letterSpacing: '0.12em' }}>Aerospace</span>
           </motion.h1>
 
           <p className="text-xl md:text-2xl text-slate-200 mb-4 max-w-3xl mx-auto font-light leading-relaxed">
@@ -102,22 +103,29 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <motion.div
+      <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center"
+        onClick={() => {
+          const hero = document.getElementById('hero');
+          if (hero) {
+            window.scrollTo({ top: hero.offsetTop + hero.offsetHeight, behavior: 'smooth' });
+          }
+        }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center cursor-pointer group bg-transparent border-none outline-none"
       >
-        <span className="text-[10px] font-mono text-[#00d9ff] uppercase tracking-[0.3em] mb-2 block">
+        <span className="text-[10px] font-mono text-[#00d9ff] uppercase tracking-[0.3em] mb-2 block opacity-70 group-hover:opacity-100 transition-opacity duration-200">
           {t('hero.scroll')}
         </span>
         <motion.div
           animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className="opacity-50 group-hover:opacity-100 transition-opacity duration-200"
         >
-          <ChevronDown className="w-6 h-6 text-[#00d9ff] mx-auto opacity-50" />
+          <ChevronDown className="w-6 h-6 text-[#00d9ff] mx-auto" />
         </motion.div>
-      </motion.div>
+      </motion.button>
     </section>
   );
 };
