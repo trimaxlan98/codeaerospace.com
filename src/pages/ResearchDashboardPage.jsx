@@ -10,6 +10,7 @@ import TelemetryPanel from '@/components/research/TelemetryPanel';
 
 const ResearchDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('status');
+  const [linkActive, setLinkActive] = useState(false);
   const [utcTime, setUtcTime] = useState(new Date().toUTCString());
 
   useEffect(() => {
@@ -54,9 +55,9 @@ const ResearchDashboardPage = () => {
       </div>
 
       {/* ── Satellite Simulator — central top area ── */}
-      <div className="mb-10 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start p-5 rounded-2xl bg-slate-900/30 border border-slate-800/60 backdrop-blur-sm">
-        <SatelliteOrbitVisualizer />
-        <TelemetryPanel />
+      <div className="mb-10 mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[500px_1fr] gap-6 items-start p-5 rounded-2xl bg-slate-900/30 border border-slate-800/60 backdrop-blur-sm justify-center">
+        <SatelliteOrbitVisualizer onLinkChange={setLinkActive} />
+        <TelemetryPanel linkActive={linkActive} />
       </div>
 
       {/* Main Content Area */}

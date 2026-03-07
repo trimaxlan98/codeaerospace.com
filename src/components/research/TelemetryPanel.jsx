@@ -15,7 +15,7 @@ const INITIAL = {
 };
 
 // ── TelemetryPanel ─────────────────────────────────────────────
-const TelemetryPanel = () => {
+const TelemetryPanel = ({ linkActive = false }) => {
   const { t } = useLanguage();
   const [data, setData]       = useState(INITIAL);
   const [tick, setTick]       = useState(false); // used to flash updated cells
@@ -64,6 +64,23 @@ const TelemetryPanel = () => {
         </div>
         <span className="text-[9px] text-[#00d9ff]/30 uppercase tracking-widest">
           NGSO_TLM_FEED
+        </span>
+      </div>
+
+      {/* ── Link status banner ── */}
+      <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border mb-4 transition-all duration-700 ${
+        linkActive
+          ? 'bg-[#00d9ff]/8 border-[#00d9ff]/25'
+          : 'bg-amber-500/5 border-amber-500/20'
+      }`}>
+        <span className={`relative flex h-1.5 w-1.5 shrink-0`}>
+          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-70 ${linkActive ? 'bg-[#00d9ff]' : 'bg-amber-400'}`} />
+          <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${linkActive ? 'bg-[#00d9ff]' : 'bg-amber-400'}`} />
+        </span>
+        <span className={`text-[9px] font-bold uppercase tracking-[0.2em] transition-colors duration-700 ${
+          linkActive ? 'text-[#00d9ff]' : 'text-amber-400'
+        }`}>
+          LINK: {linkActive ? 'ACTIVE' : 'ACQUIRING'}
         </span>
       </div>
 
