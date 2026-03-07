@@ -5,6 +5,8 @@ import { Beaker, Activity, FileText, Settings, Database, Server, RefreshCcw } fr
 import ResearchLines from '@/components/research/ResearchLines';
 import MissionStatus from '@/components/research/MissionStatus';
 import RecentPublications from '@/components/research/RecentPublications';
+import SatelliteOrbitVisualizer from '@/components/research/SatelliteOrbitVisualizer';
+import TelemetryPanel from '@/components/research/TelemetryPanel';
 
 const ResearchDashboardPage = () => {
   const [activeTab, setActiveTab] = useState('status');
@@ -49,6 +51,12 @@ const ResearchDashboardPage = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── Satellite Simulator — central top area ── */}
+      <div className="mb-10 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start p-5 rounded-2xl bg-slate-900/30 border border-slate-800/60 backdrop-blur-sm">
+        <SatelliteOrbitVisualizer />
+        <TelemetryPanel />
       </div>
 
       {/* Main Content Area */}

@@ -420,15 +420,48 @@ const translations = {
       conferences: { es: "Conferencias", en: "Conferences" }
     },
     workshops_title: { es: "Formación Especializada", en: "Specialized Training" },
-    workshops: {
-      enroll: { es: "Inscribirse", en: "Enroll Now" },
-      ai: { title: { es: "IA Agéntica", en: "Agentic AI" }, desc: { es: "Automatización avanzada con LangChain.", en: "Advanced automation with LangChain." } },
-      control: { title: { es: "Sistemas APT", en: "APT Systems" }, desc: { es: "Control y rastreo satelital.", en: "Satellite control and tracking." } },
-      mechanical: { title: { es: "Ingeniería FEA", en: "FEA Engineering" }, desc: { es: "Análisis estructural y SolidWorks.", en: "Structural analysis and SolidWorks." } }
-    },
     consulting_title: { es: "Consultoría Estratégica", en: "Strategic Consulting" },
     consulting_desc: { es: "Asesoría técnica para desafíos industriales complejos.", en: "Technical advisory for complex industrial challenges." },
-    consulting_cta: { es: "Solicitar Asesoría", en: "Request Advisory" }
+    consulting_cta: { es: "Solicitar Asesoría", en: "Request Advisory" },
+    stats: {
+      engineers_trained: { es: "150+ Ingenieros Formados", en: "150+ Engineers Trained" }
+    },
+    milestones: {
+      title: { es: "Hitos Académicos", en: "Academic Milestones" },
+      subtitle: { es: "Premios, reconocimientos y logros del equipo de Co.De Aerospace", en: "Awards, recognitions and achievements of the Co.De Aerospace team" }
+    },
+    team_specialties: {
+      title: { es: "Especialidades del Equipo", en: "Team Specialties" }
+    },
+    workshops: {
+      enroll: { es: "Inscribirse", en: "Enroll Now" },
+      ai: {
+        title: { es: "IA Agéntica", en: "Agentic AI" },
+        desc: { es: "Automatización avanzada con LangChain.", en: "Advanced automation with LangChain." },
+        modules: { es: "8 Módulos", en: "8 Modules" },
+        level: { es: "Avanzado", en: "Advanced" }
+      },
+      control: {
+        title: { es: "Sistemas APT", en: "APT Systems" },
+        desc: { es: "Control y rastreo satelital.", en: "Satellite control and tracking." },
+        modules: { es: "6 Módulos", en: "6 Modules" },
+        level: { es: "Intermedio", en: "Intermediate" }
+      },
+      mechanical: {
+        title: { es: "Ingeniería FEA", en: "FEA Engineering" },
+        desc: { es: "Análisis estructural y SolidWorks.", en: "Structural analysis and SolidWorks." },
+        modules: { es: "10 Módulos", en: "10 Modules" },
+        level: { es: "Intermedio", en: "Intermediate" }
+      }
+    }
+  },
+
+  // Research Dashboard
+  research: {
+    simulator: {
+      title:  { es: 'Simulación de Rastreo NGSO', en: 'NGSO Tracking Simulation' },
+      status: { es: 'ESTADO: NOMINAL',            en: 'STATUS: NOMINAL'          },
+    },
   },
 
   // Vet Demo

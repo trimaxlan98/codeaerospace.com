@@ -104,6 +104,13 @@ const Footer = () => {
         <p><strong className="text-white">Contact</strong></p>
         <p>For questions about these terms, contact us at <a href="mailto:contacto@codeaerospace.com" className="text-[#00d9ff] hover:underline">contacto@codeaerospace.com</a></p>
       </PolicyModal>
+      {/* Terminal log bar */}
+      <div className="bg-black border-t border-green-900/40 overflow-hidden" style={{ height: '22px' }}>
+        <div className="h-full flex items-center px-4 whitespace-nowrap text-green-400 font-mono text-[11px] tracking-wide opacity-80">
+          <span className="mr-1 text-green-600">›</span>
+          {` [SYSTEM_STATUS: NOMINAL] | MISSION_NODE: MEXICO_CITY | UPTIME: 99.97% | CO.DE_AEROSPACE_v1.2.7 | © ${new Date().getFullYear()} ALL_RIGHTS_RESERVED`}
+        </div>
+      </div>
     </footer>
   );
 };

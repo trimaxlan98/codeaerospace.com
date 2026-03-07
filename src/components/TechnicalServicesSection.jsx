@@ -19,9 +19,10 @@ const ServiceModal = ({ isOpen, onClose, service, t }) => {
           onClick={onClose}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 280 }}
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0a0e27] border-2 border-[#00d9ff] rounded-2xl p-8 z-[101] shadow-[0_0_50px_rgba(0,217,255,0.2)]"
           >
@@ -79,7 +80,7 @@ const ServiceModal = ({ isOpen, onClose, service, t }) => {
   );
 };
 
-const ServiceCard = ({ id, icon: Icon, title, description, learnMore, delay, onOpen, t }) => (
+const ServiceCard = ({ id, icon: Icon, title, description, badges = [], learnMore, delay, onOpen, t }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.95 }}
     whileInView={{ opacity: 1, scale: 1 }}
@@ -114,10 +115,22 @@ const ServiceCard = ({ id, icon: Icon, title, description, learnMore, delay, onO
       {description}
     </p>
 
-    <div className="mt-8 pt-6 border-t border-[#2a3c5f] group-hover:border-[#00d9ff]/30 transition-colors">
-      <button 
-        className="text-[#00d9ff] text-sm font-mono font-bold uppercase tracking-widest flex items-center gap-3 group/btn"
-      >
+    {/* Tech badges */}
+    {badges.length > 0 && (
+      <div className="mt-6 flex flex-wrap gap-1.5">
+        {badges.map((badge) => (
+          <span
+            key={badge}
+            className="text-[9px] font-mono uppercase tracking-wider text-[#00d9ff]/60 bg-[#00d9ff]/5 border border-[#00d9ff]/15 px-2 py-0.5 rounded-sm group-hover:border-[#00d9ff]/30 group-hover:text-[#00d9ff]/80 transition-all duration-300"
+          >
+            {badge}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <div className="mt-6 pt-6 border-t border-[#2a3c5f] group-hover:border-[#00d9ff]/30 transition-colors">
+      <button className="text-[#00d9ff] text-sm font-mono font-bold uppercase tracking-widest flex items-center gap-3">
         <span className="animate-pulse">_</span> {t('services.ui.command')}
       </button>
     </div>
@@ -128,49 +141,22 @@ const TechnicalServicesSection = () => {
   const { t } = useLanguage();
   const [selectedService, setSelectedService] = useState(null);
 
+  const techBadges = {
+    web:           ['React', 'Next.js', 'TailwindCSS', 'Node.js'],
+    ai_automation: ['Python', 'LangChain', 'OpenAI', 'FastAPI'],
+    mobile:        ['React Native', 'Flutter', 'Firebase'],
+    vr_training:   ['Unity', 'C#', 'WebXR', 'Three.js'],
+    iot_automation:['Arduino', 'MQTT', 'Python', 'ROS'],
+    project_eng:   ['SolidWorks', 'MATLAB', 'Simulink', 'FEA'],
+  };
+
   const services = [
-    { 
-      id: 'web',
-      icon: Layout, 
-      title: t('services.web.title'), 
-      description: t('services.web.desc'),
-      details: t('services.web.details')
-    },
-    { 
-      id: 'ai_automation',
-      icon: Bot, 
-      title: t('services.ai_automation.title'), 
-      description: t('services.ai_automation.desc'),
-      details: t('services.ai_automation.details')
-    },
-    { 
-      id: 'mobile',
-      icon: Smartphone, 
-      title: t('services.mobile.title'), 
-      description: t('services.mobile.desc'),
-      details: t('services.mobile.details')
-    },
-    { 
-      id: 'vr_training',
-      icon: Eye, 
-      title: t('services.vr_training.title'), 
-      description: t('services.vr_training.desc'),
-      details: t('services.vr_training.details')
-    },
-    { 
-      id: 'iot_automation',
-      icon: Cpu, 
-      title: t('services.iot_automation.title'), 
-      description: t('services.iot_automation.desc'),
-      details: t('services.iot_automation.details')
-    },
-    { 
-      id: 'project_eng',
-      icon: Settings, 
-      title: t('services.project_eng.title'), 
-      description: t('services.project_eng.desc'),
-      details: t('services.project_eng.details')
-    },
+    { id: 'web',           icon: Layout,    title: t('services.web.title'),           description: t('services.web.desc'),           details: t('services.web.details'),           badges: techBadges.web },
+    { id: 'ai_automation', icon: Bot,        title: t('services.ai_automation.title'), description: t('services.ai_automation.desc'), details: t('services.ai_automation.details'), badges: techBadges.ai_automation },
+    { id: 'mobile',        icon: Smartphone, title: t('services.mobile.title'),        description: t('services.mobile.desc'),        details: t('services.mobile.details'),        badges: techBadges.mobile },
+    { id: 'vr_training',   icon: Eye,        title: t('services.vr_training.title'),   description: t('services.vr_training.desc'),   details: t('services.vr_training.details'),   badges: techBadges.vr_training },
+    { id: 'iot_automation',icon: Cpu,        title: t('services.iot_automation.title'),description: t('services.iot_automation.desc'),details: t('services.iot_automation.details'),badges: techBadges.iot_automation },
+    { id: 'project_eng',   icon: Settings,   title: t('services.project_eng.title'),   description: t('services.project_eng.desc'),   details: t('services.project_eng.details'),   badges: techBadges.project_eng },
   ];
 
   return (
@@ -195,11 +181,11 @@ const TechnicalServicesSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <ServiceCard 
-              key={index} 
-              {...service} 
+            <ServiceCard
+              key={index}
+              {...service}
               t={t}
-              delay={index * 0.1} 
+              delay={index * 0.1}
               onOpen={() => setSelectedService(service)}
             />
           ))}
