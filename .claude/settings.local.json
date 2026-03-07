@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npx vite build)",
       "Bash(timeout 15 npx vite:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

@@ -71,7 +71,10 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-[#1a2847] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-[#64748b]">© {new Date().getFullYear()} Co.De Aerospace. {t('footer.rights')}</p>
+          <div className="flex items-center gap-3">
+            <p className="text-xs text-[#64748b]">© {new Date().getFullYear()} Co.De Aerospace. {t('footer.rights')}</p>
+            <span className="px-2 py-0.5 bg-[#00d9ff]/10 border border-[#00d9ff]/30 rounded text-[10px] font-mono font-bold text-[#00d9ff] tracking-wider">v1.3.0</span>
+          </div>
           <div className="flex gap-6 text-xs text-[#64748b]">
             <button onClick={() => setPrivacyOpen(true)} className="hover:text-[#00d9ff] transition-colors cursor-pointer">{t('footer.privacy')}</button>
             <button onClick={() => setTermsOpen(true)} className="hover:text-[#00d9ff] transition-colors cursor-pointer">{t('footer.terms')}</button>
@@ -108,7 +111,7 @@ const Footer = () => {
       <div className="bg-black border-t border-green-900/40 overflow-hidden" style={{ height: '22px' }}>
         <div className="h-full flex items-center px-4 whitespace-nowrap text-green-400 font-mono text-[11px] tracking-wide opacity-80">
           <span className="mr-1 text-green-600">›</span>
-          {` [SYSTEM_STATUS: NOMINAL] | MISSION_NODE: MEXICO_CITY | UPTIME: 99.97% | CO.DE_AEROSPACE_v1.2.7 | © ${new Date().getFullYear()} ALL_RIGHTS_RESERVED`}
+          {` [SYSTEM_STATUS: NOMINAL] | MISSION_NODE: MEXICO_CITY | UPTIME: 99.97% | CO.DE_AEROSPACE_v1.3.0 | © ${new Date().getFullYear()} ALL_RIGHTS_RESERVED`}
         </div>
       </div>
     </footer>

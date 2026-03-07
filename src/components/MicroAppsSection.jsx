@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Palette, Code2, Rocket, Headphones, ShoppingBag, BarChart3, Cpu, Check, Zap, ExternalLink, PawPrint, Pill } from 'lucide-react';
+import { Search, Palette, Code2, Rocket, Headphones, ShoppingBag, BarChart3, Cpu, Check, Zap, ExternalLink, PawPrint, Pill, Globe, Camera, Heart, Music2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 const stepIcons = [Search, Palette, Code2, Rocket, Headphones];
@@ -198,13 +198,211 @@ const MicroAppsSection = () => {
           </div>
         </motion.div>
 
+        {/* Portfolio — Apps en Producción */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00d9ff]/10 border border-[#00d9ff]/30 text-[#00d9ff] text-xs font-bold uppercase tracking-widest mb-6">
+            <Globe className="w-3.5 h-3.5" />
+            Portfolio en Producción
+          </span>
+          <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">
+            Apps <span className="text-[#00d9ff]">desplegadas</span> en vivo
+          </h3>
+          <div className="w-16 h-1 bg-[#00d9ff] mx-auto mb-5" />
+          <p className="text-[#94a3b8] max-w-2xl mx-auto text-base leading-relaxed">
+            Proyectos reales en producción, desarrollados y mantenidos por el equipo Co.De Aerospace.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-7 mb-24">
+
+          {/* freted.info */}
+          <motion.a
+            href="https://freted.info"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0 }}
+            whileHover={{ y: -8, transition: { duration: 0.2 } }}
+            className="group relative rounded-2xl overflow-hidden border border-[#1e3050] hover:border-violet-500/50 transition-all duration-300 flex flex-col cursor-pointer shadow-[0_4px_32px_rgba(0,0,0,0.5)] hover:shadow-[0_12px_48px_rgba(167,139,250,0.22)]"
+          >
+            <div className="bg-[#0d1525] px-4 py-2.5 flex items-center gap-3 border-b border-[#1a2847]">
+              <div className="flex gap-1.5 flex-shrink-0">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="flex-1 flex items-center gap-1.5 bg-[#070c1a] border border-[#1e3050] rounded-md px-2.5 py-1 min-w-0">
+                <Globe className="w-2.5 h-2.5 text-[#4a5568] flex-shrink-0" />
+                <span className="text-[10px] font-mono text-[#4a5568] truncate">freted.info</span>
+              </div>
+              <ExternalLink className="w-3.5 h-3.5 text-[#4a5568] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+            </div>
+            <div className="flex-1 p-6 bg-gradient-to-br from-[#131d35] via-[#0f1828] to-[#0c1220] relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/25 rounded-full">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-[9px] font-bold font-mono text-green-400 uppercase tracking-wider">Live</span>
+              </div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-500/25 group-hover:border-violet-400/40 transition-all duration-300">
+                    <Music2 className="w-5 h-5 text-violet-400" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-bold font-mono text-violet-400/80 uppercase tracking-widest mb-0.5">Música · Web App</span>
+                    <h4 className="text-white font-bold text-base leading-tight group-hover:text-violet-300 transition-colors">freted.info</h4>
+                  </div>
+                </div>
+                <p className="text-[#7a8fa8] text-sm leading-relaxed mb-5">
+                  Herramienta web interactiva para aprendizaje musical y exploración de acordes en el diapasón. Diseño responsivo y experiencia fluida.
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {['React', 'Vite', 'Tailwind'].map(tech => (
+                    <span key={tech} className="px-2 py-0.5 bg-[#0a0e27]/80 border border-[#2a3c5f] rounded text-[10px] font-mono text-[#64748b]">{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.a>
+
+          {/* pedrovargasfotografia.com */}
+          <motion.a
+            href="https://pedrovargasfotografia.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.12 }}
+            whileHover={{ y: -8, transition: { duration: 0.2 } }}
+            className="group relative rounded-2xl overflow-hidden border border-[#1e3050] hover:border-amber-500/50 transition-all duration-300 flex flex-col cursor-pointer shadow-[0_4px_32px_rgba(0,0,0,0.5)] hover:shadow-[0_12px_48px_rgba(245,158,11,0.2)]"
+          >
+            <div className="bg-[#0d1525] px-4 py-2.5 flex items-center gap-3 border-b border-[#1a2847]">
+              <div className="flex gap-1.5 flex-shrink-0">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="flex-1 flex items-center gap-1.5 bg-[#070c1a] border border-[#1e3050] rounded-md px-2.5 py-1 min-w-0">
+                <Globe className="w-2.5 h-2.5 text-[#4a5568] flex-shrink-0" />
+                <span className="text-[10px] font-mono text-[#4a5568] truncate">pedrovargasfotografia.com</span>
+              </div>
+              <ExternalLink className="w-3.5 h-3.5 text-[#4a5568] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+            </div>
+            <div className="flex-1 p-6 bg-gradient-to-br from-[#131d35] via-[#0f1828] to-[#0c1220] relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-600/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/25 rounded-full">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-[9px] font-bold font-mono text-green-400 uppercase tracking-wider">Live</span>
+              </div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500/25 group-hover:border-amber-400/40 transition-all duration-300">
+                    <Camera className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-bold font-mono text-amber-400/80 uppercase tracking-widest mb-0.5">Fotografía · Portfolio</span>
+                    <h4 className="text-white font-bold text-base leading-tight group-hover:text-amber-300 transition-colors">Pedro Vargas Fotografía</h4>
+                  </div>
+                </div>
+                <p className="text-[#7a8fa8] text-sm leading-relaxed mb-5">
+                  Portafolio web profesional para fotógrafo. Galería visual de alta fidelidad, presentación de servicios y formulario de contacto integrado.
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {['React', 'Next.js', 'Tailwind'].map(tech => (
+                    <span key={tech} className="px-2 py-0.5 bg-[#0a0e27]/80 border border-[#2a3c5f] rounded text-[10px] font-mono text-[#64748b]">{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.a>
+
+          {/* ginecoleslie.com.mx */}
+          <motion.a
+            href="https://ginecoleslie.com.mx"
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.24 }}
+            whileHover={{ y: -8, transition: { duration: 0.2 } }}
+            className="group relative rounded-2xl overflow-hidden border border-[#1e3050] hover:border-pink-500/50 transition-all duration-300 flex flex-col cursor-pointer shadow-[0_4px_32px_rgba(0,0,0,0.5)] hover:shadow-[0_12px_48px_rgba(244,114,182,0.2)]"
+          >
+            <div className="bg-[#0d1525] px-4 py-2.5 flex items-center gap-3 border-b border-[#1a2847]">
+              <div className="flex gap-1.5 flex-shrink-0">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="flex-1 flex items-center gap-1.5 bg-[#070c1a] border border-[#1e3050] rounded-md px-2.5 py-1 min-w-0">
+                <Globe className="w-2.5 h-2.5 text-[#4a5568] flex-shrink-0" />
+                <span className="text-[10px] font-mono text-[#4a5568] truncate">ginecoleslie.com.mx</span>
+              </div>
+              <ExternalLink className="w-3.5 h-3.5 text-[#4a5568] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+            </div>
+            <div className="flex-1 p-6 bg-gradient-to-br from-[#131d35] via-[#0f1828] to-[#0c1220] relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-600/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-green-500/10 border border-green-500/25 rounded-full">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-[9px] font-bold font-mono text-green-400 uppercase tracking-wider">Live</span>
+              </div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-pink-500/15 border border-pink-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-pink-500/25 group-hover:border-pink-400/40 transition-all duration-300">
+                    <Heart className="w-5 h-5 text-pink-400" />
+                  </div>
+                  <div>
+                    <span className="block text-[10px] font-bold font-mono text-pink-400/80 uppercase tracking-widest mb-0.5">Salud · Landing</span>
+                    <h4 className="text-white font-bold text-base leading-tight group-hover:text-pink-300 transition-colors">Ginecología Leslie</h4>
+                  </div>
+                </div>
+                <p className="text-[#7a8fa8] text-sm leading-relaxed mb-5">
+                  Sitio web médico para consultorio de ginecología. Presentación de servicios, perfil profesional y canal de contacto para citas.
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {['React', 'Vite', 'Tailwind'].map(tech => (
+                    <span key={tech} className="px-2 py-0.5 bg-[#0a0e27]/80 border border-[#2a3c5f] rounded text-[10px] font-mono text-[#64748b]">{tech}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.a>
+
+        </div>
+
+        {/* Demos — Templates Interactivos */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
+            <Zap className="w-3.5 h-3.5" />
+            Demos Interactivos
+          </span>
+          <h3 className="text-2xl md:text-3xl font-bold text-white">
+            Explora nuestros <span className="text-[#00d9ff]">templates</span>
+          </h3>
+        </motion.div>
+
         {/* Demo Showcase Banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-24 relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a2847] via-[#0f2027] to-[#1a2847] border border-[#00d9ff]/30 p-8 md:p-12"
+          className="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1a2847] via-[#0f2027] to-[#1a2847] border border-[#00d9ff]/30 p-8 md:p-12"
         >
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMGQ5ZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
