@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npx vite build)",
-      "Bash(timeout 15 npx vite:*)"
+      "Bash(timeout 15 npx vite:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

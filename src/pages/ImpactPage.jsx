@@ -312,7 +312,7 @@ const InstitutionalValidation = () => {
 };
 
 const AcademicTimeline = () => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const milestones = [
     {
@@ -397,10 +397,10 @@ const AcademicTimeline = () => {
                         </span>
                       </div>
                       <h3 className="text-base md:text-lg font-black text-white uppercase tracking-tight mb-2 group-hover:text-[#00d9ff] transition-colors">
-                        {m.title.es}
+                        {m.title[lang] || m.title.es}
                       </h3>
                       <p className="text-white/50 text-sm leading-relaxed font-light">
-                        {m.desc.es}
+                        {m.desc[lang] || m.desc.es}
                       </p>
                     </div>
                   </div>
