@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Guardián de Nyquist — Muestreo vs Aliasing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --grid: rgba(0, 255, 65, 0.06);
+    --grid-major: rgba(0, 255, 65, 0.12);
+    --green: #00ff41;
+    --green-dim: rgba(0, 255, 65, 0.35);
+    --green-glow: rgba(0, 255, 65, 0.15);
+    --red: #ff2d55;
+    --red-glow: rgba(255, 45, 85, 0.25);
+    --cyan: #00e5ff;
+    --amber: #ffab00;
+    --text: #c8d6e5;
+    --text-dim: #636e7b;
+    --panel: rgba(12, 15, 22, 0.92);
+    --border: rgba(0, 255, 65, 0.15);
+    --safe: #00e676;
+    --danger: #ff1744;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    text-align: center;
+    padding: 24px 0 16px;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green-dim), transparent);
+    margin-top: 16px;
+  }
+  .header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18px, 3vw, 28px);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--green) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px var(--green-glow);
+  }
+  .header .subtitle {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  /* ─── STATUS BAR ─── */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 14px 24px;
+    margin: 12px 0;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    flex-wrap: wrap;
+  }
+  .led-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .led {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+  }
+  .led.safe {
+    background: var(--safe);
+    box-shadow: 0 0 8px var(--safe), 0 0 20px rgba(0,230,118,0.3);
+  }
+  .led.danger {
+    background: var(--danger);
+    box-shadow: 0 0 8px var(--danger), 0 0 20px rgba(255,23,68,0.4);
+    animation: pulse-danger 0.8s ease-in-out infinite;
+  }
+  @keyframes pulse-danger {
+    0%, 100% { box-shadow: 0 0 8px var(--danger), 0 0 20px rgba(255,23,68,0.4); }
+    50% { box-shadow: 0 0 14px var(--danger), 0 0 35px rgba(255,23,68,0.6); }
+  }
+  .status-text {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+  }
+  .status-text.safe { color: var(--safe); }
+  .status-text.danger { color: var(--danger); }
+
+  .nyquist-info {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+  .nyquist-info span {
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  /* ─── CANVAS SCOPE ─── */
+  .scope-container {
+    position: relative;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+  .scope-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,255,65,0.02) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .scope-label {
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    z-index: 2;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    cursor: crosshair;
+  }
+  .scope-legend {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    z-index: 2;
+    display: flex;
+    gap: 16px;
+    font-size: 10px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-swatch {
+    width: 18px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  /* ─── CONTROLS ─── */
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  @media (max-width: 600px) {
+    .controls { grid-template-columns: 1fr; }
+  }
+  .control-group {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  .control-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .control-label .name {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .control-label .value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .control-label .unit {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-left: 3px;
+  }
+  .val-f { color: var(--green); }
+  .val-fs { color: var(--cyan); }
+
+  /* Slider styling */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    cursor: grab;
+  }
+  input[type="range"]::-webkit-slider-thumb:active { cursor: grabbing; }
+  #sliderF {
+    background: linear-gradient(90deg, rgba(0,255,65,0.15), rgba(0,255,65,0.3));
+  }
+  #sliderF::-webkit-slider-thumb { background: var(--green); box-shadow: 0 0 8px var(--green-glow); }
+  #sliderFs {
+    background: linear-gradient(90deg, rgba(0,229,255,0.15), rgba(0,229,255,0.3));
+  }
+  #sliderFs::-webkit-slider-thumb { background: var(--cyan); box-shadow: 0 0 8px rgba(0,229,255,0.3); }
+
+  /* ─── MODE SELECTOR ─── */
+  .mode-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 12px 0 8px;
+    flex-wrap: wrap;
+  }
+  .mode-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .mode-btn:hover { border-color: var(--green-dim); color: var(--text); }
+  .mode-btn.active {
+    background: rgba(0,255,65,0.08);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* ─── ENGINEERING NOTE ─── */
+  .eng-note {
+    background: var(--panel);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 8px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text);
+    min-height: 52px;
+    transition: opacity 0.3s;
+  }
+  .eng-note .note-label {
+    font-weight: 700;
+    color: var(--amber);
+    margin-right: 6px;
+  }
+
+  /* ─── MATH DISPLAY ─── */
+  .math-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding: 10px 0 4px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .math-row .eq {
+    color: var(--text);
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center;
+    padding: 16px 0 8px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>El Guardián de Nyquist</h1>
+    <div class="subtitle">Muestreo vs Aliasing — Simulador Interactivo DSP</div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="led-container">
+      <div class="led safe" id="led"></div>
+      <span class="status-text safe" id="statusText">MUESTREO SEGURO</span>
+    </div>
+    <div class="nyquist-info">
+      Nyquist: <span>f<sub>s</sub> ≥ 2f</span> → f<sub>s,min</sub> = <span id="nyqVal">2</span> Hz
+    </div>
+    <div class="nyquist-info">
+      Ratio: f<sub>s</sub>/f = <span id="ratioVal">10.0</span>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="scope-container">
+    <div class="scope-label">Osciloscopio Virtual — CH1 / CH2</div>
+    <div class="scope-legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:rgba(0,255,65,0.5)"></div><span style="color:var(--green-dim)">x(t) analógica</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:var(--cyan)"></div><span style="color:var(--cyan)">x[n] muestras</span></div>
+      <div class="legend-item"><div class="legend-swatch" style="background:var(--red)"></div><span style="color:var(--red)">Reconstrucción</span></div>
+    </div>
+    <canvas id="scope"></canvas>
+  </div>
+
+  <!-- MATH -->
+  <div class="math-row">
+    <span>x(t) = sin(2π<span class="eq" id="mathF">1</span>t)</span>
+    <span>x[n] = x(nT<sub>s</sub>), T<sub>s</sub> = 1/f<sub>s</sub> = <span class="eq" id="mathTs">0.100</span>s</span>
+    <span>f<sub>alias</sub> = <span class="eq" id="mathFa">—</span></span>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="control-group">
+      <div class="control-label">
+        <span class="name">Frecuencia de Señal (f)</span>
+        <span><span class="value val-f" id="valF">1.0</span><span class="unit">Hz</span></span>
+      </div>
+      <input type="range" id="sliderF" min="1" max="10" step="0.1" value="1">
+    </div>
+    <div class="control-group">
+      <div class="control-label">
+        <span class="name">Frecuencia de Muestreo (f<sub>s</sub>)</span>
+        <span><span class="value val-fs" id="valFs">10.0</span><span class="unit">Hz</span></span>
+      </div>
+      <input type="range" id="sliderFs" min="1" max="30" step="0.5" value="10">
+    </div>
+  </div>
+
+  <!-- MODE SELECTOR -->
+  <div class="mode-bar">
+    <button class="mode-btn active" data-mode="general" onclick="setMode('general')">General</button>
+    <button class="mode-btn" data-mode="bionica" onclick="setMode('bionica')">Biónica</button>
+    <button class="mode-btn" data-mode="telematica" onclick="setMode('telematica')">Telemática</button>
+    <button class="mode-btn" data-mode="mecatronica" onclick="setMode('mecatronica')">Mecatrónica</button>
+  </div>
+
+  <!-- ENGINEERING NOTE -->
+  <div class="eng-note" id="engNote">
+    <span class="note-label">DSP:</span>
+    El Teorema de Nyquist establece que f<sub>s</sub> ≥ 2f para evitar aliasing. Ajusta los sliders y observa cómo la señal reconstruida (roja) diverge de la original (verde).
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    UPIITA — IPN &nbsp;|&nbsp; Análisis de Señales y Sistemas &nbsp;|&nbsp; M. en C. Alan Rosas Palacios
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  EL GUARDIÁN DE NYQUIST — Motor de Simulación
+// ═══════════════════════════════════════════════════════
+
+const canvas = document.getElementById('scope');
+const ctx = canvas.getContext('2d');
+
+// ─── State ───
+let f = 1.0;
+let fs = 10.0;
+let mode = 'general';
+let time = 0;
+const DPR = window.devicePixelRatio || 1;
+
+// ─── Sizing ───
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const w = rect.width;
+  const h = Math.min(420, Math.max(280, w * 0.38));
+  canvas.style.height = h + 'px';
+  canvas.width = w * DPR;
+  canvas.height = h * DPR;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ─── DOM refs ───
+const sliderF  = document.getElementById('sliderF');
+const sliderFs = document.getElementById('sliderFs');
+const valF     = document.getElementById('valF');
+const valFs    = document.getElementById('valFs');
+const led      = document.getElementById('led');
+const statusText = document.getElementById('statusText');
+const nyqVal   = document.getElementById('nyqVal');
+const ratioVal = document.getElementById('ratioVal');
+const mathF    = document.getElementById('mathF');
+const mathTs   = document.getElementById('mathTs');
+const mathFa   = document.getElementById('mathFa');
+const engNote  = document.getElementById('engNote');
+
+// ─── Slider events ───
+sliderF.addEventListener('input', e => { f = parseFloat(e.target.value); update(); });
+sliderFs.addEventListener('input', e => { fs = parseFloat(e.target.value); update(); });
+
+// ─── Mode ───
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+  updateNote();
+}
+
+// ─── Engineering Notes ───
+const notes = {
+  general: `<span class="note-label">DSP:</span> El Teorema de Nyquist establece que f<sub>s</sub> ≥ 2f para evitar aliasing. Ajusta los sliders y observa cómo la señal reconstruida (roja) diverge de la original (verde).`,
+  bionica: `<span class="note-label">BIÓNICA:</span> Muestreo de señal ECG. El complejo QRS tiene componentes de hasta ~125 Hz. Para capturar fielmente la morfología, se necesita f<sub>s</sub> ≥ 250 Hz (estándar clínico). Un sub-muestreo provocaría pérdida del pico R, llevando a diagnósticos erróneos de arritmia.`,
+  telematica: `<span class="note-label">TELEMÁTICA:</span> En comunicaciones digitales, el aliasing introduce interferencia inter-simbólica (ISI). Al diezmar una portadora modulada en AM/FM sin respetar Nyquist, se generan frecuencias espejo que corrompen la información demodulada. Ejemplo: Aliasing en VoIP con codec G.711 (f<sub>s</sub> = 8 kHz, BW = 3.4 kHz).`,
+  mecatronica: `<span class="note-label">MECATRÓNICA:</span> En control de servomotores, un encoder con muestreo insuficiente puede reportar velocidades fantasma (aliasing mecánico). Si el eje gira a 3000 RPM (50 Hz fundamental) y muestreos a 80 Hz, detectarás oscilaciones espurias de 30 Hz que inestabilizarán tu lazo PID.`
+};
+
+function updateNote() {
+  engNote.innerHTML = notes[mode];
+}
+
+// ─── Update readouts ───
+function update() {
+  valF.textContent = f.toFixed(1);
+  valFs.textContent = fs.toFixed(1);
+  nyqVal.textContent = (2 * f).toFixed(1);
+  ratioVal.textContent = (fs / f).toFixed(1);
+  mathF.textContent = f.toFixed(1);
+  mathTs.textContent = (1 / fs).toFixed(4);
+
+  const aliasing = fs <= 2 * f;
+
+  if (aliasing) {
+    // Compute perceived alias frequency: |f - round(f/fs)*fs|
+    const fa = Math.abs(f - Math.round(f / fs) * fs);
+    mathFa.textContent = fa.toFixed(2) + ' Hz';
+    mathFa.style.color = '#ff2d55';
+  } else {
+    mathFa.textContent = '—';
+    mathFa.style.color = '';
+  }
+
+  led.className = 'led ' + (aliasing ? 'danger' : 'safe');
+  statusText.className = 'status-text ' + (aliasing ? 'danger' : 'safe');
+  statusText.textContent = aliasing ? '¡PELIGRO: ALIASING DETECTADO!' : 'MUESTREO SEGURO';
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDERING ENGINE
+// ═══════════════════════════════════════════════════════
+
+function drawGrid(W, H) {
+  const margin = { top: 35, bottom: 25, left: 50, right: 20 };
+  const pw = W - margin.left - margin.right;
+  const ph = H - margin.top - margin.bottom;
+
+  // Minor grid
+  ctx.strokeStyle = 'rgba(0, 255, 65, 0.04)';
+  ctx.lineWidth = 0.5;
+  const minorX = pw / 50;
+  const minorY = ph / 40;
+  for (let i = 0; i <= 50; i++) {
+    const x = margin.left + i * minorX;
+    ctx.beginPath(); ctx.moveTo(x, margin.top); ctx.lineTo(x, H - margin.bottom); ctx.stroke();
+  }
+  for (let i = 0; i <= 40; i++) {
+    const y = margin.top + i * minorY;
+    ctx.beginPath(); ctx.moveTo(margin.left, y); ctx.lineTo(W - margin.right, y); ctx.stroke();
+  }
+
+  // Major grid (10 divisions each axis)
+  ctx.strokeStyle = 'rgba(0, 255, 65, 0.1)';
+  ctx.lineWidth = 0.8;
+  for (let i = 0; i <= 10; i++) {
+    const x = margin.left + (i / 10) * pw;
+    ctx.beginPath(); ctx.moveTo(x, margin.top); ctx.lineTo(x, H - margin.bottom); ctx.stroke();
+    const y = margin.top + (i / 10) * ph;
+    ctx.beginPath(); ctx.moveTo(margin.left, y); ctx.lineTo(W - margin.right, y); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = 'rgba(0, 255, 65, 0.25)';
+  ctx.lineWidth = 1;
+  // Zero line (horizontal center)
+  const cy = margin.top + ph / 2;
+  ctx.beginPath(); ctx.moveTo(margin.left, cy); ctx.lineTo(W - margin.right, cy); ctx.stroke();
+  // Left axis
+  ctx.beginPath(); ctx.moveTo(margin.left, margin.top); ctx.lineTo(margin.left, H - margin.bottom); ctx.stroke();
+
+  // Y-axis labels
+  ctx.fillStyle = 'rgba(0,255,65,0.35)';
+  ctx.font = '9px JetBrains Mono';
+  ctx.textAlign = 'right';
+  ctx.fillText('+1', margin.left - 6, margin.top + 4);
+  ctx.fillText(' 0', margin.left - 6, cy + 3);
+  ctx.fillText('-1', margin.left - 6, H - margin.bottom + 2);
+
+  // Time labels
+  ctx.textAlign = 'center';
+  const tTotal = 3 / f; // show 3 periods
+  for (let i = 0; i <= 10; i += 2) {
+    const x = margin.left + (i / 10) * pw;
+    const tVal = (i / 10) * tTotal;
+    ctx.fillText(tVal.toFixed(2) + 's', x, H - margin.bottom + 14);
+  }
+
+  return { margin, pw, ph, cy, tTotal };
+}
+
+function render(timestamp) {
+  const W = canvas.width / DPR;
+  const H = canvas.height / DPR;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Background with subtle vignette
+  ctx.fillStyle = var_bg || '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
+
+  const { margin, pw, ph, cy, tTotal } = drawGrid(W, H);
+
+  const aliasing = fs <= 2 * f;
+
+  // ─── Analog signal x(t) ───
+  ctx.beginPath();
+  ctx.strokeStyle = aliasing ? 'rgba(0,255,65,0.25)' : 'rgba(0,255,65,0.45)';
+  ctx.lineWidth = 1.5;
+  const amp = ph / 2 - 10;
+  const steps = Math.max(400, pw * 2);
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * tTotal;
+    const x = margin.left + (i / steps) * pw;
+    const y = cy - amp * Math.sin(2 * Math.PI * f * t);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Glow pass
+  ctx.strokeStyle = aliasing ? 'rgba(0,255,65,0.06)' : 'rgba(0,255,65,0.1)';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * tTotal;
+    const x = margin.left + (i / steps) * pw;
+    const y = cy - amp * Math.sin(2 * Math.PI * f * t);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // ─── Sample points ───
+  const Ts = 1 / fs;
+  const numSamples = Math.floor(tTotal / Ts) + 1;
+  const samplePoints = [];
+
+  for (let n = 0; n < numSamples; n++) {
+    const t = n * Ts;
+    if (t > tTotal) break;
+    const xPos = margin.left + (t / tTotal) * pw;
+    const val = Math.sin(2 * Math.PI * f * t);
+    const yPos = cy - amp * val;
+    samplePoints.push({ x: xPos, y: yPos, t, val });
+  }
+
+  // ─── Reconstructed signal (sinc interpolation approximated as connecting frequency) ───
+  // We reconstruct as a sine at the alias frequency
+  if (samplePoints.length >= 2) {
+    // Compute perceived frequency after sampling
+    let fPerceived = f;
+    if (aliasing) {
+      // Alias frequency = |f mod fs| mapped to [0, fs/2]
+      let fmod = f % fs;
+      if (fmod > fs / 2) fmod = fs - fmod;
+      fPerceived = fmod;
+    }
+
+    ctx.beginPath();
+    ctx.strokeStyle = aliasing ? 'rgba(255,45,85,0.85)' : 'rgba(255,45,85,0.5)';
+    ctx.lineWidth = aliasing ? 2 : 1.2;
+    ctx.setLineDash(aliasing ? [] : [6, 4]);
+
+    // Use the first sample to determine phase
+    const phi = (samplePoints.length > 0) ? Math.asin(Math.max(-1, Math.min(1, samplePoints[0].val))) : 0;
+
+    for (let i = 0; i <= steps; i++) {
+      const t = (i / steps) * tTotal;
+      const x = margin.left + (i / steps) * pw;
+      const y = cy - amp * Math.sin(2 * Math.PI * fPerceived * t);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Glow for aliased signal
+    if (aliasing) {
+      ctx.strokeStyle = 'rgba(255,45,85,0.12)';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * tTotal;
+        const x = margin.left + (i / steps) * pw;
+        const y = cy - amp * Math.sin(2 * Math.PI * fPerceived * t);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  // ─── Draw stems and dots ───
+  for (const sp of samplePoints) {
+    // Stem line
+    ctx.strokeStyle = 'rgba(0,229,255,0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(sp.x, cy);
+    ctx.lineTo(sp.x, sp.y);
+    ctx.stroke();
+
+    // Dot
+    ctx.beginPath();
+    ctx.arc(sp.x, sp.y, 4.5, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,229,255,0.9)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,229,255,0.4)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Dot glow
+    ctx.beginPath();
+    ctx.arc(sp.x, sp.y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,229,255,0.08)';
+    ctx.fill();
+  }
+
+  // ─── Scanline effect (subtle) ───
+  ctx.fillStyle = 'rgba(0,0,0,0.02)';
+  for (let y = 0; y < H; y += 3) {
+    ctx.fillRect(0, y, W, 1);
+  }
+
+  requestAnimationFrame(render);
+}
+
+const var_bg = '#0a0a0f';
+update();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convolución Gráfica — Señales y Sistemas | UPIITA-IPN</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #111827;
+  --bg-panel: #1a2235;
+  --bg-canvas: #0d1220;
+  --accent-orange: #ff6b2b;
+  --accent-orange-glow: rgba(255, 107, 43, 0.25);
+  --accent-cyan: #00d4ff;
+  --accent-cyan-dim: rgba(0, 212, 255, 0.4);
+  --accent-magenta: #e040fb;
+  --accent-green: #00e676;
+  --accent-yellow: #ffd740;
+  --text-primary: #e8eaf0;
+  --text-secondary: #8892a4;
+  --text-dim: #4a5568;
+  --grid-line: rgba(255,255,255,0.04);
+  --grid-axis: rgba(255,255,255,0.12);
+  --border: rgba(255,255,255,0.06);
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(180deg, rgba(10,14,23,0.98) 0%, rgba(10,14,23,0.92) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-badge {
+  background: linear-gradient(135deg, var(--accent-orange), #ff3d00);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.header-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-weight: 300;
+}
+
+.equation-display {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent-cyan);
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  padding: 8px 18px;
+  border-radius: 8px;
+  letter-spacing: 0.3px;
+}
+
+/* ===== CONTROLS BAR ===== */
+.controls-bar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+select {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%238892a4' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+select:hover, select:focus { border-color: var(--accent-cyan); }
+
+.btn {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-play {
+  background: linear-gradient(135deg, var(--accent-orange), #ff3d00);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--accent-orange-glow);
+}
+.btn-play:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-orange-glow); }
+
+.btn-mode {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+.btn-mode:hover { border-color: var(--accent-magenta); color: var(--accent-magenta); }
+.btn-mode.active {
+  background: rgba(224,64,251,0.12);
+  border-color: var(--accent-magenta);
+  color: var(--accent-magenta);
+}
+
+.btn-reset {
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.btn-reset:hover { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+
+/* ===== SLIDER ===== */
+.slider-container {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slider-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-orange);
+  min-width: 70px;
+  text-align: center;
+  background: rgba(255,107,43,0.08);
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,107,43,0.15);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  background: var(--bg-panel);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-orange);
+  box-shadow: 0 0 12px var(--accent-orange-glow);
+  cursor: grab;
+  transition: transform 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-orange);
+  box-shadow: 0 0 12px var(--accent-orange-glow);
+  cursor: grab;
+  border: none;
+}
+
+/* ===== CANVAS AREA ===== */
+.canvas-wrapper {
+  padding: 20px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.canvas-panel {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.canvas-panel canvas {
+  display: block;
+  width: 100%;
+}
+
+.panel-label {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: rgba(10,14,23,0.7);
+  padding: 4px 10px;
+  border-radius: 4px;
+  z-index: 5;
+}
+
+/* ===== LEGEND ===== */
+.legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 12px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ===== SPEED CONTROL ===== */
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.speed-btn {
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.speed-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.speed-btn.active { border-color: var(--accent-cyan); color: var(--accent-cyan); background: rgba(0,212,255,0.08); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .header { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .equation-display { font-size: 12px; }
+  .controls-bar { flex-direction: column; align-items: stretch; }
+  .slider-container { min-width: unset; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo-badge">UPIITA · IPN</div>
+    <div>
+      <div class="header-title">Simulador de Convolución Gráfica</div>
+      <div class="header-subtitle">Señales y Sistemas — Semana 1: Laboratorio</div>
+    </div>
+  </div>
+  <div class="equation-display" id="eqDisplay">
+    y(t) = ∫ x(τ) · h(t − τ) dτ
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls-bar">
+  <div class="control-group">
+    <span class="control-label">Par de Señales</span>
+    <select id="signalSelect">
+      <option value="0">Pulso □ ∗ Pulso □ → Triángulo</option>
+      <option value="1">Pulso □ ∗ Exp Decay → Carga RC</option>
+      <option value="2">Seno ∗ Pulso Estrecho → Promedio Móvil</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <button class="btn btn-play" id="btnPlay">
+      <span id="playIcon">▶</span> <span id="playText">Play</span>
+    </button>
+    <button class="btn btn-reset" id="btnReset">↺ Reset</button>
+  </div>
+
+  <div class="control-group">
+    <button class="btn btn-mode" id="btnMode">DT: Discreto</button>
+  </div>
+
+  <div class="control-group speed-control">
+    <span class="control-label">Vel</span>
+    <button class="speed-btn active" data-speed="1">1×</button>
+    <button class="speed-btn" data-speed="2">2×</button>
+    <button class="speed-btn" data-speed="0.5">½×</button>
+  </div>
+
+  <div class="slider-container">
+    <span class="control-label">t =</span>
+    <input type="range" id="tSlider" min="-4" max="6" step="0.02" value="-4">
+    <span class="slider-value" id="tValue">−4.00</span>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--accent-cyan)"></div> x(τ) entrada</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--accent-magenta)"></div> h(t−τ) impulso desplazado</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--accent-orange); height:8px; opacity:0.6; border-radius:3px;"></div> Área: x(τ)·h(t−τ)</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:var(--accent-green)"></div> y(t) resultado</div>
+</div>
+
+<!-- CANVASES -->
+<div class="canvas-wrapper">
+  <div class="canvas-panel">
+    <div class="panel-label">Señales · Producto · Área de Intersección</div>
+    <canvas id="canvasTop"></canvas>
+  </div>
+  <div class="canvas-panel" style="margin-top: 4px;">
+    <div class="panel-label">Resultado y(t)</div>
+    <canvas id="canvasBot"></canvas>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>Análisis de Señales y Sistemas — M. en C. Alan Rosas Palacios — Co.De Aerospace</span>
+  <span>Mecatrónica · Biónica · Telemática</span>
+</div>
+
+<script>
+// ============================================================
+//  CONVOLUTION SIMULATOR — UPIITA-IPN
+//  Signals & Systems Course — Week 1 Lab
+// ============================================================
+
+const canvasTop = document.getElementById('canvasTop');
+const canvasBot = document.getElementById('canvasBot');
+const ctxTop = canvasTop.getContext('2d');
+const ctxBot = canvasBot.getContext('2d');
+
+const tSlider = document.getElementById('tSlider');
+const tValueEl = document.getElementById('tValue');
+const signalSelect = document.getElementById('signalSelect');
+const btnPlay = document.getElementById('btnPlay');
+const btnReset = document.getElementById('btnReset');
+const btnMode = document.getElementById('btnMode');
+const eqDisplay = document.getElementById('eqDisplay');
+const playIcon = document.getElementById('playIcon');
+const playText = document.getElementById('playText');
+
+// ---- State ----
+let currentT = -4;
+let isPlaying = false;
+let isDiscrete = false;
+let animSpeed = 1;
+let animId = null;
+let lastTimestamp = 0;
+
+// ---- Constants ----
+const DPR = window.devicePixelRatio || 1;
+const COLORS = {
+  cyan: '#00d4ff',
+  magenta: '#e040fb',
+  orange: '#ff6b2b',
+  orangeFill: 'rgba(255,107,43,0.30)',
+  green: '#00e676',
+  greenDim: 'rgba(0,230,118,0.15)',
+  grid: 'rgba(255,255,255,0.04)',
+  axis: 'rgba(255,255,255,0.12)',
+  axisLabel: 'rgba(255,255,255,0.35)',
+  bg: '#0d1220'
+};
+
+// ---- Signal Definitions ----
+function signalPairDefs(idx) {
+  switch(parseInt(idx)) {
+    case 0: return {
+      name: 'Pulso ∗ Pulso → Triángulo',
+      x: (tau) => (tau >= -1 && tau < 1) ? 1 : 0,
+      h: (tau) => (tau >= -1 && tau < 1) ? 1 : 0,
+      tMin: -4, tMax: 6, tauRange: [-3, 5],
+      yMax: 2.2
+    };
+    case 1: return {
+      name: 'Pulso ∗ Exp Decay → Carga RC',
+      x: (tau) => (tau >= 0 && tau < 2) ? 1 : 0,
+      h: (tau) => (tau >= 0) ? Math.exp(-tau * 1.5) : 0,
+      tMin: -3, tMax: 7, tauRange: [-2, 6],
+      yMax: 1.2
+    };
+    case 2: return {
+      name: 'Seno ∗ Pulso Estrecho → Promedio Móvil',
+      x: (tau) => (tau >= -3 && tau <= 3) ? Math.sin(2 * Math.PI * 0.5 * tau) : 0,
+      h: (tau) => (tau >= -0.5 && tau < 0.5) ? 1 : 0,
+      tMin: -5, tMax: 6, tauRange: [-4, 5],
+      yMax: 1.5
+    };
+    default: return signalPairDefs(0);
+  }
+}
+
+let sig = signalPairDefs(0);
+
+// ---- Numerical Convolution ----
+function computeConvolution(sig, tVal, dt) {
+  const tauMin = sig.tauRange[0];
+  const tauMax = sig.tauRange[1];
+  let sum = 0;
+  for (let tau = tauMin; tau <= tauMax; tau += dt) {
+    sum += sig.x(tau) * sig.h(tVal - tau) * dt;
+  }
+  return sum;
+}
+
+function computeFullConvolution(sig, tMin, tMax, dt, dtConv) {
+  const result = [];
+  for (let t = tMin; t <= tMax; t += dt) {
+    result.push({ t, y: computeConvolution(sig, t, dtConv) });
+  }
+  return result;
+}
+
+// ---- Canvas Sizing ----
+function resizeCanvases() {
+  const wrapper = document.querySelector('.canvas-wrapper');
+  const w = wrapper.clientWidth - 56;
+  const hTop = Math.min(380, window.innerHeight * 0.35);
+  const hBot = Math.min(220, window.innerHeight * 0.2);
+
+  canvasTop.style.width = w + 'px';
+  canvasTop.style.height = hTop + 'px';
+  canvasTop.width = w * DPR;
+  canvasTop.height = hTop * DPR;
+
+  canvasBot.style.width = w + 'px';
+  canvasBot.style.height = hBot + 'px';
+  canvasBot.width = w * DPR;
+  canvasBot.height = hBot * DPR;
+}
+
+// ---- Drawing Helpers ----
+function mapX(val, vMin, vMax, pxMin, pxMax) {
+  return pxMin + (val - vMin) / (vMax - vMin) * (pxMax - pxMin);
+}
+function mapY(val, vMin, vMax, pxMin, pxMax) {
+  return pxMax - (val - vMin) / (vMax - vMin) * (pxMax - pxMin);
+}
+
+function drawGrid(ctx, W, H, pad, xMin, xMax, yMin, yMax, label) {
+  ctx.save();
+  ctx.scale(DPR, DPR);
+  const w = W / DPR, h = H / DPR;
+  const pl = pad.l, pr = pad.r, pt = pad.t, pb = pad.b;
+
+  // Background
+  ctx.fillStyle = COLORS.bg;
+  ctx.fillRect(0, 0, w, h);
+
+  // Grid lines
+  ctx.strokeStyle = COLORS.grid;
+  ctx.lineWidth = 1;
+  const xStep = 1;
+  for (let v = Math.ceil(xMin); v <= Math.floor(xMax); v += xStep) {
+    const px = mapX(v, xMin, xMax, pl, w - pr);
+    ctx.beginPath(); ctx.moveTo(px, pt); ctx.lineTo(px, h - pb); ctx.stroke();
+  }
+  const yRange = yMax - yMin;
+  const yStep = yRange <= 3 ? 0.5 : 1;
+  for (let v = Math.ceil(yMin / yStep) * yStep; v <= yMax; v += yStep) {
+    const py = mapY(v, yMin, yMax, pt, h - pb);
+    ctx.beginPath(); ctx.moveTo(pl, py); ctx.lineTo(w - pr, py); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = COLORS.axis;
+  ctx.lineWidth = 1.2;
+  // X axis at y=0
+  const y0 = mapY(0, yMin, yMax, pt, h - pb);
+  ctx.beginPath(); ctx.moveTo(pl, y0); ctx.lineTo(w - pr, y0); ctx.stroke();
+  // Y axis at x=0
+  const x0 = mapX(0, xMin, xMax, pl, w - pr);
+  if (x0 >= pl && x0 <= w - pr) {
+    ctx.beginPath(); ctx.moveTo(x0, pt); ctx.lineTo(x0, h - pb); ctx.stroke();
+  }
+
+  // Tick labels
+  ctx.fillStyle = COLORS.axisLabel;
+  ctx.font = `${10}px 'JetBrains Mono', monospace`;
+  ctx.textAlign = 'center';
+  for (let v = Math.ceil(xMin); v <= Math.floor(xMax); v += xStep) {
+    const px = mapX(v, xMin, xMax, pl, w - pr);
+    ctx.fillText(v, px, h - pb + 14);
+  }
+  ctx.textAlign = 'right';
+  for (let v = Math.ceil(yMin / yStep) * yStep; v <= yMax; v += yStep) {
+    if (Math.abs(v) < 0.01) continue;
+    const py = mapY(v, yMin, yMax, pt, h - pb);
+    ctx.fillText(v.toFixed(1), pl - 6, py + 4);
+  }
+
+  // Axis label
+  if (label) {
+    ctx.fillStyle = COLORS.axisLabel;
+    ctx.font = `500 ${11}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = 'right';
+    ctx.fillText(label, w - pr, h - pb + 14);
+  }
+
+  ctx.restore();
+  return { w: w, h: h, pl, pr, pt, pb, xMin, xMax, yMin, yMax };
+}
+
+function plotLine(ctx, grid, fn, xStart, xEnd, dx, color, lineWidth, dashed) {
+  ctx.save();
+  ctx.scale(DPR, DPR);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lineWidth || 2;
+  if (dashed) ctx.setLineDash(dashed);
+  ctx.beginPath();
+  let started = false;
+  for (let x = xStart; x <= xEnd; x += dx) {
+    const y = fn(x);
+    const px = mapX(x, grid.xMin, grid.xMax, grid.pl, grid.w - grid.pr);
+    const py = mapY(y, grid.yMin, grid.yMax, grid.pt, grid.h - grid.pb);
+    if (!started) { ctx.moveTo(px, py); started = true; }
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function plotStems(ctx, grid, fn, xStart, xEnd, dx, color, lineWidth) {
+  ctx.save();
+  ctx.scale(DPR, DPR);
+  const y0px = mapY(0, grid.yMin, grid.yMax, grid.pt, grid.h - grid.pb);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = lineWidth || 1.5;
+  for (let x = xStart; x <= xEnd; x += dx) {
+    const y = fn(x);
+    const px = mapX(x, grid.xMin, grid.xMax, grid.pl, grid.w - grid.pr);
+    const py = mapY(y, grid.yMin, grid.yMax, grid.pt, grid.h - grid.pb);
+    ctx.beginPath(); ctx.moveTo(px, y0px); ctx.lineTo(px, py); ctx.stroke();
+    ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+}
+
+function fillArea(ctx, grid, fn, xStart, xEnd, dx, fillColor) {
+  ctx.save();
+  ctx.scale(DPR, DPR);
+  ctx.fillStyle = fillColor;
+  const y0px = mapY(0, grid.yMin, grid.yMax, grid.pt, grid.h - grid.pb);
+  ctx.beginPath();
+  let pxStart = mapX(xStart, grid.xMin, grid.xMax, grid.pl, grid.w - grid.pr);
+  ctx.moveTo(pxStart, y0px);
+  for (let x = xStart; x <= xEnd; x += dx) {
+    const y = fn(x);
+    const px = mapX(x, grid.xMin, grid.xMax, grid.pl, grid.w - grid.pr);
+    const py = mapY(y, grid.yMin, grid.yMax, grid.pt, grid.h - grid.pb);
+    ctx.lineTo(px, py);
+  }
+  let pxEnd = mapX(xEnd, grid.xMin, grid.xMax, grid.pl, grid.w - grid.pr);
+  ctx.lineTo(pxEnd, y0px);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+// ---- Marker for current t ----
+function drawTMarker(ctx, grid, tVal) {
+  ctx.save();
+  ctx.scale(DPR, DPR);
+  const px = mapX(tVal, grid.xMin, grid.xMax, grid.pl, grid.w - grid.pr);
+  const y0 = mapY(0, grid.yMin, grid.yMax, grid.pt, grid.h - grid.pb);
+
+  // Vertical dashed line
+  ctx.strokeStyle = 'rgba(255,107,43,0.4)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(px, grid.pt); ctx.lineTo(px, grid.h - grid.pb); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Dot on y(t)
+  ctx.fillStyle = COLORS.green;
+  ctx.shadowColor = COLORS.green;
+  ctx.shadowBlur = 10;
+  ctx.beginPath(); ctx.arc(px, y0, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+// ---- Main Draw ----
+function draw() {
+  resizeCanvases();
+  const t = currentT;
+  const dtPlot = isDiscrete ? 0.25 : 0.02;
+  const dtConv = 0.01;
+
+  // ========== TOP CANVAS ==========
+  const padTop = { l: 55, r: 20, t: 40, b: 28 };
+  const yMaxTop = sig.name.includes('Seno') ? 1.5 : 1.3;
+  const gridTop = drawGrid(ctxTop, canvasTop.width, canvasTop.height, padTop,
+    sig.tauRange[0], sig.tauRange[1], -yMaxTop, yMaxTop, 'τ');
+
+  // Product fill area
+  const prodFn = (tau) => sig.x(tau) * sig.h(t - tau);
+  if (isDiscrete) {
+    // Discrete stems for product
+    ctxTop.save();
+    ctxTop.scale(DPR, DPR);
+    const y0px = mapY(0, gridTop.yMin, gridTop.yMax, gridTop.pt, gridTop.h - gridTop.pb);
+    for (let tau = sig.tauRange[0]; tau <= sig.tauRange[1]; tau += 0.25) {
+      const val = prodFn(tau);
+      if (Math.abs(val) < 0.001) continue;
+      const px = mapX(tau, gridTop.xMin, gridTop.xMax, gridTop.pl, gridTop.w - gridTop.pr);
+      const py = mapY(val, gridTop.yMin, gridTop.yMax, gridTop.pt, gridTop.h - gridTop.pb);
+      ctxTop.fillStyle = COLORS.orangeFill;
+      const barW = Math.max(4, (gridTop.w - gridTop.pl - gridTop.pr) / ((gridTop.xMax - gridTop.xMin) / 0.25) * 0.6);
+      const barH = y0px - py;
+      ctxTop.fillRect(px - barW/2, Math.min(y0px, py), barW, Math.abs(barH));
+    }
+    ctxTop.restore();
+  } else {
+    fillArea(ctxTop, gridTop, prodFn, sig.tauRange[0], sig.tauRange[1], dtPlot, COLORS.orangeFill);
+  }
+
+  // x(tau) — cyan
+  if (isDiscrete) {
+    plotStems(ctxTop, gridTop, sig.x, sig.tauRange[0], sig.tauRange[1], 0.25, COLORS.cyan, 2);
+  } else {
+    plotLine(ctxTop, gridTop, sig.x, sig.tauRange[0], sig.tauRange[1], dtPlot, COLORS.cyan, 2.5);
+  }
+
+  // h(t - tau) — magenta
+  const hShifted = (tau) => sig.h(t - tau);
+  if (isDiscrete) {
+    plotStems(ctxTop, gridTop, hShifted, sig.tauRange[0], sig.tauRange[1], 0.25, COLORS.magenta, 2);
+  } else {
+    plotLine(ctxTop, gridTop, hShifted, sig.tauRange[0], sig.tauRange[1], dtPlot, COLORS.magenta, 2.5);
+  }
+
+  // Labels on curves
+  ctxTop.save();
+  ctxTop.scale(DPR, DPR);
+  ctxTop.font = `600 12px 'JetBrains Mono', monospace`;
+  // x(τ) label
+  ctxTop.fillStyle = COLORS.cyan;
+  ctxTop.textAlign = 'left';
+  ctxTop.fillText('x(τ)', gridTop.pl + 8, gridTop.pt + 18);
+  // h(t−τ) label
+  ctxTop.fillStyle = COLORS.magenta;
+  ctxTop.fillText('h(t−τ)', gridTop.w - gridTop.pr - 60, gridTop.pt + 18);
+  ctxTop.restore();
+
+  // ========== BOTTOM CANVAS ==========
+  const padBot = { l: 55, r: 20, t: 30, b: 28 };
+  const gridBot = drawGrid(ctxBot, canvasBot.width, canvasBot.height, padBot,
+    sig.tMin, sig.tMax, -sig.yMax * 0.3, sig.yMax, 't');
+
+  // Full convolution curve up to current t
+  const convData = computeFullConvolution(sig, sig.tMin, sig.tMax, 0.04, dtConv);
+
+  if (isDiscrete) {
+    // Stems for result
+    ctxBot.save();
+    ctxBot.scale(DPR, DPR);
+    const y0px = mapY(0, gridBot.yMin, gridBot.yMax, gridBot.pt, gridBot.h - gridBot.pb);
+    ctxBot.strokeStyle = COLORS.green;
+    ctxBot.fillStyle = COLORS.green;
+    ctxBot.lineWidth = 1.5;
+    for (const pt of convData) {
+      if (pt.t > t + 0.01) break;
+      if (Math.round(pt.t * 4) % 1 !== 0 && Math.abs(pt.t - Math.round(pt.t * 4) / 4) > 0.03) continue;
+      const px = mapX(pt.t, gridBot.xMin, gridBot.xMax, gridBot.pl, gridBot.w - gridBot.pr);
+      const py = mapY(pt.y, gridBot.yMin, gridBot.yMax, gridBot.pt, gridBot.h - gridBot.pb);
+      ctxBot.beginPath(); ctxBot.moveTo(px, y0px); ctxBot.lineTo(px, py); ctxBot.stroke();
+      ctxBot.beginPath(); ctxBot.arc(px, py, 3, 0, Math.PI * 2); ctxBot.fill();
+    }
+    ctxBot.restore();
+  } else {
+    // Continuous green fill under curve
+    ctxBot.save();
+    ctxBot.scale(DPR, DPR);
+    const y0px = mapY(0, gridBot.yMin, gridBot.yMax, gridBot.pt, gridBot.h - gridBot.pb);
+    ctxBot.fillStyle = COLORS.greenDim;
+    ctxBot.beginPath();
+    let startPx = mapX(convData[0].t, gridBot.xMin, gridBot.xMax, gridBot.pl, gridBot.w - gridBot.pr);
+    ctxBot.moveTo(startPx, y0px);
+    for (const pt of convData) {
+      if (pt.t > t + 0.01) break;
+      const px = mapX(pt.t, gridBot.xMin, gridBot.xMax, gridBot.pl, gridBot.w - gridBot.pr);
+      const py = mapY(pt.y, gridBot.yMin, gridBot.yMax, gridBot.pt, gridBot.h - gridBot.pb);
+      ctxBot.lineTo(px, py);
+    }
+    // Find last drawn point
+    let lastDrawn = convData[0];
+    for (const pt of convData) { if (pt.t > t + 0.01) break; lastDrawn = pt; }
+    const lastPx = mapX(lastDrawn.t, gridBot.xMin, gridBot.xMax, gridBot.pl, gridBot.w - gridBot.pr);
+    ctxBot.lineTo(lastPx, y0px);
+    ctxBot.closePath();
+    ctxBot.fill();
+    ctxBot.restore();
+
+    // Green line
+    ctxBot.save();
+    ctxBot.scale(DPR, DPR);
+    ctxBot.strokeStyle = COLORS.green;
+    ctxBot.lineWidth = 2.5;
+    ctxBot.shadowColor = COLORS.green;
+    ctxBot.shadowBlur = 6;
+    ctxBot.beginPath();
+    let started = false;
+    for (const pt of convData) {
+      if (pt.t > t + 0.01) break;
+      const px = mapX(pt.t, gridBot.xMin, gridBot.xMax, gridBot.pl, gridBot.w - gridBot.pr);
+      const py = mapY(pt.y, gridBot.yMin, gridBot.yMax, gridBot.pt, gridBot.h - gridBot.pb);
+      if (!started) { ctxBot.moveTo(px, py); started = true; }
+      else ctxBot.lineTo(px, py);
+    }
+    ctxBot.stroke();
+    ctxBot.shadowBlur = 0;
+    ctxBot.restore();
+  }
+
+  // Current t marker on bottom
+  const yAtT = computeConvolution(sig, t, dtConv);
+  ctxBot.save();
+  ctxBot.scale(DPR, DPR);
+  const tPx = mapX(t, gridBot.xMin, gridBot.xMax, gridBot.pl, gridBot.w - gridBot.pr);
+  const yPx = mapY(yAtT, gridBot.yMin, gridBot.yMax, gridBot.pt, gridBot.h - gridBot.pb);
+
+  // Dashed vertical
+  ctxBot.strokeStyle = 'rgba(255,107,43,0.35)';
+  ctxBot.lineWidth = 1;
+  ctxBot.setLineDash([4, 4]);
+  ctxBot.beginPath(); ctxBot.moveTo(tPx, gridBot.pt); ctxBot.lineTo(tPx, gridBot.h - gridBot.pb); ctxBot.stroke();
+  ctxBot.setLineDash([]);
+
+  // Glowing dot
+  ctxBot.fillStyle = COLORS.orange;
+  ctxBot.shadowColor = COLORS.orange;
+  ctxBot.shadowBlur = 14;
+  ctxBot.beginPath(); ctxBot.arc(tPx, yPx, 5, 0, Math.PI * 2); ctxBot.fill();
+  ctxBot.shadowBlur = 0;
+
+  // Value label
+  ctxBot.fillStyle = COLORS.orange;
+  ctxBot.font = `600 11px 'JetBrains Mono', monospace`;
+  ctxBot.textAlign = 'left';
+  ctxBot.fillText(`y(${t.toFixed(1)}) = ${yAtT.toFixed(3)}`, tPx + 10, yPx - 10);
+  ctxBot.restore();
+}
+
+// ---- Slider ----
+tSlider.addEventListener('input', () => {
+  currentT = parseFloat(tSlider.value);
+  updateTDisplay();
+  draw();
+});
+
+function updateTDisplay() {
+  const formatted = currentT < 0 ? `−${Math.abs(currentT).toFixed(2)}` : currentT.toFixed(2);
+  tValueEl.textContent = formatted;
+}
+
+// ---- Signal Select ----
+signalSelect.addEventListener('change', () => {
+  sig = signalPairDefs(signalSelect.value);
+  tSlider.min = sig.tMin;
+  tSlider.max = sig.tMax;
+  currentT = sig.tMin;
+  tSlider.value = currentT;
+  updateTDisplay();
+  draw();
+});
+
+// ---- Play / Pause ----
+btnPlay.addEventListener('click', () => {
+  isPlaying = !isPlaying;
+  if (isPlaying) {
+    playIcon.textContent = '⏸';
+    playText.textContent = 'Pausa';
+    lastTimestamp = performance.now();
+    animate();
+  } else {
+    playIcon.textContent = '▶';
+    playText.textContent = 'Play';
+    if (animId) cancelAnimationFrame(animId);
+  }
+});
+
+function animate(ts) {
+  if (!isPlaying) return;
+  if (!ts) ts = performance.now();
+  const dt = (ts - lastTimestamp) / 1000;
+  lastTimestamp = ts;
+
+  currentT += dt * 0.8 * animSpeed;
+  if (currentT > parseFloat(tSlider.max)) {
+    currentT = parseFloat(tSlider.min);
+  }
+  tSlider.value = currentT;
+  updateTDisplay();
+  draw();
+  animId = requestAnimationFrame(animate);
+}
+
+// ---- Reset ----
+btnReset.addEventListener('click', () => {
+  isPlaying = false;
+  playIcon.textContent = '▶';
+  playText.textContent = 'Play';
+  if (animId) cancelAnimationFrame(animId);
+  currentT = parseFloat(tSlider.min);
+  tSlider.value = currentT;
+  updateTDisplay();
+  draw();
+});
+
+// ---- Discrete Mode ----
+btnMode.addEventListener('click', () => {
+  isDiscrete = !isDiscrete;
+  btnMode.classList.toggle('active', isDiscrete);
+  btnMode.textContent = isDiscrete ? 'CT: Continuo' : 'DT: Discreto';
+
+  if (isDiscrete) {
+    eqDisplay.textContent = 'y[n] = Σ x[k] · h[n − k]';
+  } else {
+    eqDisplay.textContent = 'y(t) = ∫ x(τ) · h(t − τ) dτ';
+  }
+  draw();
+});
+
+// ---- Speed ----
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    animSpeed = parseFloat(btn.dataset.speed);
+  });
+});
+
+// ---- Resize ----
+window.addEventListener('resize', () => draw());
+
+// ---- Init ----
+sig = signalPairDefs(0);
+tSlider.min = sig.tMin;
+tSlider.max = sig.tMax;
+currentT = sig.tMin;
+tSlider.value = currentT;
+updateTDisplay();
+draw();
+</script>
+</body>
+</html>

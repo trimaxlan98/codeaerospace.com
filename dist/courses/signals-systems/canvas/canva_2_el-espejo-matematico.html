@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Espejo Matemático — Descomposición Par/Impar</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0c10;--bg2:#0f1218;--bg3:#151922;--bg4:#1a1f2b;
+  --border:#1e2533;--border2:#2a3245;
+  --text:#c8cdd8;--text2:#8a92a4;--text3:#5a6278;
+  --accent:#e8722a;--accent2:#ff8f4f;
+  --cyan:#22d3ee;--cyan2:#67e8f9;
+  --green:#34d399;--red:#f87171;
+  --par:#e8722a;--impar:#22d3ee;
+  --signal:#a78bfa;--reflected:#f472b6;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif}
+
+.app{display:grid;grid-template-columns:1fr 280px;grid-template-rows:auto 1fr;height:100vh;gap:0}
+.header{grid-column:1/-1;padding:16px 28px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:20px;z-index:10}
+.header h1{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;letter-spacing:-.3px;color:#fff}
+.header h1 span{color:var(--accent);font-weight:700}
+.header .subtitle{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.5px;text-transform:uppercase}
+
+.toolbar{display:flex;gap:6px;margin-left:auto;align-items:center}
+.btn{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;
+  padding:7px 14px;border:1px solid var(--border2);border-radius:6px;
+  background:var(--bg3);color:var(--text2);cursor:pointer;
+  transition:all .15s ease;letter-spacing:.3px;white-space:nowrap;
+}
+.btn:hover{background:var(--bg4);color:var(--text);border-color:var(--text3)}
+.btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.clear{border-color:#f8717140;color:var(--red)}
+.btn.clear:hover{background:#f8717118;border-color:var(--red)}
+.btn-group{display:flex;gap:0}
+.btn-group .btn{border-radius:0}
+.btn-group .btn:first-child{border-radius:6px 0 0 6px}
+.btn-group .btn:last-child{border-radius:0 6px 6px 0}
+.btn-group .btn+.btn{border-left:0}
+.sep{width:1px;height:20px;background:var(--border2);margin:0 8px}
+
+.main{overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.graph-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;flex:1;min-height:0;display:flex;flex-direction:column;
+}
+.graph-header{
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.graph-header .dot{width:8px;height:8px;border-radius:50%}
+.graph-header .label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.5px}
+.graph-header .formula{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);margin-left:auto}
+.graph-body{flex:1;position:relative;min-height:0}
+.graph-body canvas{width:100%;height:100%;display:block}
+
+.sidebar{
+  background:var(--bg2);border-left:1px solid var(--border);
+  padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:20px;
+  scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
+}
+.panel{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px}
+.panel-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px}
+.meter{margin-bottom:10px}
+.meter-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;font-family:'JetBrains Mono',monospace}
+.meter-label span:first-child{color:var(--text2)}
+.meter-label span:last-child{font-weight:600}
+.meter-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.meter-fill{height:100%;border-radius:3px;transition:width .25s ease}
+
+.verdict{margin-top:8px;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg)}
+.verdict-type{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;margin-bottom:4px}
+.verdict-desc{font-size:11px;color:var(--text2);line-height:1.6}
+
+.instructions{font-size:11px;color:var(--text3);line-height:1.7}
+.instructions strong{color:var(--text2);font-weight:500}
+.instructions .key{
+  display:inline-block;padding:1px 6px;border-radius:3px;
+  background:var(--bg);border:1px solid var(--border2);
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);
+}
+
+.legend-item{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:11px;font-family:'JetBrains Mono',monospace}
+.legend-swatch{width:20px;height:3px;border-radius:2px}
+
+.zoom-controls{display:flex;align-items:center;gap:10px}
+.zoom-group{display:flex;align-items:center;gap:6px}
+.zoom-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.4px;white-space:nowrap}
+.zoom-slider{-webkit-appearance:none;appearance:none;width:90px;height:4px;border-radius:2px;background:var(--bg);outline:none;cursor:pointer;transition:background .2s}
+.zoom-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.zoom-slider::-webkit-slider-thumb:hover{transform:scale(1.2);box-shadow:0 0 8px #e8722a60}
+.zoom-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);cursor:pointer}
+.zoom-slider.y-axis{width:70px}
+.zoom-slider.y-axis::-webkit-slider-thumb{background:var(--cyan)}
+.zoom-slider.y-axis::-webkit-slider-thumb:hover{box-shadow:0 0 8px #22d3ee60}
+.zoom-slider.y-axis::-moz-range-thumb{background:var(--cyan)}
+.zoom-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);min-width:28px;text-align:center}
+.zoom-reset{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 8px;border:1px solid var(--border2);border-radius:4px;background:var(--bg3);color:var(--text3);cursor:pointer;transition:all .15s}
+.zoom-reset:hover{color:var(--text);border-color:var(--text3)}
+
+.draw-hint{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3);
+  pointer-events:none;opacity:.6;text-align:center;line-height:1.8;
+  transition:opacity .3s ease;
+}
+.draw-hint.hidden{opacity:0}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+  .sidebar{border-left:0;border-top:1px solid var(--border);max-height:220px;flex-direction:row;flex-wrap:wrap;padding:12px}
+  .panel{flex:1;min-width:200px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <h1>El <span>Espejo</span> Matemático</h1>
+      <div class="subtitle">Descomposición Par / Impar de Señales</div>
+    </div>
+    <div class="toolbar">
+      <div class="btn-group">
+        <button class="btn" id="btnDraw" onclick="setMode('draw')">✏ Dibujar</button>
+        <button class="btn" id="btnStep" onclick="loadPreset('step')">u(t)</button>
+        <button class="btn" id="btnRamp" onclick="loadPreset('ramp')">Rampa</button>
+        <button class="btn" id="btnExp" onclick="loadPreset('exp')">e⁻ᵗ</button>
+        <button class="btn" id="btnSawtooth" onclick="loadPreset('sawtooth')">Diente</button>
+      </div>
+      <div class="sep"></div>
+      <div class="zoom-controls">
+        <div class="zoom-group">
+          <span class="zoom-label">T</span>
+          <input type="range" class="zoom-slider" id="zoomT" min="0.2" max="3" step="0.1" value="1">
+          <span class="zoom-val" id="zoomTVal">1.0×</span>
+        </div>
+        <div class="zoom-group">
+          <span class="zoom-label">Y</span>
+          <input type="range" class="zoom-slider y-axis" id="zoomY" min="0.2" max="4" step="0.1" value="1">
+          <span class="zoom-val" id="zoomYVal">1.0×</span>
+        </div>
+        <button class="zoom-reset" onclick="resetZoom()">1:1</button>
+      </div>
+      <div class="sep"></div>
+      <button class="btn clear" onclick="clearAll()">✕ Limpiar</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="graph-card" id="card0">
+      <div class="graph-header">
+        <div class="dot" style="background:var(--signal)"></div>
+        <div class="label" style="color:var(--signal)">x(t) Original</div>
+        <div class="legend-item" style="margin-left:12px"><div class="legend-swatch" style="background:var(--reflected)"></div><span style="color:var(--reflected)">x(−t)</span></div>
+        <div class="formula">Gráfica 1 — Señal y Reflexión</div>
+      </div>
+      <div class="graph-body">
+        <canvas id="c0"></canvas>
+        <div class="draw-hint" id="hint">Dibuja una señal con el mouse<br>o selecciona una predefinida ↑</div>
+      </div>
+    </div>
+    <div class="graph-card" id="card1">
+      <div class="graph-header">
+        <div class="dot" style="background:var(--par)"></div>
+        <div class="label" style="color:var(--par)">xₑ(t) Parte Par</div>
+        <div class="formula">½ · [x(t) + x(−t)]</div>
+      </div>
+      <div class="graph-body"><canvas id="c1"></canvas></div>
+    </div>
+    <div class="graph-card" id="card2">
+      <div class="graph-header">
+        <div class="dot" style="background:var(--impar)"></div>
+        <div class="label" style="color:var(--impar)">xₒ(t) Parte Impar</div>
+        <div class="formula">½ · [x(t) − x(−t)]</div>
+      </div>
+      <div class="graph-body"><canvas id="c2"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="panel">
+      <div class="panel-title">⚡ Energía de Componentes</div>
+      <div class="meter">
+        <div class="meter-label"><span>Par (Eₑ)</span><span id="eparVal" style="color:var(--par)">0.00</span></div>
+        <div class="meter-bar"><div class="meter-fill" id="eparBar" style="width:0%;background:var(--par)"></div></div>
+      </div>
+      <div class="meter">
+        <div class="meter-label"><span>Impar (Eₒ)</span><span id="eimpVal" style="color:var(--impar)">0.00</span></div>
+        <div class="meter-bar"><div class="meter-fill" id="eimpBar" style="width:0%;background:var(--impar)"></div></div>
+      </div>
+      <div class="meter">
+        <div class="meter-label"><span>Total (E)</span><span id="etotVal" style="color:var(--text)">0.00</span></div>
+        <div class="meter-bar"><div class="meter-fill" id="etotBar" style="width:0%;background:var(--text3)"></div></div>
+      </div>
+      <div class="verdict" id="verdict">
+        <div class="verdict-type" id="verdictType" style="color:var(--text3)">Sin señal</div>
+        <div class="verdict-desc" id="verdictDesc">Dibuja o carga una señal para analizar su simetría.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">📐 Concepto</div>
+      <div class="instructions">
+        Toda señal <strong>x(t)</strong> puede expresarse como la suma de una componente <strong style="color:var(--par)">par</strong> y una <strong style="color:var(--impar)">impar</strong>:<br><br>
+        <strong>xₑ(t) = xₑ(−t)</strong> → simétrica<br>
+        <strong>xₒ(t) = −xₒ(−t)</strong> → antisimétrica<br><br>
+        La energía relativa de cada componente indica qué tipo de simetría domina en la señal.
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">🖱 Controles</div>
+      <div class="instructions">
+        <strong>Click + arrastrar</strong> en la gráfica superior para dibujar una señal libre.<br><br>
+        Usa los botones de la barra para cargar señales clásicas:<br>
+        <span class="key">u(t)</span> Escalón unitario<br>
+        <span class="key">Rampa</span> Señal rampa<br>
+        <span class="key">e⁻ᵗ</span> Exponencial decreciente<br>
+        <span class="key">Diente</span> Diente de sierra<br><br>
+        <strong>Zoom:</strong> Usa los deslizadores <span class="key">T</span> y <span class="key">Y</span> para ampliar el eje horizontal y vertical. <span class="key">1:1</span> restaura la vista original.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const N = 512;
+const T_MIN = -5, T_MAX = 5;
+const dt = (T_MAX - T_MIN) / (N - 1);
+
+let signal = new Float64Array(N);
+let reflected = new Float64Array(N);
+let evenPart = new Float64Array(N);
+let oddPart = new Float64Array(N);
+let hasSignal = false;
+let isDrawing = false;
+let currentMode = 'draw';
+let lastDrawIdx = -1;
+let zoomT = 1;
+let zoomY = 1;
+
+document.getElementById('zoomT').addEventListener('input', e => {
+  zoomT = parseFloat(e.target.value);
+  document.getElementById('zoomTVal').textContent = zoomT.toFixed(1) + '×';
+  renderAll();
+});
+document.getElementById('zoomY').addEventListener('input', e => {
+  zoomY = parseFloat(e.target.value);
+  document.getElementById('zoomYVal').textContent = zoomY.toFixed(1) + '×';
+  renderAll();
+});
+function resetZoom() {
+  zoomT = 1; zoomY = 1;
+  document.getElementById('zoomT').value = 1;
+  document.getElementById('zoomY').value = 1;
+  document.getElementById('zoomTVal').textContent = '1.0×';
+  document.getElementById('zoomYVal').textContent = '1.0×';
+  renderAll();
+}
+
+const canvases = [
+  document.getElementById('c0'),
+  document.getElementById('c1'),
+  document.getElementById('c2')
+];
+const ctxs = canvases.map(c => c.getContext('2d'));
+
+function tToIndex(t) {
+  return Math.round((t - T_MIN) / dt);
+}
+function indexToT(i) {
+  return T_MIN + i * dt;
+}
+
+function resizeAll() {
+  canvases.forEach(c => {
+    const rect = c.parentElement.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    c.width = rect.width * dpr;
+    c.height = rect.height * dpr;
+    c.style.width = rect.width + 'px';
+    c.style.height = rect.height + 'px';
+  });
+  renderAll();
+}
+
+function decompose() {
+  for (let i = 0; i < N; i++) {
+    const mirrorIdx = N - 1 - i;
+    reflected[i] = signal[mirrorIdx];
+    evenPart[i] = 0.5 * (signal[i] + signal[mirrorIdx]);
+    oddPart[i] = 0.5 * (signal[i] - signal[mirrorIdx]);
+  }
+}
+
+function computeEnergy(arr) {
+  let e = 0;
+  for (let i = 0; i < N; i++) e += arr[i] * arr[i] * Math.abs(dt);
+  return e;
+}
+
+function updateMeters() {
+  const epar = computeEnergy(evenPart);
+  const eimp = computeEnergy(oddPart);
+  const etot = epar + eimp;
+
+  document.getElementById('eparVal').textContent = epar.toFixed(2);
+  document.getElementById('eimpVal').textContent = eimp.toFixed(2);
+  document.getElementById('etotVal').textContent = etot.toFixed(2);
+
+  const maxE = Math.max(etot, 0.01);
+  document.getElementById('eparBar').style.width = (epar / maxE * 100) + '%';
+  document.getElementById('eimpBar').style.width = (eimp / maxE * 100) + '%';
+  document.getElementById('etotBar').style.width = '100%';
+
+  const vType = document.getElementById('verdictType');
+  const vDesc = document.getElementById('verdictDesc');
+
+  if (!hasSignal || etot < 0.001) {
+    vType.textContent = 'Sin señal';
+    vType.style.color = 'var(--text3)';
+    vDesc.textContent = 'Dibuja o carga una señal para analizar su simetría.';
+    return;
+  }
+
+  const parRatio = epar / etot;
+  const impRatio = eimp / etot;
+
+  if (parRatio > 0.98) {
+    vType.textContent = '✦ Puramente Par';
+    vType.style.color = 'var(--par)';
+    vDesc.textContent = `La señal posee simetría especular respecto al eje vertical. El ${(parRatio*100).toFixed(1)}% de la energía es par. xₒ(t) ≈ 0.`;
+  } else if (impRatio > 0.98) {
+    vType.textContent = '✦ Puramente Impar';
+    vType.style.color = 'var(--impar)';
+    vDesc.textContent = `La señal es antisimétrica respecto al origen. El ${(impRatio*100).toFixed(1)}% de la energía es impar. xₑ(t) ≈ 0.`;
+  } else if (parRatio > 0.7) {
+    vType.textContent = '◈ Predominantemente Par';
+    vType.style.color = 'var(--par)';
+    vDesc.textContent = `La componente par domina con ${(parRatio*100).toFixed(1)}% de la energía total. La señal tiene una simetría parcial respecto a t=0.`;
+  } else if (impRatio > 0.7) {
+    vType.textContent = '◈ Predominantemente Impar';
+    vType.style.color = 'var(--impar)';
+    vDesc.textContent = `La componente impar domina con ${(impRatio*100).toFixed(1)}% de la energía total. La señal tiene antisimetría parcial.`;
+  } else {
+    vType.textContent = '◇ Asimétrica';
+    vType.style.color = 'var(--green)';
+    vDesc.textContent = `Energía par: ${(parRatio*100).toFixed(1)}% — impar: ${(impRatio*100).toFixed(1)}%. La señal no tiene simetría dominante y ambas componentes contribuyen significativamente.`;
+  }
+}
+
+function drawGrid(ctx, w, h, yLabel) {
+  const dpr = window.devicePixelRatio || 1;
+  const pad = { l: 48 * dpr, r: 16 * dpr, t: 12 * dpr, b: 28 * dpr };
+  const pw = w - pad.l - pad.r;
+  const ph = h - pad.t - pad.b;
+
+  // Zoomed ranges
+  const tHalf = 5 / zoomT;
+  const viewTMin = -tHalf;
+  const viewTMax = tHalf;
+  const yRange = 4 / zoomY;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // BG
+  ctx.fillStyle = '#0d0f14';
+  ctx.fillRect(pad.l, pad.t, pw, ph);
+
+  // Compute nice grid steps
+  function niceStep(range) {
+    const raw = range / 4;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const norm = raw / mag;
+    if (norm <= 1.5) return mag;
+    if (norm <= 3.5) return 2 * mag;
+    if (norm <= 7.5) return 5 * mag;
+    return 10 * mag;
+  }
+
+  const tStep = niceStep(viewTMax - viewTMin);
+  const yStep = niceStep(2 * yRange);
+
+  // Grid lines - vertical
+  ctx.strokeStyle = '#1a1f2a';
+  ctx.lineWidth = 1 * dpr;
+  {
+    const start = Math.ceil(viewTMin / tStep) * tStep;
+    for (let t = start; t <= viewTMax; t += tStep) {
+      const x = pad.l + ((t - viewTMin) / (viewTMax - viewTMin)) * pw;
+      ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t + ph); ctx.stroke();
+    }
+  }
+  // Grid lines - horizontal
+  {
+    const start = Math.ceil(-yRange / yStep) * yStep;
+    for (let v = start; v <= yRange; v += yStep) {
+      const y = pad.t + (1 - (v + yRange) / (2 * yRange)) * ph;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + pw, y); ctx.stroke();
+    }
+  }
+
+  // Axes
+  ctx.strokeStyle = '#2a3245';
+  ctx.lineWidth = 1.5 * dpr;
+  // x-axis at y=0
+  const y0 = pad.t + (1 - (0 + yRange) / (2 * yRange)) * ph;
+  if (y0 >= pad.t && y0 <= pad.t + ph) {
+    ctx.beginPath(); ctx.moveTo(pad.l, y0); ctx.lineTo(pad.l + pw, y0); ctx.stroke();
+  }
+  // y-axis at t=0
+  const x0 = pad.l + ((0 - viewTMin) / (viewTMax - viewTMin)) * pw;
+  if (x0 >= pad.l && x0 <= pad.l + pw) {
+    ctx.beginPath(); ctx.moveTo(x0, pad.t); ctx.lineTo(x0, pad.t + ph); ctx.stroke();
+  }
+
+  // Labels
+  ctx.fillStyle = '#5a6278';
+  ctx.font = `${10 * dpr}px 'JetBrains Mono', monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  {
+    const start = Math.ceil(viewTMin / tStep) * tStep;
+    for (let t = start; t <= viewTMax; t += tStep) {
+      const x = pad.l + ((t - viewTMin) / (viewTMax - viewTMin)) * pw;
+      const label = Math.abs(t) < 1e-9 ? '0' : (Number.isInteger(t) ? t.toString() : t.toFixed(1));
+      ctx.fillText(label, x, pad.t + ph + 6 * dpr);
+    }
+  }
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  {
+    const start = Math.ceil(-yRange / yStep) * yStep;
+    for (let v = start; v <= yRange; v += yStep) {
+      const y = pad.t + (1 - (v + yRange) / (2 * yRange)) * ph;
+      const label = Math.abs(v) < 1e-9 ? '0' : (Number.isInteger(v) ? v.toString() : v.toFixed(1));
+      ctx.fillText(label, pad.l - 8 * dpr, y);
+    }
+  }
+  // t label
+  ctx.fillStyle = '#3a4258';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  const tLabelY = (y0 >= pad.t && y0 <= pad.t + ph) ? y0 - 4 * dpr : pad.t + ph / 2;
+  ctx.fillText('t', pad.l + pw + 8 * dpr, tLabelY);
+
+  return { pad, pw, ph, yRange, viewTMin, viewTMax };
+}
+
+function plotSignal(ctx, w, h, data, color, lineWidth, layout, dashed) {
+  const { pad, pw, ph, yRange, viewTMin, viewTMax } = layout;
+  const dpr = window.devicePixelRatio || 1;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(pad.l, pad.t, pw, ph);
+  ctx.clip();
+
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lineWidth * dpr;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  if (dashed) ctx.setLineDash([6 * dpr, 4 * dpr]);
+
+  let started = false;
+  for (let i = 0; i < N; i++) {
+    const t = indexToT(i);
+    if (t < viewTMin - 0.5 || t > viewTMax + 0.5) continue;
+    const x = pad.l + ((t - viewTMin) / (viewTMax - viewTMin)) * pw;
+    const y = pad.t + (1 - (data[i] + yRange) / (2 * yRange)) * ph;
+    if (!started) { ctx.beginPath(); ctx.moveTo(x, y); started = true; }
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function renderAll() {
+  if (!hasSignal) {
+    canvases.forEach((c, idx) => {
+      const ctx = ctxs[idx];
+      drawGrid(ctx, c.width, c.height);
+    });
+    updateMeters();
+    return;
+  }
+
+  decompose();
+
+  // Graph 0: x(t) + x(-t)
+  {
+    const c = canvases[0], ctx = ctxs[0];
+    const layout = drawGrid(ctx, c.width, c.height);
+    plotSignal(ctx, c.width, c.height, reflected, '#f472b6', 1.5, layout, true);
+    plotSignal(ctx, c.width, c.height, signal, '#a78bfa', 2, layout, false);
+  }
+  // Graph 1: even
+  {
+    const c = canvases[1], ctx = ctxs[1];
+    const layout = drawGrid(ctx, c.width, c.height);
+    plotSignal(ctx, c.width, c.height, evenPart, '#e8722a', 2, layout, false);
+  }
+  // Graph 2: odd
+  {
+    const c = canvases[2], ctx = ctxs[2];
+    const layout = drawGrid(ctx, c.width, c.height);
+    plotSignal(ctx, c.width, c.height, oddPart, '#22d3ee', 2, layout, false);
+  }
+
+  updateMeters();
+}
+
+// Drawing
+function getDrawPos(e, canvas) {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const pad = { l: 48 * dpr, r: 16 * dpr, t: 12 * dpr, b: 28 * dpr };
+  const pw = canvas.width - pad.l - pad.r;
+  const ph = canvas.height - pad.t - pad.b;
+  const tHalf = 5 / zoomT;
+  const viewTMin = -tHalf;
+  const viewTMax = tHalf;
+  const yRange = 4 / zoomY;
+
+  let clientX, clientY;
+  if (e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+  else { clientX = e.clientX; clientY = e.clientY; }
+
+  const px = (clientX - rect.left) * dpr;
+  const py = (clientY - rect.top) * dpr;
+
+  const t = viewTMin + ((px - pad.l) / pw) * (viewTMax - viewTMin);
+  const val = (1 - (py - pad.t) / ph) * 2 * yRange - yRange;
+
+  return { t, val };
+}
+
+function setSignalAt(t, val) {
+  const idx = tToIndex(t);
+  if (idx < 0 || idx >= N) return;
+  const yRange = 4 / zoomY;
+  const clamped = Math.max(-yRange, Math.min(yRange, val));
+  signal[idx] = clamped;
+}
+
+function interpolateDraw(t, val) {
+  const idx = tToIndex(t);
+  if (idx < 0 || idx >= N) return;
+  const yRange = 4 / zoomY;
+  const clamped = Math.max(-yRange, Math.min(yRange, val));
+
+  if (lastDrawIdx >= 0 && lastDrawIdx < N) {
+    const from = lastDrawIdx;
+    const to = idx;
+    const fromVal = signal[from];
+    const steps = Math.abs(to - from);
+    if (steps > 0) {
+      const dir = to > from ? 1 : -1;
+      for (let s = 0; s <= steps; s++) {
+        const i = from + s * dir;
+        if (i >= 0 && i < N) {
+          signal[i] = fromVal + (clamped - fromVal) * (s / steps);
+        }
+      }
+    }
+  }
+  signal[idx] = clamped;
+  lastDrawIdx = idx;
+}
+
+const c0 = canvases[0];
+
+c0.addEventListener('mousedown', startDraw);
+c0.addEventListener('mousemove', moveDraw);
+c0.addEventListener('mouseup', endDraw);
+c0.addEventListener('mouseleave', endDraw);
+c0.addEventListener('touchstart', e => { e.preventDefault(); startDraw(e); }, { passive: false });
+c0.addEventListener('touchmove', e => { e.preventDefault(); moveDraw(e); }, { passive: false });
+c0.addEventListener('touchend', endDraw);
+
+function startDraw(e) {
+  if (currentMode !== 'draw') return;
+  isDrawing = true;
+  hasSignal = true;
+  document.getElementById('hint').classList.add('hidden');
+  const pos = getDrawPos(e, c0);
+  lastDrawIdx = -1;
+  setSignalAt(pos.t, pos.val);
+  lastDrawIdx = tToIndex(pos.t);
+  renderAll();
+}
+function moveDraw(e) {
+  if (!isDrawing) return;
+  const pos = getDrawPos(e, c0);
+  interpolateDraw(pos.t, pos.val);
+  renderAll();
+}
+function endDraw() {
+  isDrawing = false;
+  lastDrawIdx = -1;
+}
+
+// Presets
+function loadPreset(type) {
+  signal.fill(0);
+  hasSignal = true;
+  document.getElementById('hint').classList.add('hidden');
+  clearActiveButtons();
+
+  for (let i = 0; i < N; i++) {
+    const t = indexToT(i);
+    switch (type) {
+      case 'step':
+        signal[i] = t >= 0 ? 1 : 0;
+        document.getElementById('btnStep').classList.add('active');
+        break;
+      case 'ramp':
+        signal[i] = t >= 0 ? t : 0;
+        document.getElementById('btnRamp').classList.add('active');
+        break;
+      case 'exp':
+        signal[i] = t >= 0 ? Math.exp(-t) : 0;
+        document.getElementById('btnExp').classList.add('active');
+        break;
+      case 'sawtooth':
+        signal[i] = t - Math.floor(t + 0.5);
+        document.getElementById('btnSawtooth').classList.add('active');
+        break;
+    }
+  }
+  currentMode = 'preset';
+  renderAll();
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  clearActiveButtons();
+  document.getElementById('btnDraw').classList.add('active');
+}
+
+function clearActiveButtons() {
+  document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+}
+
+function clearAll() {
+  signal.fill(0);
+  reflected.fill(0);
+  evenPart.fill(0);
+  oddPart.fill(0);
+  hasSignal = false;
+  lastDrawIdx = -1;
+  currentMode = 'draw';
+  clearActiveButtons();
+  document.getElementById('btnDraw').classList.add('active');
+  document.getElementById('hint').classList.remove('hidden');
+  renderAll();
+}
+
+// Init
+window.addEventListener('resize', resizeAll);
+setMode('draw');
+setTimeout(resizeAll, 50);
+</script>
+</body>
+</html>

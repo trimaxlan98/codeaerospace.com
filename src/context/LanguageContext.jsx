@@ -9,6 +9,7 @@ const translations = {
     leadership: { en: 'Leadership', es: 'Liderazgo' },
     services: { en: 'Services', es: 'Servicios' },
     impact: { en: 'Impact', es: 'Impacto' },
+    courses: { en: 'Courses', es: 'Cursos' },
     wrc2027: { en: 'WRC-2027', es: 'WRC-2027' },
     microapps: { en: 'MicroApps', es: 'MicroApps' },
     research: { en: 'Research', es: 'Investigación' },
@@ -405,6 +406,17 @@ const translations = {
         es: "Hola equipo de Co.De Aerospace,\n\nMe interesa contratar el Paquete {name} para mi negocio. Entiendo que el costo por actualización es de $600 MXN y me gustaría iniciar el proceso.\n\nSaludos.",
         en: "Hello Co.De Aerospace team,\n\nI am interested in the {name} Package for my business. I understand that the cost per update is $600 MXN and I would like to start the process.\n\nBest regards."
       }
+    }
+  },
+
+  // Courses Section
+  courses: {
+    title: { es: "Formación de Alto Nivel", en: "High-Level Training" },
+    subtitle: { es: "Programas especializados en ingeniería y tecnología espacial.", en: "Specialized programs in engineering and space technology." },
+    view_course: { es: "Ver Curso", en: "View Course" },
+    signals: {
+      title: { es: "Análisis de Señales y Sistemas", en: "Signals and Systems Analysis" },
+      desc: { es: "Fundamentos teóricos y prácticos para el procesamiento de señales en comunicaciones espaciales.", en: "Theoretical and practical foundations for signal processing in space communications." },
     }
   },
 

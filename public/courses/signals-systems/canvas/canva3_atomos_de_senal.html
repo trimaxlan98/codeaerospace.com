@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Átomos de Señal — El Árbol Genealógico Funcional</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a1628;
+    --bg-mid: #0d1f3c;
+    --bg-panel: #0f2444;
+    --grid-line: rgba(0, 180, 255, 0.07);
+    --grid-axis: rgba(0, 200, 255, 0.25);
+    --cyan: #00e5ff;
+    --cyan-dim: rgba(0, 229, 255, 0.4);
+    --cyan-glow: rgba(0, 229, 255, 0.15);
+    --white: #e8f4f8;
+    --white-dim: rgba(232, 244, 248, 0.6);
+    --accent-deriv: #ff6b6b;
+    --accent-func: #00e5ff;
+    --accent-integ: #69db7c;
+    --accent-deriv-glow: rgba(255, 107, 107, 0.3);
+    --accent-func-glow: rgba(0, 229, 255, 0.3);
+    --accent-integ-glow: rgba(105, 219, 124, 0.3);
+    --border: rgba(0, 180, 255, 0.15);
+    --radius: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Blueprint background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(0, 100, 200, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 80%, rgba(0, 150, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 24px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+
+  .header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--cyan), #80d8ff, var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 20px var(--cyan-glow));
+  }
+
+  .header .subtitle {
+    font-size: 11px;
+    color: var(--white-dim);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  .institution {
+    font-size: 10px;
+    color: var(--cyan-dim);
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  /* Controls */
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 20px;
+  }
+
+  .control-group {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+  }
+
+  .control-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan-dim);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  /* Function selector buttons */
+  .func-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .func-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 10px 8px;
+    background: var(--bg-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--white-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .func-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--cyan-glow), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .func-btn:hover::before { opacity: 1; }
+
+  .func-btn.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.08);
+    box-shadow: 0 0 15px var(--cyan-glow), inset 0 0 15px var(--cyan-glow);
+  }
+
+  .func-btn .sym { font-size: 16px; display: block; margin-bottom: 2px; }
+  .func-btn .name { font-size: 9px; letter-spacing: 1px; opacity: 0.7; }
+
+  /* CT/DT Toggle */
+  .toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toggle-wrapper {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    text-align: center;
+  }
+
+  .toggle-track {
+    width: 100px;
+    height: 36px;
+    background: var(--bg-mid);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    cursor: pointer;
+    position: relative;
+    margin: 8px auto 6px;
+    transition: all 0.4s ease;
+  }
+
+  .toggle-track.dt {
+    border-color: var(--accent-integ);
+    box-shadow: 0 0 10px var(--accent-integ-glow);
+  }
+
+  .toggle-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cyan);
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 0 10px var(--cyan-glow);
+  }
+
+  .toggle-track.dt .toggle-thumb {
+    left: 68px;
+    background: var(--accent-integ);
+    box-shadow: 0 0 10px var(--accent-integ-glow);
+  }
+
+  .toggle-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+    margin: 0 auto;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .toggle-labels span { transition: color 0.3s; }
+  .toggle-labels .ct-label { color: var(--cyan); }
+  .toggle-labels .dt-label { color: var(--white-dim); }
+  .toggle-track.dt ~ .toggle-labels .ct-label { color: var(--white-dim); }
+  .toggle-track.dt ~ .toggle-labels .dt-label { color: var(--accent-integ); }
+
+  /* Sliders */
+  .slider-group { margin-bottom: 10px; }
+  .slider-group:last-child { margin-bottom: 0; }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .slider-name {
+    font-size: 12px;
+    color: var(--white);
+  }
+
+  .slider-value {
+    font-size: 12px;
+    color: var(--cyan);
+    font-weight: 600;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--bg-mid);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--cyan);
+    border: 2px solid var(--bg-deep);
+    box-shadow: 0 0 8px var(--cyan-glow);
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--cyan);
+    border: 2px solid var(--bg-deep);
+    box-shadow: 0 0 8px var(--cyan-glow);
+    cursor: pointer;
+  }
+
+  /* Canvas area */
+  .canvas-section {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 8px;
+  }
+
+  .canvas-row {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .canvas-row::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .canvas-row.deriv::before { background: linear-gradient(90deg, transparent, var(--accent-deriv), transparent); }
+  .canvas-row.func::before { background: linear-gradient(90deg, transparent, var(--accent-func), transparent); }
+  .canvas-row.integ::before { background: linear-gradient(90deg, transparent, var(--accent-integ), transparent); }
+
+  .canvas-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .canvas-title .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .deriv .canvas-title { color: var(--accent-deriv); }
+  .deriv .dot { background: var(--accent-deriv); box-shadow: 0 0 8px var(--accent-deriv-glow); }
+  .func .canvas-title { color: var(--accent-func); }
+  .func .dot { background: var(--accent-func); box-shadow: 0 0 8px var(--accent-func-glow); }
+  .integ .canvas-title { color: var(--accent-integ); }
+  .integ .dot { background: var(--accent-integ); box-shadow: 0 0 8px var(--accent-integ-glow); }
+
+  canvas {
+    width: 100%;
+    height: 160px;
+    display: block;
+    border-radius: 4px;
+  }
+
+  /* Relation arrows */
+  .relation-arrow {
+    text-align: center;
+    font-size: 11px;
+    color: var(--white-dim);
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .relation-arrow .arrow { font-size: 16px; color: var(--cyan); }
+  .relation-arrow .math-label { font-size: 11px; opacity: 0.8; }
+
+  /* Info panel */
+  .info-bar {
+    margin-top: 16px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .info-item {
+    font-size: 12px;
+    color: var(--white-dim);
+  }
+
+  .info-item strong {
+    color: var(--cyan);
+    font-weight: 500;
+  }
+
+  .formula-display {
+    margin-top: 12px;
+    background: var(--bg-mid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--white);
+    letter-spacing: 0.5px;
+    line-height: 2;
+  }
+
+  .formula-display .math {
+    display: inline-block;
+    margin: 0 16px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .formula-display .math.deriv-c { color: var(--accent-deriv); border-bottom: 2px solid var(--accent-deriv); }
+  .formula-display .math.func-c { color: var(--accent-func); border-bottom: 2px solid var(--accent-func); }
+  .formula-display .math.integ-c { color: var(--accent-integ); border-bottom: 2px solid var(--accent-integ); }
+
+  .arrow-between { color: var(--white-dim); font-size: 16px; vertical-align: middle; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 9px;
+    color: var(--white-dim);
+    letter-spacing: 2px;
+    opacity: 0.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 800px) {
+    .controls { grid-template-columns: 1fr; }
+    .func-btn { min-width: 70px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="header">
+    <h1>Átomos de Señal</h1>
+    <div class="subtitle">El Árbol Genealógico Funcional</div>
+    <div class="institution">UPIITA — IPN · Análisis de Señales y Sistemas</div>
+  </header>
+
+  <div class="controls">
+    <!-- Function selector -->
+    <div class="control-group">
+      <span class="control-label">Función Maestra</span>
+      <div class="func-buttons">
+        <button class="func-btn active" data-fn="impulse" onclick="selectFunction('impulse')">
+          <span class="sym">δ</span>
+          <span class="name">Impulso</span>
+        </button>
+        <button class="func-btn" data-fn="step" onclick="selectFunction('step')">
+          <span class="sym">u</span>
+          <span class="name">Escalón</span>
+        </button>
+        <button class="func-btn" data-fn="ramp" onclick="selectFunction('ramp')">
+          <span class="sym">r</span>
+          <span class="name">Rampa</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CT/DT Toggle -->
+    <div class="toggle-wrapper">
+      <span class="control-label">Dominio</span>
+      <div class="toggle-track" id="toggleTrack" onclick="toggleDomain()">
+        <div class="toggle-thumb"></div>
+      </div>
+      <div class="toggle-labels">
+        <span class="ct-label">CT</span>
+        <span class="dt-label">DT</span>
+      </div>
+    </div>
+
+    <!-- Parameters -->
+    <div class="control-group">
+      <span class="control-label">Parámetros</span>
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-name">Desplazamiento t₀</span>
+          <span class="slider-value" id="t0Value">0.0</span>
+        </div>
+        <input type="range" id="t0Slider" min="-4" max="4" step="0.1" value="0" oninput="updateParams()">
+      </div>
+      <div class="slider-group">
+        <div class="slider-header">
+          <span class="slider-name">Amplitud A</span>
+          <span class="slider-value" id="ampValue">1.0</span>
+        </div>
+        <input type="range" id="ampSlider" min="0.1" max="3" step="0.1" value="1" oninput="updateParams()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas graphs -->
+  <div class="canvas-section">
+    <div class="canvas-row deriv">
+      <div class="canvas-title"><span class="dot"></span><span id="derivTitle">DERIVADA — d/dt [δ(t)]</span></div>
+      <canvas id="canvasDerivative"></canvas>
+    </div>
+
+    <div class="relation-arrow">
+      <span class="math-label" id="relUp">∫ integrar</span>
+      <span class="arrow">↑</span>
+      <span style="color:var(--cyan);">│</span>
+      <span class="arrow">↓</span>
+      <span class="math-label" id="relDown">d/dt derivar</span>
+    </div>
+
+    <div class="canvas-row func">
+      <div class="canvas-title"><span class="dot"></span><span id="funcTitle">FUNCIÓN — δ(t)</span></div>
+      <canvas id="canvasFunction"></canvas>
+    </div>
+
+    <div class="relation-arrow">
+      <span class="math-label">∫ integrar</span>
+      <span class="arrow">↑</span>
+      <span style="color:var(--cyan);">│</span>
+      <span class="arrow">↓</span>
+      <span class="math-label">d/dt derivar</span>
+    </div>
+
+    <div class="canvas-row integ">
+      <div class="canvas-title"><span class="dot"></span><span id="integTitle">INTEGRAL — u(t)</span></div>
+      <canvas id="canvasIntegral"></canvas>
+    </div>
+  </div>
+
+  <!-- Formula display -->
+  <div class="formula-display" id="formulaDisplay">
+    <span class="math deriv-c" id="fDerivLabel">δ'(t)</span>
+    <span class="arrow-between">→ d/dt →</span>
+    <span class="math func-c" id="fFuncLabel">δ(t)</span>
+    <span class="arrow-between">→ ∫ →</span>
+    <span class="math integ-c" id="fIntegLabel">u(t)</span>
+  </div>
+
+  <div class="info-bar">
+    <div class="info-item"><strong>Semana 1</strong> · Funciones Base</div>
+    <div class="info-item">Relación: <strong>derivada ↔ función ↔ integral</strong></div>
+    <div class="info-item" id="domainInfo">Dominio: <strong>Tiempo Continuo (CT)</strong></div>
+  </div>
+
+  <div class="footer">UPIITA — IPN · M. en C. Alan Rosas Palacios · Señales y Sistemas 2026</div>
+</div>
+
+<script>
+// ── State ──
+let state = {
+  fn: 'impulse',    // impulse | step | ramp
+  isDT: false,      // false = CT, true = DT
+  t0: 0,
+  amp: 1
+};
+
+const DPR = window.devicePixelRatio || 1;
+
+// ── Canvas Setup ──
+function setupCanvas(canvas) {
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const h = 160;
+  canvas.width = w * DPR;
+  canvas.height = h * DPR;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(DPR, DPR);
+  return { ctx, w, h };
+}
+
+// ── Drawing Helpers ──
+function drawGrid(ctx, w, h, xRange, yRange) {
+  const xMin = xRange[0], xMax = xRange[1];
+  const yMin = yRange[0], yMax = yRange[1];
+  const pad = 40;
+  const plotW = w - 2 * pad;
+  const plotH = h - 2 * pad;
+
+  function toX(val) { return pad + ((val - xMin) / (xMax - xMin)) * plotW; }
+  function toY(val) { return pad + ((yMax - val) / (yMax - yMin)) * plotH; }
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(0, 180, 255, 0.06)';
+  ctx.lineWidth = 0.5;
+  for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+    const px = toX(x);
+    ctx.beginPath(); ctx.moveTo(px, pad); ctx.lineTo(px, h - pad); ctx.stroke();
+  }
+  for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+    const py = toY(y);
+    ctx.beginPath(); ctx.moveTo(pad, py); ctx.lineTo(w - pad, py); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+  ctx.lineWidth = 1;
+  // x-axis
+  if (yMin <= 0 && yMax >= 0) {
+    const y0 = toY(0);
+    ctx.beginPath(); ctx.moveTo(pad, y0); ctx.lineTo(w - pad, y0); ctx.stroke();
+  }
+  // y-axis
+  if (xMin <= 0 && xMax >= 0) {
+    const x0 = toX(0);
+    ctx.beginPath(); ctx.moveTo(x0, pad); ctx.lineTo(x0, h - pad); ctx.stroke();
+  }
+
+  // Tick labels
+  ctx.fillStyle = 'rgba(232, 244, 248, 0.35)';
+  ctx.font = '9px JetBrains Mono';
+  ctx.textAlign = 'center';
+  for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+    if (x === 0) continue;
+    ctx.fillText(x, toX(x), toY(0) + 14);
+  }
+  ctx.textAlign = 'right';
+  for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+    if (y === 0) continue;
+    const py = toY(y);
+    if (py > pad + 5 && py < h - pad - 5) {
+      ctx.fillText(y, toX(0) - 6, py + 3);
+    }
+  }
+
+  // Axis labels
+  ctx.fillStyle = 'rgba(232, 244, 248, 0.45)';
+  ctx.font = '10px JetBrains Mono';
+  ctx.textAlign = 'center';
+  const varName = state.isDT ? 'n' : 't';
+  ctx.fillText(varName, w - pad + 14, toY(0) + 4);
+
+  return { toX, toY, pad, plotW, plotH };
+}
+
+function drawContinuousLine(ctx, w, h, xRange, yRange, evalFn, color) {
+  const { toX, toY, pad, plotW } = drawGrid(ctx, w, h, xRange, yRange);
+  const steps = plotW * 2;
+  const xMin = xRange[0], xMax = xRange[1];
+
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 8;
+  ctx.beginPath();
+  let started = false;
+  for (let i = 0; i <= steps; i++) {
+    const t = xMin + (i / steps) * (xMax - xMin);
+    const val = evalFn(t);
+    if (val === null || val === undefined || !isFinite(val)) {
+      started = false;
+      continue;
+    }
+    const px = toX(t);
+    const py = toY(Math.max(yRange[0], Math.min(yRange[1], val)));
+    if (!started) { ctx.moveTo(px, py); started = true; }
+    else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  return { toX, toY };
+}
+
+function drawDiscreteStem(ctx, w, h, xRange, yRange, evalFn, color) {
+  const { toX, toY } = drawGrid(ctx, w, h, xRange, yRange);
+  const nMin = Math.ceil(xRange[0]);
+  const nMax = Math.floor(xRange[1]);
+  const y0 = toY(0);
+
+  for (let n = nMin; n <= nMax; n++) {
+    const val = evalFn(n);
+    if (val === null || !isFinite(val)) continue;
+    const px = toX(n);
+    const py = toY(Math.max(yRange[0], Math.min(yRange[1], val)));
+
+    // Stem line
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    ctx.moveTo(px, y0);
+    ctx.lineTo(px, py);
+    ctx.stroke();
+
+    // Dot
+    ctx.fillStyle = color;
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(px, py, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  return { toX, toY };
+}
+
+// ── Signal Evaluation Functions ──
+function impulse_ct(t, t0, A) {
+  // Approximate Dirac delta as a narrow Gaussian for visualization
+  const sigma = 0.08;
+  const dt = t - t0;
+  return A * Math.exp(-(dt * dt) / (2 * sigma * sigma)) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+function step_ct(t, t0, A) {
+  return t >= t0 ? A : 0;
+}
+
+function ramp_ct(t, t0, A) {
+  return t >= t0 ? A * (t - t0) : 0;
+}
+
+// Derivatives (CT)
+function deriv_impulse_ct(t, t0, A) {
+  // derivative of Dirac approximation (doublet)
+  const sigma = 0.08;
+  const dt = t - t0;
+  return -A * dt / (sigma * sigma) * Math.exp(-(dt * dt) / (2 * sigma * sigma)) / (sigma * Math.sqrt(2 * Math.PI));
+}
+
+function deriv_step_ct(t, t0, A) {
+  return impulse_ct(t, t0, A);
+}
+
+function deriv_ramp_ct(t, t0, A) {
+  return step_ct(t, t0, A);
+}
+
+// Integrals (CT)
+function integ_impulse_ct(t, t0, A) {
+  return step_ct(t, t0, A);
+}
+
+function integ_step_ct(t, t0, A) {
+  return ramp_ct(t, t0, A);
+}
+
+function integ_ramp_ct(t, t0, A) {
+  return t >= t0 ? A * 0.5 * (t - t0) * (t - t0) : 0;
+}
+
+// DT versions
+function impulse_dt(n, n0, A) {
+  return n === Math.round(n0) ? A : 0;
+}
+
+function step_dt(n, n0, A) {
+  return n >= Math.round(n0) ? A : 0;
+}
+
+function ramp_dt(n, n0, A) {
+  const n0r = Math.round(n0);
+  return n >= n0r ? A * (n - n0r) : 0;
+}
+
+// DT derivatives (first backward difference)
+function deriv_impulse_dt(n, n0, A) {
+  return impulse_dt(n, n0, A) - impulse_dt(n - 1, n0, A);
+}
+
+function deriv_step_dt(n, n0, A) {
+  return impulse_dt(n, n0, A);
+}
+
+function deriv_ramp_dt(n, n0, A) {
+  return step_dt(n, n0, A);
+}
+
+// DT integrals (running sum)
+function integ_impulse_dt(n, n0, A) {
+  return step_dt(n, n0, A);
+}
+
+function integ_step_dt(n, n0, A) {
+  return ramp_dt(n, n0, A);
+}
+
+function integ_ramp_dt(n, n0, A) {
+  const n0r = Math.round(n0);
+  if (n < n0r) return 0;
+  let sum = 0;
+  for (let k = n0r; k <= n; k++) {
+    sum += A * (k - n0r);
+  }
+  return sum;
+}
+
+// ── Get functions for current state ──
+function getFunctions() {
+  const { fn, isDT, t0, amp } = state;
+  const fns = {};
+
+  if (!isDT) {
+    // CT
+    switch (fn) {
+      case 'impulse':
+        fns.deriv = t => deriv_impulse_ct(t, t0, amp);
+        fns.func = t => impulse_ct(t, t0, amp);
+        fns.integ = t => integ_impulse_ct(t, t0, amp);
+        break;
+      case 'step':
+        fns.deriv = t => deriv_step_ct(t, t0, amp);
+        fns.func = t => step_ct(t, t0, amp);
+        fns.integ = t => integ_step_ct(t, t0, amp);
+        break;
+      case 'ramp':
+        fns.deriv = t => deriv_ramp_ct(t, t0, amp);
+        fns.func = t => ramp_ct(t, t0, amp);
+        fns.integ = t => integ_ramp_ct(t, t0, amp);
+        break;
+    }
+  } else {
+    // DT
+    switch (fn) {
+      case 'impulse':
+        fns.deriv = n => deriv_impulse_dt(n, t0, amp);
+        fns.func = n => impulse_dt(n, t0, amp);
+        fns.integ = n => integ_impulse_dt(n, t0, amp);
+        break;
+      case 'step':
+        fns.deriv = n => deriv_step_dt(n, t0, amp);
+        fns.func = n => step_dt(n, t0, amp);
+        fns.integ = n => integ_step_dt(n, t0, amp);
+        break;
+      case 'ramp':
+        fns.deriv = n => deriv_ramp_dt(n, t0, amp);
+        fns.func = n => ramp_dt(n, t0, amp);
+        fns.integ = n => integ_ramp_dt(n, t0, amp);
+        break;
+    }
+  }
+  return fns;
+}
+
+// ── Y-range estimation ──
+function getYRanges() {
+  const { fn, isDT, amp } = state;
+  let derivRange, funcRange, integRange;
+
+  if (fn === 'impulse') {
+    const peak = isDT ? amp * 1.5 : amp * 6;
+    derivRange = [-peak, peak];
+    funcRange = isDT ? [-0.5, amp * 1.5] : [-1, amp * 6];
+    integRange = [-0.5, amp * 1.5];
+  } else if (fn === 'step') {
+    const peak = isDT ? amp * 1.5 : amp * 6;
+    derivRange = isDT ? [-0.5, amp * 1.5] : [-1, peak];
+    funcRange = [-0.5, amp * 1.5];
+    integRange = [-0.5, amp * 6];
+  } else {
+    funcRange = [-0.5, amp * 6];
+    derivRange = [-0.5, amp * 1.5];
+    integRange = [-0.5, amp * 20];
+  }
+
+  return { derivRange, funcRange, integRange };
+}
+
+// ── Labels ──
+function getLabels() {
+  const { fn, isDT, t0, amp } = state;
+  const v = isDT ? 'n' : 't';
+  const shift = t0 !== 0 ? (t0 > 0 ? ` - ${t0}` : ` + ${Math.abs(t0)}`) : '';
+  const ampStr = amp !== 1 ? `${amp}` : '';
+  const labels = {};
+
+  if (fn === 'impulse') {
+    if (isDT) {
+      labels.func = `δ[${v}${shift}]`;
+      labels.deriv = `δ[${v}${shift}] − δ[${v}${shift} − 1]`;
+      labels.integ = `u[${v}${shift}]`;
+      labels.derivTitle = `DIFERENCIA — Δδ[n]`;
+      labels.funcTitle = `FUNCIÓN — ${ampStr}δ[n${shift}]`;
+      labels.integTitle = `SUMA ACUMULADA — u[n${shift}]`;
+    } else {
+      labels.func = `δ(${v}${shift})`;
+      labels.deriv = `δ'(${v}${shift})`;
+      labels.integ = `u(${v}${shift})`;
+      labels.derivTitle = `DERIVADA — δ'(t${shift})`;
+      labels.funcTitle = `FUNCIÓN — ${ampStr}δ(t${shift})`;
+      labels.integTitle = `INTEGRAL — u(t${shift})`;
+    }
+  } else if (fn === 'step') {
+    if (isDT) {
+      labels.func = `u[${v}${shift}]`;
+      labels.deriv = `δ[${v}${shift}]`;
+      labels.integ = `r[${v}${shift}]`;
+      labels.derivTitle = `DIFERENCIA — δ[n${shift}]`;
+      labels.funcTitle = `FUNCIÓN — ${ampStr}u[n${shift}]`;
+      labels.integTitle = `SUMA ACUMULADA — r[n${shift}]`;
+    } else {
+      labels.func = `u(${v}${shift})`;
+      labels.deriv = `δ(${v}${shift})`;
+      labels.integ = `r(${v}${shift})`;
+      labels.derivTitle = `DERIVADA — δ(t${shift})`;
+      labels.funcTitle = `FUNCIÓN — ${ampStr}u(t${shift})`;
+      labels.integTitle = `INTEGRAL — r(t${shift})`;
+    }
+  } else {
+    if (isDT) {
+      labels.func = `r[${v}${shift}]`;
+      labels.deriv = `u[${v}${shift}]`;
+      labels.integ = `Σ r[${v}${shift}]`;
+      labels.derivTitle = `DIFERENCIA — u[n${shift}]`;
+      labels.funcTitle = `FUNCIÓN — ${ampStr}r[n${shift}]`;
+      labels.integTitle = `SUMA ACUMULADA — Σr[n${shift}]`;
+    } else {
+      labels.func = `r(${v}${shift})`;
+      labels.deriv = `u(${v}${shift})`;
+      labels.integ = `½(${v}${shift})²u(${v}${shift})`;
+      labels.derivTitle = `DERIVADA — u(t${shift})`;
+      labels.funcTitle = `FUNCIÓN — ${ampStr}r(t${shift})`;
+      labels.integTitle = `INTEGRAL — ½(t${shift})²·u(t${shift})`;
+    }
+  }
+
+  return labels;
+}
+
+// ── Main Draw ──
+function draw() {
+  const canvases = ['canvasDerivative', 'canvasFunction', 'canvasIntegral'];
+  const colors = ['#ff6b6b', '#00e5ff', '#69db7c'];
+  const fns = getFunctions();
+  const fnArr = [fns.deriv, fns.func, fns.integ];
+  const xRange = [-6, 6];
+  const { derivRange, funcRange, integRange } = getYRanges();
+  const yRanges = [derivRange, funcRange, integRange];
+  const labels = getLabels();
+
+  // Update titles
+  document.getElementById('derivTitle').textContent = labels.derivTitle;
+  document.getElementById('funcTitle').textContent = labels.funcTitle;
+  document.getElementById('integTitle').textContent = labels.integTitle;
+
+  // Update formula bar
+  document.getElementById('fDerivLabel').textContent = labels.deriv;
+  document.getElementById('fFuncLabel').textContent = labels.func;
+  document.getElementById('fIntegLabel').textContent = labels.integ;
+
+  // Update relation labels
+  const opUp = state.isDT ? 'Σ sumar' : '∫ integrar';
+  const opDown = state.isDT ? 'Δ diferencia' : 'd/dt derivar';
+  document.querySelectorAll('.relation-arrow').forEach(el => {
+    el.querySelector('.math-label:first-child').textContent = opUp;
+    el.querySelector('.math-label:last-child').textContent = opDown;
+  });
+
+  // Update domain info
+  document.getElementById('domainInfo').innerHTML = state.isDT
+    ? 'Dominio: <strong>Tiempo Discreto (DT)</strong>'
+    : 'Dominio: <strong>Tiempo Continuo (CT)</strong>';
+
+  canvases.forEach((id, i) => {
+    const canvas = document.getElementById(id);
+    const { ctx, w, h } = setupCanvas(canvas);
+
+    // Clear
+    ctx.clearRect(0, 0, w, h);
+
+    if (state.isDT) {
+      drawDiscreteStem(ctx, w, h, xRange, yRanges[i], fnArr[i], colors[i]);
+    } else {
+      drawContinuousLine(ctx, w, h, xRange, yRanges[i], fnArr[i], colors[i]);
+    }
+
+    // Draw label on canvas
+    ctx.font = '600 13px JetBrains Mono';
+    ctx.fillStyle = colors[i];
+    ctx.shadowColor = colors[i];
+    ctx.shadowBlur = 6;
+    ctx.textAlign = 'right';
+    const labelTexts = [labels.deriv, labels.func, labels.integ];
+    ctx.fillText(labelTexts[i], w - 48, 26);
+    ctx.shadowBlur = 0;
+  });
+}
+
+// ── Interaction Handlers ──
+function selectFunction(fn) {
+  state.fn = fn;
+  document.querySelectorAll('.func-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.fn === fn);
+  });
+  draw();
+}
+
+function toggleDomain() {
+  state.isDT = !state.isDT;
+  document.getElementById('toggleTrack').classList.toggle('dt', state.isDT);
+  // Snap t0 to integer in DT mode
+  if (state.isDT) {
+    state.t0 = Math.round(state.t0);
+    document.getElementById('t0Slider').value = state.t0;
+    document.getElementById('t0Value').textContent = state.t0.toFixed(1);
+  }
+  draw();
+}
+
+function updateParams() {
+  let t0 = parseFloat(document.getElementById('t0Slider').value);
+  const amp = parseFloat(document.getElementById('ampSlider').value);
+  if (state.isDT) t0 = Math.round(t0);
+  state.t0 = t0;
+  state.amp = amp;
+  document.getElementById('t0Value').textContent = t0.toFixed(1);
+  document.getElementById('ampValue').textContent = amp.toFixed(1);
+  draw();
+}
+
+// ── Init ──
+window.addEventListener('load', () => {
+  draw();
+  window.addEventListener('resize', draw);
+});
+</script>
+
+</body>
+</html>

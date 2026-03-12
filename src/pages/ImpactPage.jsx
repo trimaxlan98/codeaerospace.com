@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useSpring, useTransform, animate, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { Award, Users, Globe, BookOpen, Briefcase, Send, ChevronRight, ChevronLeft, ChevronDown } from 'lucide-react';
+import CoursesSection from '@/components/CoursesSection';
 
 const AnimatedNumber = ({ value, suffix = "" }) => {
   const ref = useRef(null);
@@ -466,27 +467,8 @@ const ImpactPage = () => {
       {/* Academic Timeline */}
       <AcademicTimeline />
 
-      {/* Training Grid */}
-      <section className="py-32 px-6 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-24">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-black text-white/90 mb-6 uppercase tracking-[0.2em]"
-            >
-              {t('impact.workshops_title')}
-            </motion.h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#00d9ff] to-transparent mx-auto" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <CourseCard title={t('impact.workshops.ai.title')} desc={t('impact.workshops.ai.desc')} modules={t('impact.workshops.ai.modules')} level={t('impact.workshops.ai.level')} delay={0.1} />
-            <CourseCard title={t('impact.workshops.control.title')} desc={t('impact.workshops.control.desc')} modules={t('impact.workshops.control.modules')} level={t('impact.workshops.control.level')} delay={0.2} />
-            <CourseCard title={t('impact.workshops.mechanical.title')} desc={t('impact.workshops.mechanical.desc')} modules={t('impact.workshops.mechanical.modules')} level={t('impact.workshops.mechanical.level')} delay={0.3} />
-          </div>
-        </div>
-      </section>
+      {/* Courses Section */}
+      <CoursesSection />
 
       {/* Consulting Block */}
       <section className="py-48 px-6 bg-[#050816]/80 relative overflow-hidden border-t border-[#00d9ff]/10">
